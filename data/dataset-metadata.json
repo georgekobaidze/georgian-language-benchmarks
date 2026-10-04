@@ -1,0 +1,11 @@
+{
+  "title": "Georgian Language Benchmark Data",
+  "subtitle": "Gold data for testing how well AI models know Georgian",
+  "description": "Evaluation items for the Georgian Language Benchmark on Kaggle: script and orthography, base-20 numbers, verb morphology, grammar judgment, chat Georgian, reasoning parity, language fidelity and cultural knowledge. Generated items come from deterministic scripts; hand-curated items were written and checked by a native speaker.\n\nCode: https://github.com/georgekobaidze/georgian-language-benchmarks",
+  "id": "georgekobaidze/georgian-language-benchmark-data",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ]
+}
