@@ -1,5 +1,5 @@
 # Smoke test: many items -> one leaderboard score.
-# Push: kaggle b t push glb-smoke -f aggregate_test.py --wait
+# Push: kaggle b t push glb-smoke -f tasks/aggregate_test.py --wait
 import dataclasses
 import unicodedata
 
