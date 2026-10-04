@@ -1,0 +1,43 @@
+Slug                           Display Name                  
+------------------------------------------------------------
+gemini-3.7-flash               Gemini 3.7 Flash              
+claude-haiku-4-5-20251001      Claude Haiku 4.5              
+claude-opus-4-5-20251101       Claude Opus 4.5               
+claude-opus-4-6-default        Claude Opus 4.6               
+claude-opus-4-7-default        Claude Opus 4.7               
+claude-opus-4-8-default        Claude Opus 4.8               
+claude-opus-5-default          Claude Opus 5                 
+claude-sonnet-4-5-20250929     Claude Sonnet 4.5             
+claude-sonnet-4-6-default      Claude Sonnet 4.6             
+claude-sonnet-5-default        Claude Sonnet 5               
+deepseek-r1-0528               DeepSeek-R1                   
+gemini-2.5-flash               Gemini 2.5 Flash              
+gemini-2.5-pro                 Gemini 2.5 Pro                
+gemini-3-flash-preview         Gemini 3 Flash Preview        
+gemini-3.1-flash-lite-preview  Gemini 3.1 Flash-Lite Preview 
+gemini-3.1-pro-preview         Gemini 3.1 Pro Preview        
+gemini-3.5-flash               Gemini 3.5 Flash              
+gemini-3.5-flash-lite          Gemini 3.5 Flash-Lite         
+gemini-3.6-flash               Gemini 3.6 Flash              
+gemini-3.8-flash               Gemini 3.8 Flash              
+gemma-4-26b-a4b-it             Gemma 4 26B A4B               
+gemma-4-31b-it                 Gemma 4 31B                   
+glm-5                          GLM-5                         
+gpt-5.4-2026-03-05             GPT-5.4                       
+gpt-5.4-mini-2026-03-17        GPT-5.4 mini                  
+gpt-5.4-nano-2026-03-17        GPT-5.4 nano                  
+gpt-5.5-2026-04-23             GPT-5.5                       
+gpt-5.6-luna                   GPT-5.6 Luna                  
+gpt-5.6-sol                    GPT-5.6 Sol                   
+gpt-5.6-terra                  GPT-5.6 Terra                 
+gpt-6-astra                    GPT-6 Astra                   
+gpt-oss-120b                   gpt-oss-120b                  
+gpt-oss-20b                    gpt-oss-20b                   
+grok-4.20-0309-non-reasoning   Grok 4.20 (Non-Reasoning)     
+grok-4.20-0309-reasoning       Grok 4.20 Reasoning           
+grok-4.5-0708                  Grok 4.5                      
+grok-4.6                       Grok 4.6                      
+qwen3-235b-a22b-instruct-2507  Qwen 3 235B A22B Instruct     
+qwen3-coder-480b-a35b-instruct Qwen 3 Coder 480B             
+qwen3-next-80b-a3b-instruct    Qwen 3 Next 80B Instruct      
+qwen3-next-80b-a3b-thinking    Qwen 3 Next 80B Thinking      
