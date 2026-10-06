@@ -1,0 +1,46 @@
+id,input,expected,expected_translation
+rw-000,"ra xdeba, rogor xar?","რა ხდება, როგორ ხარ?","What's up, how are you?"
+rw-001,xval shevxvdet 5-ze.,ხვალ შევხვდეთ 5-ზე.,Let's meet tomorrow at 5.
+rw-002,hemi teleponi gaitiha.,ჩემი ტელეფონი გაითიშა.,My phone died.
+rw-003,ar vitsi ra vkna.,არ ვიცი რა ვქნა.,I don't know what to do.
+rw-004,gilocav dabadebis dges!,გილოცავ დაბადების დღეს!,Happy birthday!
+rw-005,sad xar? gelodebi ukve naxevari saatia.,სად ხარ? გელოდები უკვე ნახევარი საათია.,Where are you? I've been waiting for you for half an hour already.
+rw-006,"mapatie, damagvianda.","მაპატიე, დამაგვიანდა.","Sorry, I'm late."
+rw-007,zustad ver gavige ra tqvi.,ზუსტად ვერ გავიგე რა თქვი.,I didn't quite catch what you said.
+rw-008,"fuli chagiricxe, naxe.","ფული ჩაგირიცხე, ნახე.","I transferred the money to you, check."
+rw-009,"dges dzalian cxela, zgvaze cavidet?","დღეს ძალიან ცხელა, ზღვაზე წავიდეთ?","It's very hot today, shall we go to the sea?"
+rw-010,shens dzmas mokitxva gadaeci.,შენს ძმას მოკითხვა გადაეცი.,Say hello to your brother for me.
+rw-011,"xom ar ici, aptiaqi romel saatamdea Ria?","ხომ არ იცი, აფთიაქი რომელ საათამდეა ღია?",Do you happen to know until what time the pharmacy is open?
+rw-012,chame rame?,ჭამე რამე?,Have you eaten anything?
+rw-013,manqana gafuchda da taqsit movdivar.,მანქანა გაფუჭდა და ტაქსით მოვდივარ.,My car broke down and I'm coming by taxi.
+rw-014,Zalian momenatre.,ძალიან მომენატრე.,I missed you so much.
+rw-015,sheni wigni jer ar wamikitxavs.,შენი წიგნი ჯერ არ წამიკითხავს.,I haven't read your book yet.
+rw-016,"Cqara modi, filmi iwyeba.","ჩქარა მოდი, ფილმი იწყება.","Come quickly, the movie is starting."
+rw-017,samsaxuridan gvian gamovedi.,სამსახურიდან გვიან გამოვედი.,I left work late.
+rw-018,"yvelaferi kargadaa, nu ghelav.","ყველაფერი კარგადაა, ნუ ღელავ.","Everything is fine, don't worry."
+rw-019,Sabats ras aketeb?,შაბათს რას აკეთებ?,What are you doing on Saturday?
+rw-020,"bodishi, ver gipasuxe, shexvedraze viyavi.","ბოდიში, ვერ გიპასუხე, შეხვედრაზე ვიყავი.","Sorry, I couldn't answer, I was in a meeting."
+rw-021,cota xanshi dagirekav.,ცოტა ხანში დაგირეკავ.,I'll call you in a bit.
+rw-022,bankomatma barati gadaylapa.,ბანკომატმა ბარათი გადაყლაპა.,The ATM swallowed my card.
+rw-023,tyuilad nu nerviulob.,ტყუილად ნუ ნერვიულობ.,Don't stress for nothing.
+rw-024,"kinoshi biletebi avige, shvidis naxevarze iwyeba.","კინოში ბილეთები ავიღე, შვიდის ნახევარზე იწყება.","I got cinema tickets, it starts at 6:30."
+rw-025,dzagli gavaseirne ukve.,ძაღლი გავასეირნე უკვე.,I already walked the dog.
+rw-026,zeg dilit mivfrinav berlinshi.,ზეგ დილით მივფრინავ ბერლინში.,"The day after tomorrow, in the morning, I'm flying to Berlin."
+rw-027,shen xom ar gagijdi?,შენ ხომ არ გაგიჟდი?,Have you gone crazy?
+rw-028,"panjara dakete, qaria.","ფანჯარა დაკეტე, ქარია.","Close the window, it's windy."
+rw-029,vaxshamze ra gavaketo?,ვახშამზე რა გავაკეთო?,What should I make for dinner?
+rw-030,chiqa gatyda da xeli gavicheri.,ჭიქა გატყდა და ხელი გავიჭერი.,The glass broke and I cut my hand.
+rw-031,maswavlebelma sashinao davaleba mogvca.,მასწავლებელმა საშინაო დავალება მოგვცა.,The teacher gave us homework.
+rw-032,"qalaqshi sacobia, naxevar saatshi viqnebi.","ქალაქში საცობია, ნახევარ საათში ვიქნები.","There's a traffic jam in the city, I'll be there in half an hour."
+rw-033,chems dzmas coli mohyavs.,ჩემს ძმას ცოლი მოჰყავს.,My brother is getting married.
+rw-034,es simgera dzalian momwons.,ეს სიმღერა ძალიან მომწონს.,I really like this song.
+rw-035,fotoebi gamomigzavne.,ფოტოები გამომიგზავნე.,Send me the photos.
+rw-036,ra xirs?,რა ღირს?,How much does it cost?
+rw-037,"jer ar vici, mogwer.","ჯერ არ ვიცი, მოგწერ.","I don't know yet, I'll text you."
+rw-038,shexvedra gadaido xutshabatistvis.,შეხვედრა გადაიდო ხუთშაბათისთვის.,The meeting was postponed to Thursday.
+rw-039,"bavshvebs sdzinavt, xmamagla nu laparakob.","ბავშვებს სძინავთ, ხმამაღლა ნუ ლაპარაკობ.","The kids are asleep, don't talk loudly."
+rw-040,wvims da qolga ar wamomiRia.,წვიმს და ქოლგა არ წამომიღია.,It's raining and I didn't bring an umbrella.
+rw-041,eqimtan chawera minda.,ექიმთან ჩაწერა მინდა.,I want to make an appointment with the doctor.
+rw-042,vin moigo matchi?,ვინ მოიგო მატჩი?,Who won the match?
+rw-043,"pica me momaqvs, shen xachapuri iyide.","პიცა მე მომაქვს, შენ ხაჭაპური იყიდე.","I'm bringing pizza, you buy khachapuri."
+rw-044,"sul damaviwyda, xval chemi dabadebis dgea.","სულ დამავიწყდა, ხვალ ჩემი დაბადების დღეა.","I completely forgot, tomorrow is my birthday."
