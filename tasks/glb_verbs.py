@@ -20,8 +20,6 @@ import pandas as pd
 KAGGLE_DATA = Path("/kaggle/input/georgian-language-benchmark-data")
 DATA = KAGGLE_DATA if KAGGLE_DATA.exists() else Path(__file__).resolve().parent.parent / "data"
 
-LETTERS = "ABCD"
-
 TENSES = {
     "present": "present (აწმყო)",
     "imperfect": "imperfect (უწყვეტელი)",
@@ -77,35 +75,21 @@ def ask(llm, prompt: str) -> str:
             time.sleep(10)
 
 
-def parse_choices(choices: str, expected: str) -> tuple[list[str], str]:
-    """Return the option texts and the correct letter.
-
-    Accepts both data formats: "A) x|B) y|..." with a letter in expected, and
-    plain "x|y|..." with the correct option's text in expected.
-    """
-    parts = choices.split("|")
-    if all(re.match(r"[A-D]\) ", p) for p in parts):
-        return [p[3:] for p in parts], expected.strip()
-    return parts, LETTERS[parts.index(expected)]
-
-
-def options(choices: list[str]) -> str:
-    return "\n".join(f"{letter}) {c}" for letter, c in zip(LETTERS, choices))
-
-
-def build_prompt(kind: str, text: str, choices: list[str]) -> str:
+def build_prompt(kind: str, text: str, choices: str) -> str:
+    # choices is "A) x|B) y|C) z|D) w"; shown one option per line.
+    options = choices.replace("|", "\n")
     if kind == "who_to_whom":
         return (
             f"Georgian verb form: {text}\n"
             "Who does what to whom? " + ARROWS + "\n\n"
-            + options(choices)
+            + options
             + "\n\nPut only the letter of the correct option in the `answer` field."
         )
     if kind == "preverb":
         return (
             "Fill in the blank (___) in this Georgian sentence with the correct preverb.\n"
             f"Sentence: {text}\n\n"
-            + options(choices)
+            + options
             + "\n\nPut only the letter of the correct option in the `answer` field."
         )
     if kind == "form":
@@ -127,15 +111,15 @@ def letter_of(answer: str) -> str:
 
 @kbench.task(name="glb-verbs-item", store_task=False)
 def verb_item(llm, id: str, kind: str, text: str, choices: str, expected: str) -> bool:
-    options_list, want = parse_choices(choices, expected) if choices else ([], "")
-    reply = ask(llm, build_prompt(kind, text, options_list))
-    if options_list:
+    reply = ask(llm, build_prompt(kind, text, choices))
+    if choices:
+        # Multiple choice: expected is the letter of the correct option.
+        want = expected
         got = letter_of(reply)
-        detail = f"{id}: {text} -> {want}) {options_list[LETTERS.index(want)]}"
     else:
         want = normalize(expected)
         got = normalize(reply)
-        detail = f"{id}: {text} -> {expected}"
+    detail = f"{id}: {text} -> {expected}"
     kbench.assertions.assert_equal(want, got, expectation=detail)
     return got == want
 
