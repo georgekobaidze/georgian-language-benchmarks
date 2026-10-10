@@ -7,7 +7,7 @@ to the Kaggle dataset (only `data/` is).
 
 | File | Rows | Kaggle benchmark |
 |---|---|---|
-| `numbers_full.csv` | 186 | Trimmed to 120 rows in `data/numbers.csv` (easy rows removed, ids renumbered) |
+| `numbers_full.csv` | 186 | Trimmed to 82 rows in `data/numbers.csv`: only rows where gemini-3-flash-preview got at least one answer wrong (ids renumbered) |
 | `verbs_full.csv` | 115 | Trimmed to 50 rows in `data/verbs.csv` (easy rows removed, ids renumbered) |
 | `real_world.csv` | 45 | Removed: chat Georgian typed in Latin letters, rewritten in Georgian script |
 | `translation_full.csv` | 47 | Trimmed to the 12 most complex paragraphs in `data/translation.csv` (ids renumbered) |
