@@ -44,7 +44,8 @@ PROMPTS = {
     ("to_digits", "ordinal"): (
         "This is a Georgian cardinal number: {text}\n"
         "Write the corresponding ordinal number in digits, the way it is "
-        "written in Georgian. Put only the answer in the `answer` field."
+        "written in Georgian. Use plain digits with no thousand separators "
+        "(1000000). Put only the answer in the `answer` field."
     ),
 }
 
