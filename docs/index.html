@@ -181,7 +181,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   <header>
     <div class="eyebrow"><span class="dot" aria-hidden="true"></span><span>DEV × Kaggle Benchmarking Challenge</span><span aria-hidden="true" style="color:#3A4A66">//</span><span class="ka" lang="ka">ქართული ენის ბენჩმარქი</span></div>
     <h1>Georgian Language Benchmark</h1>
-    <p class="lead">How well do Claude and GPT handle Georgian? Five tasks written by a native speaker and reviewed by a language specialist. Every model answers directly, without hidden thinking, under identical conditions.</p>
+    <p class="lead">How well do Claude and GPT handle Georgian? Five tasks written by Giorgi Kobaidze, a native speaker, and reviewed by a language specialist. Every model answers directly, without hidden thinking, under identical conditions.</p>
     <nav role="tablist" aria-label="Dashboard sections">
       <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Overview</button>
       <button role="tab" id="tab-cost" aria-controls="cost" aria-selected="false">Cost &amp; tokens</button>
@@ -353,7 +353,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
         <h2>Where the questions come from</h2>
       </div>
       <div class="prose">
-        <p>Every item was written by hand by a native Georgian speaker: no machine-generated or translated text. The full sets were then trimmed to the items that actually separate models, because every question costs model credits. Easy items were removed using a thinking model (Gemini 3 Flash) as a probe; every item it got wrong was kept.</p>
+        <p>Every item was written by hand by Giorgi Kobaidze, a native Georgian speaker: no machine-generated or translated text. The full sets were then trimmed to the items that actually separate models, because every question costs model credits. Easy items were removed using a thinking model (Gemini 3 Flash) as a probe; every item it got wrong was kept.</p>
         <div class="scroll"><table class="tbl" id="data-table"></table></div>
         <p>The full, untrimmed sets are kept in the repository's <code>archive/</code> folder for later testing.</p>
       </div>
@@ -368,7 +368,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
         <dl class="defs">
           <dt>Numbers</dt><dd>Write a number in Georgian words, or a Georgian number in digits, as cardinal and as ordinal. One call per question, exact match after Unicode normalization. Dash variants count as the same character.</dd>
           <dt>Verbs</dt><dd>Read who does what to whom from a verb form, choose the right preverb (multiple choice, answered with a letter), or build a verb form for given persons and tense (exact match).</dd>
-          <dt>Translation</dt><dd>Translate a Georgian paragraph into English. A fixed judge model (Gemini 3 Flash, without thinking) compares the meaning with a native speaker's reference on a 5-level scale; wording and style do not count, and he/she/they choices are never penalized where Georgian has no gender.</dd>
+          <dt>Translation</dt><dd>Translate a Georgian paragraph into English. A fixed judge model (Gemini 3 Flash, without thinking) compares the meaning with the author's reference translation on a 5-level scale; wording and style do not count, and he/she/they choices are never penalized where Georgian has no gender.</dd>
           <dt>Cloze</dt><dd>Fill 25 numbered gaps in an article with the right grammatical form of words from a list that also contains distractors. Every gap counts on its own: right word, right form, right place.</dd>
           <dt>Correction</dt><dd>Fix planted grammar, spelling and punctuation errors in a paragraph. Partial credit, word by word: every fixed error counts, and every correct word the model changes counts against it, exactly like a missed error.</dd>
         </dl>
