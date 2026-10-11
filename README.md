@@ -16,7 +16,7 @@
   ![Tasks](https://img.shields.io/badge/tasks-5-38D6FF)
   ![Models](https://img.shields.io/badge/models-8-A98BFF)
 
-  **[📊 Dashboard](https://georgekobaidze.github.io/georgian-language-benchmarks/)** · **[🏆 Benchmark on Kaggle](https://www.kaggle.com/benchmarks/georgekobaidze/georgian-language-benchmark)** · **[📖 Article](#)** · **[🐛 Report a Bug](https://github.com/georgekobaidze/georgian-language-benchmarks/issues)**
+  **[📊 Dashboard](https://georgekobaidze.github.io/georgian-language-benchmarks/)** · **[🏆 Benchmark on Kaggle](https://www.kaggle.com/benchmarks/georgekobaidze/georgian-language-benchmark)** · **[📖 Article](https://dev.to/georgekobaidze/georgian-language-benchmark-two-biggest-ai-labs-clash-in-a-language-that-doesnt-play-by-anyones-5b22)** · **[🐛 Report a Bug](https://github.com/georgekobaidze/georgian-language-benchmarks/issues)**
 
 </div>
 
