@@ -1,7 +1,7 @@
 {
   "title": "Georgian Language Benchmark Data",
   "subtitle": "Gold data for testing how well AI models know Georgian",
-  "description": "Evaluation items for the Georgian Language Benchmark on Kaggle, in five tasks: numbers (digits and words, cardinal and ordinal, in Georgian's base-20 system), verb morphology (who does what to whom, verb forms, preverbs), Georgian-to-English translation, cloze texts (fill gaps with the right word form) and grammar correction. All items were written by a native speaker and reviewed by a Georgian language specialist.\n\nFiles: numbers.csv, verbs.csv, translation.csv, cloze.yaml, correction.csv. In all files `|` separates alternative correct answers or multiple-choice options.\n\nCode: https://github.com/georgekobaidze/georgian-language-benchmarks",
+  "description": "Evaluation items for the Georgian Language Benchmark on Kaggle, in five tasks: numbers (digits and words, cardinal and ordinal, in Georgian's base-20 system), verb morphology (who does what to whom, verb forms, preverbs), Georgian-to-English translation, cloze texts (fill gaps with the right word form) and grammar correction. All items were written by hand by a native Georgian speaker.\n\nFiles: numbers.csv, verbs.csv, translation.csv, cloze.yaml, correction.csv. In all files `|` separates alternative correct answers or multiple-choice options.\n\nCode: https://github.com/georgekobaidze/georgian-language-benchmarks",
   "id": "georgekobaidze/georgian-language-benchmark-data",
   "licenses": [
     {

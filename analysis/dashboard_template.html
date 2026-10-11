@@ -151,6 +151,20 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .tbl td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); }
 .tbl td.num { font-family: var(--mono); text-align: right; }
 @media (max-width: 640px) { .defs { grid-template-columns: 1fr; gap: 4px; } .defs dd { margin-bottom: 10px; } }
+.exgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.excard { background: var(--panel); border: 1px solid var(--line); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+.excard h3 { margin: 0; font-family: var(--display); font-size: 17px; letter-spacing: 0.04em; color: var(--text-strong); }
+.excard .q { font-size: 15px; color: var(--text-soft); }
+.excard .exp { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.excard .exp b { font-family: var(--sans); font-size: 17px; color: var(--neon); font-weight: 600; text-shadow: 0 0 10px rgba(56, 214, 255, 0.45); }
+.answers { display: flex; flex-direction: column; gap: 5px; }
+.ans { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; font-size: 15px; align-items: baseline; }
+.ans .who { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.ans .who .sw { width: 8px; height: 8px; flex: none; }
+.ans .a { color: #FF7FAF; word-break: break-word; }
+.ans .a.ok { color: var(--neon); }
+.excard .why { font-size: 14px; line-height: 1.55; color: var(--text-body); border-top: 1px dashed var(--line-soft); padding-top: 10px; }
+.grouptitle { font-family: var(--display); font-size: 20px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-strong); margin: 4px 0 -12px; }
 [hidden] { display: none !important; }
 @media (max-width: 640px) {
   .wrap { padding: 32px 16px 48px; }
@@ -322,7 +336,16 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
       <div id="cloze-hard"></div>
     </section>
   </div>
-  <section id="examples" role="tabpanel" aria-labelledby="tab-examples" class="panel" hidden><p class="soon">Examples: in the next build.</p></section>
+  <div id="examples" role="tabpanel" aria-labelledby="tab-examples" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 20 EXAMPLES</div>
+        <h2>Real answers, real mistakes</h2>
+        <p class="sub">Hand-picked items with every model's actual answer. Lit answers are right; pink ones are wrong.</p>
+      </div>
+    </section>
+    <div id="example-groups" class="tabpage"></div>
+  </div>
   <div id="method" role="tabpanel" aria-labelledby="tab-method" class="tabpage" hidden>
     <section class="panel">
       <div class="head">
@@ -657,6 +680,30 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
       box.append(el('div', {}, el('span', { class: 'q' }, (g.text === 'cloze-000' ? 'Text 1' : 'Text 2') + ', gap [' + g.gap + ']: '), 'expected ', el('b', { lang: 'ka' }, g.expected), ', models wrote ', el('b', { lang: 'ka', style: 'color:#FF7FAF' }, answers)));
     }
     hard.append(box);
+  }
+
+  // ---- Examples tab ----
+  const eg = document.getElementById('example-groups');
+  const groups = [...new Set(D.examples.map((e) => e.group))];
+  for (const g of groups) {
+    eg.append(el('h3', { class: 'grouptitle' }, g));
+    const gridBox = el('div', { class: 'exgrid' });
+    for (const ex of D.examples.filter((e) => e.group === g)) {
+      const ans = el('div', { class: 'answers' });
+      for (const a of ex.answers) {
+        const m = D.models[a.model];
+        ans.append(el('div', { class: 'ans' },
+          el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] }), nm(m, true)),
+          el('div', { class: 'a' + (a.ok ? ' ok' : ''), lang: 'ka' }, (a.ok ? '✓ ' : '✗ ') + a.answer)));
+      }
+      gridBox.append(el('article', { class: 'excard' },
+        el('h3', {}, ex.title),
+        el('div', { class: 'q', lang: 'ka' }, ex.question),
+        el('div', { class: 'exp' }, 'Expected  ', el('b', { lang: 'ka' }, ex.expected)),
+        ans,
+        el('div', { class: 'why' }, ex.explain)));
+    }
+    eg.append(gridBox);
   }
 
   // ---- Method tab ----

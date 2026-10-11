@@ -282,6 +282,84 @@ def tasks_tab(runs: dict, done: list, models: dict) -> dict:
             "clozeGaps": gap_list, "clozeAllWrong": all_wrong}
 
 
+# Hand-picked examples. Answers are read from the runs, so new models appear
+# automatically. "find" lists word forms to look for in a long answer
+# (correction, translation): the first one found is shown as the answer.
+EXAMPLES = [
+    {"group": "Typical mistakes", "task": "glb-numbers", "item": "numbers-044-ordinal",
+     "title": "Eighteenth, in digits", "question": "თვრამეტი (eighteen) → its ordinal in digits",
+     "explain": "Georgian forms the ordinal of a simple number with the prefix მე-: მეთვრამეტე, “eighteenth”. In digits the prefix stays in front: მე-18. The suffix form (21-ე) is only for ordinals whose word does not start with მე-, like ოცდამეერთე."},
+    {"group": "Typical mistakes", "task": "glb-numbers", "item": "numbers-059-ordinal",
+     "title": "Forty-thousandth, in digits", "question": "ორმოცი ათასი (forty thousand) → its ordinal in digits",
+     "explain": "The same rule for a big round number: მეორმოციათასე starts with მე-, so it is written მე-40000. Almost every model reached for the suffix instead."},
+    {"group": "Typical mistakes", "task": "glb-numbers", "item": "numbers-008-ordinal",
+     "title": "Twelve-thousandth, in words", "question": "12000 → its ordinal in Georgian words",
+     "explain": "A round number's ordinal is one word: მე- in front, -ე at the end, around the whole number: მე + თორმეტიათას + ე. Models split it, drop the prefix, or attach it to the wrong part."},
+    {"group": "Typical mistakes", "task": "glb-numbers", "item": "numbers-021-cardinal",
+     "title": "Ten to the 27th, in words", "question": "1 000 000 000 000 000 000 000 000 000 → Georgian words",
+     "explain": "The expected Georgian name is ოკტალიონი. Models borrow the international -illion forms instead, and some even pick the wrong power of ten (a sextillion is 10²¹)."},
+    {"group": "Typical mistakes", "task": "glb-verbs", "item": "verbs-027",
+     "title": "“I fell in love with you”", "question": "შეყვარება (to fall in love), I → you, aorist",
+     "explain": "Falling in love is an inversion verb in Georgian: the one who loves is marked like an indirect object, so the form is შემიყვარდი, literally “you became loved to me”. Almost every model built the pattern of an ordinary transitive verb instead (შეგიყვარე)."},
+    {"group": "Typical mistakes", "task": "glb-verbs", "item": "verbs-011",
+     "title": "Who wrote it?", "question": "დაგიწერია: who did what to whom?",
+     "explain": "In the Georgian perfect the markers flip: the გ- in დაგიწერია marks “you” as the writer, so it means “you have (apparently) written it”. The models scattered across the other readings, including “he wrote it to you”."},
+    {"group": "Typical mistakes", "task": "glb-verbs", "item": "verbs-044",
+     "title": "On or off?", "question": "მან ტელევიზორი ___რთო და დაიძინა. (“He ___ the TV and fell asleep.”)",
+     "explain": "The preverb decides the meaning: ჩართო is “switched on”, გამორთო is “switched off”. Only the context, falling asleep, tells which one fits."},
+    {"group": "Typical mistakes", "task": "glb-correction", "item": "correction-005",
+     "title": "“We sat”", "question": "A paragraph with the planted error ვიჯექით (“we sat”)", "find": ["ვისხედით", "ვსხედით", "ვიჯექით"], "expected": "ვისხედით",
+     "explain": "Georgian uses a different verb root for sitting when the subject is plural: “I sat” is ვიჯექი, but “we sat” is ვისხედით. No model fixed it."},
+    {"group": "Conventions", "task": "glb-numbers", "item": "numbers-011-cardinal",
+     "title": "One million", "question": "1000000 → Georgian words",
+     "explain": "A round million is simply მილიონი, the way 1000 is ათასი, not “one thousand”. Most models add ერთი, “one”, as English does."},
+]
+
+
+def examples_tab(runs: dict, done: list, models: dict, gaps: list) -> list:
+    rows = load_items(runs, done)
+    data = {}
+    for name in ("numbers", "verbs", "correction"):
+        with open(REPO / "data" / f"{name}.csv", encoding="utf-8") as fh:
+            data[name] = {r["id"]: r for r in csv.DictReader(fh)}
+    gap_index = {f"{g['text']}:{g['gap']}": g for g in gaps}
+    out = []
+    for ex in EXAMPLES:
+        answers, expected = [], ex.get("expected")
+        if ex["task"] == "glb-numbers":
+            rid, form = ex["item"].rsplit("-", 1)
+            expected = data["numbers"][rid]["expected_" + form].split("|")[0]
+        elif ex["task"] == "glb-verbs":
+            v = data["verbs"][ex["item"]]
+            opts = {o[0]: o[3:] for o in v["choices"].split("|")} if v["choices"] else {}
+            expected = opts.get(v["expected"], v["expected"]) if opts else v["expected"]
+        for s in done:
+            if ex["task"] == "glb-cloze":
+                g = gap_index.get(ex["item"])
+                if not g or s not in g["answers"]:
+                    continue
+                expected = g["expected"]
+                answers.append({"model": s, "answer": g["answers"][s], "ok": g["results"][s]})
+                continue
+            it = rows[(s, ex["task"])].get(ex["item"])
+            if not it:
+                continue
+            ans = it["answer"].strip()
+            if ex["task"] == "glb-verbs" and opts:
+                letter = re.fullmatch(r"\(?([A-Da-d])[).]?", ans)
+                ans = opts.get(letter.group(1).upper(), ans) if letter else ans
+                ok = float(it["score"]) == 1.0
+            elif "find" in ex:
+                found = next((f for f in ex["find"] if f in it["answer"]), None)
+                ans = (found or "(rewritten)").strip()
+                ok = ans == ex["expected"]
+            else:
+                ok = float(it["score"]) == 1.0
+            answers.append({"model": s, "answer": ans, "ok": ok})
+        out.append({k: ex[k] for k in ("group", "title", "question", "explain")} | {"expected": expected, "answers": answers})
+    return out
+
+
 def main():
     items = scored_items()
     runs = latest_runs()
@@ -392,7 +470,8 @@ def main():
         "generated": date.today().isoformat(),
         "methodTable": method_table,
         "costTab": cost_tab,
-        "tasksTab": tasks_tab(runs, done, models),
+        "tasksTab": (tt := tasks_tab(runs, done, models)),
+        "examples": examples_tab(runs, done, models, tt["clozeGaps"]),
         "itemsPerModel": sum(items.values()),
         "tasks": [{"id": t, "name": n, "items": items[t]} for t, n in TASKS],
         "levels": [{"name": lv, "hint": hint, "models": [c, g]} for lv, hint, c, g in LEVELS],
