@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Georgian Language Benchmark</title>
+<meta name="description" content="How well do Claude and GPT handle Georgian? Results of the Georgian Language Benchmark on Kaggle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070D;
+  --panel: rgba(9, 15, 27, 0.92);
+  --line: #1F3554;
+  --line-soft: #18293F;
+  --track: #0F1A2C;
+  --text: #E6F1FF;
+  --text-strong: #F2FAFF;
+  --text-body: #D3DEEE;
+  --text-soft: #B9C7DD;
+  --muted: #8FA3BF;
+  --neon: #38D6FF;
+  --neon-glow: rgba(56, 214, 255, 0.55);
+  --hot: #FF2E7E;
+  --claude: #FFA62B;
+  --gpt: #A98BFF;
+  --display: 'Orbitron', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', 'Noto Sans Georgian', sans-serif;
+  --cut: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+  --cut-sm: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+body {
+  color: var(--text);
+  font-family: var(--sans);
+  background-image:
+    linear-gradient(rgba(64, 200, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(64, 200, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  min-height: 100vh;
+}
+a { color: #5CE1FF; }
+a:hover { color: #B8F3FF; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 52px 32px 72px; display: flex; flex-direction: column; gap: 30px; }
+.eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.eyebrow .dot { width: 10px; height: 10px; background: var(--hot); box-shadow: 0 0 10px var(--hot); }
+.eyebrow .ka { color: var(--neon); text-transform: none; letter-spacing: 0.04em; font-family: var(--sans); }
+h1 { margin: 0; font-family: var(--display); font-size: clamp(30px, 5vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--text-strong); text-shadow: 0 0 22px var(--neon-glow), 0 0 2px var(--neon); }
+.lead { margin: 0; font-size: 18px; line-height: 1.55; color: var(--text-soft); max-width: 780px; }
+header { display: flex; flex-direction: column; gap: 16px; }
+nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+nav button {
+  font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 11px 18px; min-height: 44px; cursor: pointer; clip-path: var(--cut-sm);
+  border: 1px solid #27405E; background: rgba(10, 18, 32, 0.8); color: var(--text-soft);
+}
+nav button[aria-selected="true"] { border-color: var(--neon); background: var(--neon); color: #03121A; font-weight: 600; box-shadow: 0 0 18px var(--neon-glow); }
+nav button:focus-visible { outline: 2px solid var(--text-strong); outline-offset: 2px; }
+.panel { background: var(--panel); border: 1px solid var(--line); box-shadow: 0 0 30px rgba(64, 200, 255, 0.08); padding: 30px; display: flex; flex-direction: column; gap: 22px; clip-path: var(--cut); }
+.panel.hot { border-color: rgba(255, 46, 126, 0.45); box-shadow: 0 0 26px rgba(255, 46, 126, 0.18); }
+.tag { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--neon); }
+.panel.hot .tag { color: var(--hot); }
+h2 { margin: 0; font-family: var(--display); font-size: 24px; font-weight: 600; letter-spacing: 0.03em; color: var(--text-strong); }
+.sub { margin: 0; font-size: 15px; color: var(--muted); line-height: 1.5; }
+.head { display: flex; flex-direction: column; gap: 8px; }
+.head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px; }
+.legend { display: flex; gap: 20px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-soft); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 14px; height: 14px; display: inline-block; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.kpi { background: linear-gradient(180deg, rgba(16, 28, 48, 0.95), rgba(8, 13, 24, 0.95)); border: 1px solid var(--line); box-shadow: inset 0 0 18px rgba(64, 200, 255, 0.05); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+.kpi .label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.kpi .value { font-family: var(--display); font-size: 36px; font-weight: 800; color: var(--text-strong); }
+.kpi .note { font-size: 14px; color: var(--text-soft); line-height: 1.45; }
+.kpi.neon { border-color: rgba(56, 214, 255, 0.45); box-shadow: 0 0 24px rgba(56, 214, 255, 0.25); }
+.kpi.neon .value { color: var(--neon); text-shadow: 0 0 16px rgba(56, 214, 255, 0.5); }
+.kpi.hot { border-color: rgba(255, 46, 126, 0.5); box-shadow: 0 0 24px rgba(255, 46, 126, 0.22); }
+.kpi.hot .value { color: var(--hot); text-shadow: 0 0 16px rgba(255, 46, 126, 0.5); }
+.levels { display: flex; flex-direction: column; gap: 20px; }
+.level { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 18px; align-items: center; border-top: 1px dashed var(--line-soft); padding-top: 12px; }
+.level .name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-strong); }
+.level .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar { display: grid; grid-template-columns: 170px minmax(0, 1fr) 76px; gap: 12px; align-items: center; }
+.bar .m { font-size: 14px; color: var(--text-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track { height: 18px; background: var(--track); border: 1px solid #1A2D47; overflow: hidden; }
+.fill { height: 100%; }
+.bar .v { font-family: var(--mono); font-size: 15px; font-weight: 600; text-align: right; color: var(--text-strong); }
+.bar .v.pending { color: var(--hot); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .bar .v.pending { animation: none; } }
+.scroll { overflow-x: auto; }
+.heat { min-width: 780px; display: flex; flex-direction: column; gap: 6px; }
+.heat .row { display: grid; grid-template-columns: 200px repeat(6, minmax(0, 1fr)); gap: 6px; align-items: center; }
+.heat .hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.heat .hdr div:not(:first-child) { text-align: center; }
+.heat .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-body); }
+.heat .who .sw { width: 10px; height: 10px; flex: none; }
+.cell { height: 44px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 15px; color: var(--text-strong); border: 1px solid; }
+.cell.none { background: rgba(15, 26, 44, 0.6); border-color: #132238; color: #5D6F8C; }
+.cell.avg { font-weight: 600; }
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.duo .panel { gap: 18px; }
+.cost { display: grid; grid-template-columns: 150px minmax(0, 1fr) 70px; gap: 12px; align-items: center; }
+.cost .track { height: 14px; }
+.cost .m { font-size: 14px; color: var(--text-body); }
+.cost .v { font-family: var(--mono); font-size: 14px; font-weight: 600; text-align: right; color: var(--text-strong); }
+.costs { display: flex; flex-direction: column; gap: 12px; }
+ol.findings { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.55; color: var(--text-body); }
+ol.findings strong { color: var(--text-strong); }
+.soon { font-family: var(--mono); color: var(--muted); font-size: 15px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 13px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 20px; }
+[hidden] { display: none !important; }
+@media (max-width: 640px) {
+  .wrap { padding: 32px 16px 48px; }
+  .panel { padding: 22px 18px; }
+  .level { grid-template-columns: 1fr; gap: 6px; }
+  .bar { grid-template-columns: 110px minmax(0, 1fr) 64px; }
+  .cost { grid-template-columns: 110px minmax(0, 1fr) 60px; }
+  .duo { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span class="dot" aria-hidden="true"></span><span>DEV × Kaggle Benchmarking Challenge</span><span aria-hidden="true" style="color:#3A4A66">//</span><span class="ka" lang="ka">ქართული ენის ბენჩმარქი</span></div>
+    <h1>Georgian Language Benchmark</h1>
+    <p class="lead">How well do Claude and GPT handle Georgian? Five tasks written by a native speaker and reviewed by a language specialist. Every model answers directly, without hidden thinking, under identical conditions.</p>
+    <nav role="tablist" aria-label="Dashboard sections">
+      <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Overview</button>
+      <button role="tab" id="tab-cost" aria-controls="cost" aria-selected="false">Cost &amp; tokens</button>
+      <button role="tab" id="tab-tasks" aria-controls="tasks" aria-selected="false">Tasks</button>
+      <button role="tab" id="tab-examples" aria-controls="examples" aria-selected="false">Examples</button>
+      <button role="tab" id="tab-method" aria-controls="method" aria-selected="false">Method</button>
+    </nav>
+  </header>
+
+  <main id="overview" role="tabpanel" aria-labelledby="tab-overview" style="display:flex;flex-direction:column;gap:30px">
+    <section class="kpis" id="kpis" aria-label="Key numbers"></section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 01 HEAD TO HEAD</div>
+          <h2>Anthropic vs OpenAI, level by level</h2>
+          <p class="sub">Average score across all 5 tasks, 0 to 1. Each level pairs comparable models.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--claude);box-shadow:0 0 10px var(--claude)"></span>Anthropic</span><span><span class="sw" style="background:var(--gpt);box-shadow:0 0 10px var(--gpt)"></span>OpenAI</span></div>
+      </div>
+      <div class="levels" id="levels"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 02 TASK MATRIX</div>
+        <h2>Scores by task</h2>
+        <p class="sub">Brighter cells mean higher scores. Numbers and verbs keep only the hard items left after trimming, so their scores are low by design.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="heat"></div></div>
+    </section>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 03 COST</div>
+          <h2>Cost of one full run</h2>
+          <p class="sub" id="cost-sub"></p>
+        </div>
+        <div class="costs" id="costs"></div>
+      </section>
+      <section class="panel hot">
+        <div class="tag">// 04 SIGNAL</div>
+        <h2>What stands out</h2>
+        <ol class="findings" id="findings"></ol>
+      </section>
+    </div>
+  </main>
+
+  <section id="cost" role="tabpanel" aria-labelledby="tab-cost" class="panel" hidden><p class="soon">Cost &amp; tokens: in the next build.</p></section>
+  <section id="tasks" role="tabpanel" aria-labelledby="tab-tasks" class="panel" hidden><p class="soon">Task deep dives: in the next build.</p></section>
+  <section id="examples" role="tabpanel" aria-labelledby="tab-examples" class="panel" hidden><p class="soon">Examples: in the next build.</p></section>
+  <section id="method" role="tabpanel" aria-labelledby="tab-method" class="panel" hidden><p class="soon">Method: in the next build.</p></section>
+
+  <footer>
+    <span id="foot-note"></span>
+    <span><a href="https://www.kaggle.com/benchmarks">Benchmark on Kaggle</a> · <a href="https://github.com/georgekobaidze/georgian-language-benchmarks">Code and data on GitHub</a></span>
+  </footer>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const color = { anthropic: 'var(--claude)', openai: 'var(--gpt)' };
+  const fmt = (v) => v.toFixed(2);
+  const el = (tag, attrs, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === 'style') n.style.cssText = v; else if (k === 'class') n.className = v; else n.setAttribute(k, v);
+    }
+    for (const kid of kids) n.append(kid);
+    return n;
+  };
+  const neon = (a) => 'rgba(56, 214, 255, ' + a + ')';
+
+  // Key numbers
+  const kpis = document.getElementById('kpis');
+  for (const k of D.kpis) {
+    kpis.append(el('div', { class: 'kpi ' + (k.style || '') },
+      el('div', { class: 'label' }, k.label),
+      el('div', { class: 'value' }, k.value),
+      el('div', { class: 'note' }, k.note)));
+  }
+
+  // Head to head, level by level
+  const levels = document.getElementById('levels');
+  for (const lv of D.levels) {
+    const bars = el('div', { class: 'bars' });
+    for (const slug of lv.models) {
+      const m = D.models[slug];
+      const done = m.average != null;
+      bars.append(el('div', { class: 'bar' },
+        el('div', { class: 'm', title: m.name }, m.name),
+        el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (done ? m.average * 100 : 0) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 14px ' + color[m.vendor] })),
+        el('div', { class: 'v' + (done ? '' : ' pending') }, done ? fmt(m.average) : 'RUNNING')));
+    }
+    levels.append(el('div', { class: 'level' },
+      el('div', {}, el('div', { class: 'name' }, lv.name), el('div', { class: 'hint' }, lv.hint)),
+      bars));
+  }
+
+  // Task matrix
+  const heat = document.getElementById('heat');
+  const hdr = el('div', { class: 'row hdr' }, el('div', {}, 'Model'));
+  for (const t of D.tasks) hdr.append(el('div', {}, t.name));
+  hdr.append(el('div', {}, 'Average'));
+  heat.append(hdr);
+  for (const slug of D.order) {
+    const m = D.models[slug];
+    const row = el('div', { class: 'row' },
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), el('span', {}, m.name)));
+    const vals = D.tasks.map((t) => m.scores[t.id]);
+    vals.push(m.average);
+    vals.forEach((v, i) => {
+      if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); return; }
+      row.append(el('div', {
+        class: 'cell' + (i === vals.length - 1 ? ' avg' : ''),
+        style: 'background:' + neon((0.04 + v * 0.36).toFixed(3)) + ';border-color:' + neon((0.12 + v * 0.45).toFixed(3)) + (v >= 0.9 ? ';box-shadow:0 0 14px ' + neon(0.45) : ''),
+      }, fmt(v)));
+    });
+    heat.append(row);
+  }
+
+  // Cost of one full run
+  document.getElementById('cost-sub').textContent = 'All 5 tasks, ' + D.itemsPerModel + ' scored items, paid in Kaggle model credits.';
+  const costs = document.getElementById('costs');
+  const done = D.order.filter((s) => D.models[s].average != null).sort((a, b) => D.models[a].cost - D.models[b].cost);
+  const maxCost = Math.max(...done.map((s) => D.models[s].cost));
+  for (const slug of done) {
+    const m = D.models[slug];
+    costs.append(el('div', { class: 'cost' },
+      el('div', { class: 'm' }, m.name),
+      el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (m.cost / maxCost * 100) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 12px ' + color[m.vendor] })),
+      el('div', { class: 'v' }, '$' + m.cost.toFixed(2))));
+  }
+
+  // Findings
+  const findings = document.getElementById('findings');
+  for (const f of D.findings) {
+    const li = el('li', {}, el('strong', {}, f.head), ' ' + f.body);
+    findings.append(li);
+  }
+  document.getElementById('foot-note').textContent = D.footnote;
+
+  // Tabs
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  const show = (tab) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    }
+  };
+  for (const t of tabs) t.addEventListener('click', () => show(t));
+})();
+</script>
+</body>
+</html>
