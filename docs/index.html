@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Georgian Language Benchmark</title>
+<meta name="description" content="How well do Claude and GPT handle Georgian? Results of the Georgian Language Benchmark on Kaggle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070D;
+  --panel: rgba(9, 15, 27, 0.92);
+  --line: #1F3554;
+  --line-soft: #18293F;
+  --track: #0F1A2C;
+  --text: #E6F1FF;
+  --text-strong: #F2FAFF;
+  --text-body: #D3DEEE;
+  --text-soft: #B9C7DD;
+  --muted: #8FA3BF;
+  --neon: #38D6FF;
+  --neon-glow: rgba(56, 214, 255, 0.55);
+  --hot: #FF2E7E;
+  --claude: #FFA62B;
+  --gpt: #A98BFF;
+  --display: 'Orbitron', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', 'Noto Sans Georgian', sans-serif;
+  --cut: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+  --cut-sm: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+body {
+  color: var(--text);
+  font-family: var(--sans);
+  background-image:
+    linear-gradient(rgba(64, 200, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(64, 200, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  min-height: 100vh;
+}
+a { color: #5CE1FF; }
+a:hover { color: #B8F3FF; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 52px 32px 72px; display: flex; flex-direction: column; gap: 30px; }
+.eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.eyebrow .dot { width: 10px; height: 10px; background: var(--hot); box-shadow: 0 0 10px var(--hot); }
+.eyebrow .ka { color: var(--neon); text-transform: none; letter-spacing: 0.04em; font-family: var(--sans); }
+h1 { margin: 0; font-family: var(--display); font-size: clamp(30px, 5vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--text-strong); text-shadow: 0 0 22px var(--neon-glow), 0 0 2px var(--neon); }
+.lead { margin: 0; font-size: 18px; line-height: 1.55; color: var(--text-soft); max-width: 780px; }
+header { display: flex; flex-direction: column; gap: 16px; }
+nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+nav button {
+  font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 11px 18px; min-height: 44px; cursor: pointer; clip-path: var(--cut-sm);
+  border: 1px solid #27405E; background: rgba(10, 18, 32, 0.8); color: var(--text-soft);
+}
+nav button[aria-selected="true"] { border-color: var(--neon); background: var(--neon); color: #03121A; font-weight: 600; box-shadow: 0 0 18px var(--neon-glow); }
+nav button:focus-visible { outline: 2px solid var(--text-strong); outline-offset: 2px; }
+.panel { background: var(--panel); border: 1px solid var(--line); box-shadow: 0 0 30px rgba(64, 200, 255, 0.08); padding: 30px; display: flex; flex-direction: column; gap: 22px; clip-path: var(--cut); }
+.panel.hot { border-color: rgba(255, 46, 126, 0.45); box-shadow: 0 0 26px rgba(255, 46, 126, 0.18); }
+.tag { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--neon); }
+.panel.hot .tag { color: var(--hot); }
+h2 { margin: 0; font-family: var(--display); font-size: 24px; font-weight: 600; letter-spacing: 0.03em; color: var(--text-strong); }
+.sub { margin: 0; font-size: 15px; color: var(--muted); line-height: 1.5; }
+.head { display: flex; flex-direction: column; gap: 8px; }
+.head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px; }
+.legend { display: flex; gap: 20px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-soft); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 14px; height: 14px; display: inline-block; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.kpi { background: linear-gradient(180deg, rgba(16, 28, 48, 0.95), rgba(8, 13, 24, 0.95)); border: 1px solid var(--line); box-shadow: inset 0 0 18px rgba(64, 200, 255, 0.05); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+.kpi .label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.kpi .value { font-family: var(--display); font-size: 36px; font-weight: 800; color: var(--text-strong); }
+.kpi .note { font-size: 14px; color: var(--text-soft); line-height: 1.45; }
+.kpi.neon { border-color: rgba(56, 214, 255, 0.45); box-shadow: 0 0 24px rgba(56, 214, 255, 0.25); }
+.kpi.neon .value { color: var(--neon); text-shadow: 0 0 16px rgba(56, 214, 255, 0.5); }
+.kpi.hot { border-color: rgba(255, 46, 126, 0.5); box-shadow: 0 0 24px rgba(255, 46, 126, 0.22); }
+.kpi.hot .value { color: var(--hot); text-shadow: 0 0 16px rgba(255, 46, 126, 0.5); }
+.levels { display: flex; flex-direction: column; gap: 20px; }
+.level { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 18px; align-items: center; border-top: 1px dashed var(--line-soft); padding-top: 12px; }
+.level .name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-strong); }
+.level .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar { display: grid; grid-template-columns: 170px minmax(0, 1fr) 76px; gap: 12px; align-items: center; }
+.bar .m { font-size: 14px; color: var(--text-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track { height: 18px; background: var(--track); border: 1px solid #1A2D47; overflow: hidden; }
+.fill { height: 100%; }
+.bar .v { font-family: var(--mono); font-size: 15px; font-weight: 600; text-align: right; color: var(--text-strong); }
+.bar .v.pending { color: var(--hot); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .bar .v.pending { animation: none; } }
+.scroll { overflow-x: auto; }
+.heat { min-width: 780px; display: flex; flex-direction: column; gap: 6px; }
+.heat .row { display: grid; grid-template-columns: 200px repeat(6, minmax(0, 1fr)); gap: 6px; align-items: center; }
+.heat .hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.heat .hdr div:not(:first-child) { text-align: center; }
+.heat .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-body); }
+.heat .who .sw { width: 10px; height: 10px; flex: none; }
+.cell { height: 44px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 15px; color: var(--text-strong); border: 1px solid; }
+.cell.none { background: rgba(15, 26, 44, 0.6); border-color: #132238; color: #5D6F8C; }
+.cell.avg { font-weight: 600; }
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.duo .panel { gap: 18px; }
+.cost { display: grid; grid-template-columns: 150px minmax(0, 1fr) 70px; gap: 12px; align-items: center; }
+.cost .track { height: 14px; }
+.cost .m { font-size: 14px; color: var(--text-body); }
+.cost .v { font-family: var(--mono); font-size: 14px; font-weight: 600; text-align: right; color: var(--text-strong); }
+.costs { display: flex; flex-direction: column; gap: 12px; }
+ol.findings { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.55; color: var(--text-body); }
+ol.findings strong { color: var(--text-strong); }
+.soon { font-family: var(--mono); color: var(--muted); font-size: 15px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 13px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 20px; }
+.tabpage { display: flex; flex-direction: column; gap: 30px; }
+.cost.wide { grid-template-columns: 200px minmax(0, 1fr) 90px; }
+.pair { display: flex; flex-direction: column; gap: 4px; }
+.pair .track { height: 12px; }
+.ratio { font-family: var(--display); font-size: 20px; font-weight: 800; color: var(--hot); text-shadow: 0 0 12px rgba(255, 46, 126, 0.5); }
+.total { font-family: var(--display); font-size: 30px; font-weight: 800; color: var(--text-strong); }
+.errs { display: flex; flex-direction: column; gap: 14px; }
+.err { display: grid; grid-template-columns: 250px minmax(0, 1fr) 56px; gap: 14px; align-items: center; }
+.err .t { font-size: 15px; color: var(--text-strong); font-weight: 500; }
+.err .ex { grid-column: 1 / -1; font-size: 14px; color: var(--muted); margin-top: -6px; }
+.err .ex b { font-weight: 500; color: var(--text-body); }
+.err .ex .bad { color: #FF7FAF; }
+.gapgrid { min-width: 860px; display: flex; flex-direction: column; gap: 6px; }
+.gaprow { display: grid; grid-template-columns: 170px 1fr 1fr; gap: 16px; align-items: center; }
+.gaprow .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-body); }
+.gaprow .who .sw { width: 10px; height: 10px; flex: none; }
+.squares { display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 3px; }
+.sq { aspect-ratio: 1; border: 1px solid var(--hot); background: transparent; }
+.sq.ok { border-color: var(--neon); background: var(--neon); box-shadow: 0 0 6px rgba(56, 214, 255, 0.6); }
+.gaprow.hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.hard { display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--text-body); line-height: 1.5; }
+.hard .q { color: var(--text-strong); font-weight: 500; }
+.badge { display: inline-block; margin-top: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 3px 7px; border: 1px solid var(--hot); color: var(--hot); box-shadow: 0 0 8px rgba(255, 46, 126, 0.35); }
+.badge.inline { margin: 0 0 0 8px; padding: 1px 5px; font-size: 10px; }
+.note { font-size: 14px; line-height: 1.5; color: var(--text-soft); border: 1px dashed rgba(255, 46, 126, 0.5); padding: 12px 14px; }
+.note b { color: var(--hot); font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em; }
+.prose { display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.6; color: var(--text-body); max-width: 900px; }
+.prose p { margin: 0; }
+.prose ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; }
+.prose strong { color: var(--text-strong); }
+.prose code { font-family: var(--mono); font-size: 14px; color: var(--neon); }
+.defs { margin: 0; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 12px 20px; }
+.defs dt { font-family: var(--display); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--neon); padding-top: 3px; }
+.defs dd { margin: 0; }
+.tbl { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+.tbl th { text-align: left; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 400; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.tbl td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); }
+.tbl td.num { font-family: var(--mono); text-align: right; }
+@media (max-width: 640px) { .defs { grid-template-columns: 1fr; gap: 4px; } .defs dd { margin-bottom: 10px; } }
+.exgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.excard { background: var(--panel); border: 1px solid var(--line); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+.excard h3 { margin: 0; font-family: var(--display); font-size: 17px; letter-spacing: 0.04em; color: var(--text-strong); }
+.excard .q { font-size: 15px; color: var(--text-soft); }
+.excard .exp { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.excard .exp b { font-family: var(--sans); font-size: 17px; color: var(--neon); font-weight: 600; text-shadow: 0 0 10px rgba(56, 214, 255, 0.45); }
+.answers { display: flex; flex-direction: column; gap: 5px; }
+.ans { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; font-size: 15px; align-items: baseline; }
+.ans .who { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.ans .who .sw { width: 8px; height: 8px; flex: none; }
+.ans .a { color: #FF7FAF; word-break: break-word; }
+.ans .a.ok { color: var(--neon); }
+.excard .why { font-size: 14px; line-height: 1.55; color: var(--text-body); border-top: 1px dashed var(--line-soft); padding-top: 10px; }
+.grouptitle { font-family: var(--display); font-size: 20px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-strong); margin: 4px 0 -12px; }
+[hidden] { display: none !important; }
+@media (max-width: 640px) {
+  .wrap { padding: 32px 16px 48px; }
+  .panel { padding: 22px 18px; }
+  .level { grid-template-columns: 1fr; gap: 6px; }
+  .bar { grid-template-columns: 110px minmax(0, 1fr) 64px; }
+  .cost { grid-template-columns: 110px minmax(0, 1fr) 60px; }
+  .duo { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span class="dot" aria-hidden="true"></span><span>DEV × Kaggle Benchmarking Challenge</span><span aria-hidden="true" style="color:#3A4A66">//</span><span class="ka" lang="ka">ქართული ენის ბენჩმარქი</span></div>
+    <h1>Georgian Language Benchmark</h1>
+    <p class="lead">How well do Claude and GPT handle Georgian? Five tasks written by a native speaker and reviewed by a language specialist. Every model answers directly, without hidden thinking, under identical conditions.</p>
+    <nav role="tablist" aria-label="Dashboard sections">
+      <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Overview</button>
+      <button role="tab" id="tab-cost" aria-controls="cost" aria-selected="false">Cost &amp; tokens</button>
+      <button role="tab" id="tab-tasks" aria-controls="tasks" aria-selected="false">Tasks</button>
+      <button role="tab" id="tab-examples" aria-controls="examples" aria-selected="false">Examples</button>
+      <button role="tab" id="tab-method" aria-controls="method" aria-selected="false">Method</button>
+    </nav>
+  </header>
+
+  <main id="overview" role="tabpanel" aria-labelledby="tab-overview" style="display:flex;flex-direction:column;gap:30px">
+    <section class="kpis" id="kpis" aria-label="Key numbers"></section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 01 HEAD TO HEAD</div>
+          <h2>Anthropic vs OpenAI, level by level</h2>
+          <p class="sub">Average score across all 5 tasks, 0 to 1. Each level pairs comparable models.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--claude);box-shadow:0 0 10px var(--claude)"></span>Anthropic</span><span><span class="sw" style="background:var(--gpt);box-shadow:0 0 10px var(--gpt)"></span>OpenAI</span></div>
+      </div>
+      <div class="levels" id="levels"></div>
+      <p class="note" id="thinking-note"></p>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 02 TASK MATRIX</div>
+        <h2>Scores by task</h2>
+        <p class="sub">Brighter cells mean higher scores. Numbers and verbs keep only the hard items left after trimming, so their scores are low by design.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="heat"></div></div>
+    </section>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 03 COST</div>
+          <h2>Cost of one full run</h2>
+          <p class="sub" id="cost-sub"></p>
+        </div>
+        <div class="costs" id="costs"></div>
+      </section>
+      <section class="panel hot">
+        <div class="tag">// 04 SIGNAL</div>
+        <h2>What stands out</h2>
+        <ol class="findings" id="findings"></ol>
+      </section>
+    </div>
+  </main>
+
+  <div id="cost" role="tabpanel" aria-labelledby="tab-cost" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 05 COST MATRIX</div>
+        <h2>What each model paid per task</h2>
+        <p class="sub">US dollars per complete task run, in Kaggle model credits. Hotter cells cost more.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="cost-matrix"></div></div>
+    </section>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 06 TOKENS</div>
+          <h2>Tokens in and out</h2>
+          <p class="sub">All 5 tasks. Input is our prompts as each vendor counts them; output is the models' answers, with no hidden thinking.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Input</span><span><span class="sw" style="background:var(--hot);box-shadow:0 0 10px var(--hot)"></span>Output</span></div>
+        <div class="costs" id="tokens"></div>
+      </section>
+      <section class="panel hot">
+        <div class="head">
+          <div class="tag">// 07 TOKEN GAP</div>
+          <h2>The Georgian token gap</h2>
+          <p class="sub">Average input tokens per call for identical prompts. Same text, different bill.</p>
+        </div>
+        <div class="levels" id="per-call"></div>
+      </section>
+    </div>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 08 VALUE</div>
+          <h2>Cost per correct answer</h2>
+          <p class="sub" id="cpc-sub"></p>
+        </div>
+        <div class="costs" id="cpc"></div>
+      </section>
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 09 BUDGET</div>
+          <h2>What the whole project cost</h2>
+          <p class="sub" id="spend-sub"></p>
+        </div>
+        <div class="costs" id="spend"></div>
+      </section>
+    </div>
+  </div>
+  <div id="tasks" role="tabpanel" aria-labelledby="tab-tasks" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 10 NUMBERS</div>
+        <h2>Numbers, by question type</h2>
+        <p class="sub">Share answered exactly right. Georgian counts in twenties, and ordinals add the prefix მე- inside the word or before the digits.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="num-grid"></div></div>
+    </section>
+
+    <section class="panel hot">
+      <div class="head">
+        <div class="tag">// 11 ERROR TYPES</div>
+        <h2>How the models get numbers wrong</h2>
+        <p class="sub">All wrong numbers answers of the compared models, sorted into types automatically, with one real example each.</p>
+      </div>
+      <div class="errs" id="num-errors"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 12 VERBS</div>
+        <h2>Verbs, by question type</h2>
+        <p class="sub">Georgian verbs mark who does what to whom inside the verb itself. Share answered right.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="verb-grid"></div></div>
+      <p class="sub" id="swaps"></p>
+    </section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 13 CORRECTION</div>
+          <h2>Grammar correction: fixed, missed, broken</h2>
+          <p class="sub" id="corr-sub"></p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Fixed</span><span><span class="sw" style="background:#2A3B57"></span>Missed</span><span><span class="sw" style="background:var(--hot);box-shadow:0 0 10px var(--hot)"></span>Broken</span></div>
+      </div>
+      <div class="costs" id="corr"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 14 CLOZE</div>
+          <h2>Cloze, gap by gap</h2>
+          <p class="sub">Two articles with 25 gaps each. Every square is one gap; lit means the exact right word form.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Right</span><span><span class="sw" style="border:1px solid var(--hot)"></span>Wrong</span></div>
+      </div>
+      <div class="scroll"><div class="gapgrid" id="cloze"></div></div>
+      <div id="cloze-hard"></div>
+    </section>
+  </div>
+  <div id="examples" role="tabpanel" aria-labelledby="tab-examples" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 20 EXAMPLES</div>
+        <h2>Real answers, real mistakes</h2>
+        <p class="sub">Hand-picked items with every model's actual answer. Lit answers are right; pink ones are wrong.</p>
+      </div>
+    </section>
+    <div id="example-groups" class="tabpage"></div>
+  </div>
+  <div id="method" role="tabpanel" aria-labelledby="tab-method" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 15 DATA</div>
+        <h2>Where the questions come from</h2>
+      </div>
+      <div class="prose">
+        <p>Every item was written by hand by a native Georgian speaker: no machine-generated or translated text. The full sets were then trimmed to the items that actually separate models, because every question costs model credits. Easy items were removed using a thinking model (Gemini 3 Flash) as a probe; every item it got wrong was kept.</p>
+        <div class="scroll"><table class="tbl" id="data-table"></table></div>
+        <p>The full, untrimmed sets are kept in the repository's <code>archive/</code> folder for later testing.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 16 SCORING</div>
+        <h2>How each task is scored</h2>
+      </div>
+      <div class="prose">
+        <dl class="defs">
+          <dt>Numbers</dt><dd>Write a number in Georgian words, or a Georgian number in digits, as cardinal and as ordinal. One call per question, exact match after Unicode normalization. Dash variants count as the same character.</dd>
+          <dt>Verbs</dt><dd>Read who does what to whom from a verb form, choose the right preverb (multiple choice, answered with a letter), or build a verb form for given persons and tense (exact match).</dd>
+          <dt>Translation</dt><dd>Translate a Georgian paragraph into English. A fixed judge model (Gemini 3 Flash, without thinking) compares the meaning with a native speaker's reference on a 5-level scale; wording and style do not count, and he/she/they choices are never penalized where Georgian has no gender.</dd>
+          <dt>Cloze</dt><dd>Fill 25 numbered gaps in an article with the right grammatical form of words from a list that also contains distractors. Every gap counts on its own: right word, right form, right place.</dd>
+          <dt>Correction</dt><dd>Fix planted grammar, spelling and punctuation errors in a paragraph. Partial credit, word by word: every fixed error counts, and every correct word the model changes counts against it, exactly like a missed error.</dd>
+        </dl>
+        <p>Task scores run from 0 to 1. A model's average is the plain mean of its 5 task scores, each task counting equally.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 17 CONDITIONS</div>
+        <h2>Same conditions for every model</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>No thinking.</strong> Every model answers directly, without hidden reasoning. Default settings would have mixed models that think with models that don't, which is not a fair comparison.</li>
+          <li><strong>One exception, clearly marked.</strong> GPT-6 Astra cannot switch thinking off; its minimum is "low". So the newest pair, Claude Opus 5 and GPT-6 Astra, both think at "low". They are marked <span class="badge inline" style="margin:0">LOW</span> everywhere.</li>
+          <li><strong>Pairs of comparable models.</strong> Each level pairs an Anthropic and an OpenAI model of the same class: light, decent, top, newest.</li>
+          <li><strong>Same prompts, same code.</strong> All models run the same task version on Kaggle Benchmarks, with English instructions and Georgian content.</li>
+          <li><strong>An output limit of 32,000 tokens per answer</strong>, far above any answer in the runs. It only exists because Kaggle reserves the worst-case cost of every call before sending it.</li>
+          <li><strong>One run per model.</strong> Re-runs of the same model differed by about ±0.03 per task.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 18 BUDGET</div>
+        <h2>Built on a free quota</h2>
+      </div>
+      <div class="prose">
+        <p>Kaggle provides model credits of $10 per day. Before each call, Kaggle reserves the worst possible cost (the model's maximum answer length × its price) and refuses the call if that does not fit, even when the real answer costs a fraction of a cent. That shaped the benchmark: trimmed item sets, two parallel calls instead of four, the output limit, and no thinking. The Cost &amp; tokens tab shows where every dollar went.</p>
+      </div>
+    </section>
+
+    <section class="panel hot">
+      <div class="head">
+        <div class="tag">// 19 LIMITS</div>
+        <h2>Read the results with this in mind</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>The sets are hard by design.</strong> Numbers and verbs keep mostly items a strong model got wrong, so absolute scores are low. The ranking between models is the meaningful part.</li>
+          <li><strong>Small sets.</strong> Some tasks have only 12 to 17 items, so differences of a few points are not significant.</li>
+          <li><strong>Some answers are debatable.</strong> In a few items every model agrees with each other against the expected answer; these are shown in the Tasks tab.</li>
+          <li><strong>The token gap includes format overhead.</strong> Input tokens cover the prompt plus each vendor's answer-format instructions, so part of the gap is not Georgian text itself.</li>
+          <li><strong>The judge is a model.</strong> Translation scores depend on Gemini 3 Flash's judgment of meaning.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <span id="foot-note"></span>
+    <span><a href="https://www.kaggle.com/benchmarks">Benchmark on Kaggle</a> · <a href="https://github.com/georgekobaidze/georgian-language-benchmarks">Code and data on GitHub</a></span>
+  </footer>
+</div>
+
+<script type="application/json" id="data">{"generated": "2026-10-11", "methodTable": [{"task": "Numbers", "full": "186 rows", "kept": "82 rows, 158 questions", "rule": "rows where the probe model got at least one answer wrong"}, {"task": "Verbs", "full": "115", "kept": "50", "rule": "every item the probe got wrong, plus the right answers it struggled with most"}, {"task": "Translation", "full": "47", "kept": "12", "rule": "the paragraphs with the most Georgian-specific traps"}, {"task": "Cloze", "full": "2 texts", "kept": "2 texts, 50 gaps", "rule": "kept in full"}, {"task": "Correction", "full": "51", "kept": "17", "rule": "chosen by hand"}], "costTab": {"perTask": {"claude-haiku-4-5-20251001": {"glb-numbers": 0.050223, "glb-verbs": 0.016532, "glb-translation": 0.009943, "glb-cloze": 0.004875, "glb-correction": 0.018126}, "gpt-5.4-mini-2026-03-17": {"glb-numbers": 0.024991, "glb-verbs": 0.008605, "glb-translation": 0.007088, "glb-cloze": 0.002246, "glb-correction": 0.007463}, "claude-sonnet-4-6-default": {"glb-numbers": 0.157248, "glb-verbs": 0.049986, "glb-translation": 0.022076, "glb-cloze": 0.014481, "glb-correction": 0.050484}, "gpt-5.4-2026-03-05": {"glb-numbers": 0.077995, "glb-verbs": 0.025385, "glb-translation": 0.014922, "glb-cloze": 0.00747, "glb-correction": 0.024772}, "claude-opus-4-8-default": {"glb-numbers": 0.31344, "glb-verbs": 0.101255, "glb-translation": 0.041778, "glb-cloze": 0.02425, "glb-correction": 0.097965}, "gpt-5.5-2026-04-23": {"glb-numbers": 0.15719, "glb-verbs": 0.05074, "glb-translation": 0.025923, "glb-cloze": 0.01494, "glb-correction": 0.049665}, "claude-opus-5-default": {"glb-numbers": 0.70104, "glb-verbs": 0.250705, "glb-translation": 0.042404, "glb-cloze": 0.07435, "glb-correction": 0.15179}, "gpt-6-astra": {}}, "perCall": [{"task": "Numbers", "anthropic": 271.8512658227848, "openai": 103.84810126582279}, {"task": "Verbs", "anthropic": 310.42999999999995, "openai": 130.24}, {"task": "Cloze", "anthropic": 1411.5, "openai": 699.0}, {"task": "Correction", "anthropic": 403.8970588235294, "openai": 158.64705882352942}], "costPerCorrect": [{"model": "claude-haiku-4-5-20251001", "cents": 0.07871428571428572, "correct": 91, "of": 258}, {"model": "gpt-5.4-mini-2026-03-17", "cents": 0.03200178571428571, "correct": 112, "of": 258}, {"model": "claude-sonnet-4-6-default", "cents": 0.1759642857142857, "correct": 126, "of": 258}, {"model": "gpt-5.4-2026-03-05", "cents": 0.07751748251748251, "correct": 143, "of": 258}, {"model": "claude-opus-4-8-default", "cents": 0.2709537037037037, "correct": 162, "of": 258}, {"model": "gpt-5.5-2026-04-23", "cents": 0.14378709677419355, "correct": 155, "of": 258}, {"model": "claude-opus-5-default", "cents": 0.5487139037433155, "correct": 187, "of": 258}], "spend": [{"label": "Final comparison runs", "cost": 2.692346}, {"label": "Kaggle's automatic push runs", "cost": 2.882866}, {"label": "Earlier runs and probes", "cost": 2.858918}, {"label": "Local test runs", "cost": 3.464462}], "spendTotal": 11.898592}, "tasksTab": {"numbersGrid": [{"label": "Digits → words, cardinal", "values": {"claude-haiku-4-5-20251001": 0.15625, "gpt-5.4-mini-2026-03-17": 0.4375, "claude-sonnet-4-6-default": 0.34375, "gpt-5.4-2026-03-05": 0.375, "claude-opus-4-8-default": 0.375, "gpt-5.5-2026-04-23": 0.40625, "claude-opus-5-default": 0.40625}, "n": 32}, {"label": "Digits → words, ordinal", "values": {"claude-haiku-4-5-20251001": 0.11538461538461539, "gpt-5.4-mini-2026-03-17": 0.2692307692307692, "claude-sonnet-4-6-default": 0.07692307692307693, "gpt-5.4-2026-03-05": 0.3076923076923077, "claude-opus-4-8-default": 0.38461538461538464, "gpt-5.5-2026-04-23": 0.5, "claude-opus-5-default": 0.4230769230769231}, "n": 26}, {"label": "Words → digits, cardinal", "values": {"claude-haiku-4-5-20251001": 0.74, "gpt-5.4-mini-2026-03-17": 0.82, "claude-sonnet-4-6-default": 0.86, "gpt-5.4-2026-03-05": 0.86, "claude-opus-4-8-default": 0.92, "gpt-5.5-2026-04-23": 0.9, "claude-opus-5-default": 0.94}, "n": 50}, {"label": "Words → digits, ordinal", "values": {"claude-haiku-4-5-20251001": 0.04, "gpt-5.4-mini-2026-03-17": 0.06, "claude-sonnet-4-6-default": 0.12, "gpt-5.4-2026-03-05": 0.18, "claude-opus-4-8-default": 0.36, "gpt-5.5-2026-04-23": 0.2, "claude-opus-5-default": 0.62}, "n": 50}, {"label": "Huge numbers, 10¹⁵ to 10³⁹", "values": {"claude-haiku-4-5-20251001": 0.1388888888888889, "gpt-5.4-mini-2026-03-17": 0.05555555555555555, "claude-sonnet-4-6-default": 0.1111111111111111, "gpt-5.4-2026-03-05": 0.16666666666666666, "claude-opus-4-8-default": 0.16666666666666666, "gpt-5.5-2026-04-23": 0.19444444444444445, "claude-opus-5-default": 0.3333333333333333}, "n": 36}], "numbersErrors": [{"type": "N-ე instead of მე-N", "count": 204, "example": {"question": "თორმეტი ათასი", "expected": "მე-12000", "answer": "12000-ე", "model": "Claude Haiku 4.5"}}, {"type": "Other wrong form", "count": 157, "example": {"question": "90", "expected": "ოთხმოცდაათი", "answer": "ოთხმოცი", "model": "Claude Haiku 4.5"}}, {"type": "Wrong ordinal in digits", "count": 67, "example": {"question": "თორმეტი ათას ხუთას სამოცდაშვიდი", "expected": "12567-ე", "answer": "12587-ე", "model": "Claude Haiku 4.5"}}, {"type": "International name for a huge number", "count": 58, "example": {"question": "1000000000000000000000000000", "expected": "ოკტალიონი", "answer": "ერთი სექსტილიონი", "model": "Claude Haiku 4.5"}}, {"type": "Wrong value in digits", "count": 48, "example": {"question": "ოცდაათი ათას სამი", "expected": "30003", "answer": "20003", "model": "Claude Haiku 4.5"}}, {"type": "Added ერთი (one)", "count": 41, "example": {"question": "1000000", "expected": "მილიონი", "answer": "ერთი მილიონი", "model": "Claude Haiku 4.5"}}, {"type": "Spacing between words", "count": 7, "example": {"question": "976000000000", "expected": "ცხრაას სამოცდათექვსმეტი მილიარდი", "answer": "ცხრაასსამოცდათექვსმეტი მილიარდი", "model": "Claude Sonnet 4.6"}}, {"type": "მე- in the wrong place", "count": 5, "example": {"question": "1000000000", "expected": "მემილიარდე", "answer": "მილიარდე", "model": "GPT-5.4 mini"}}, {"type": "Missing მე-", "count": 4, "example": {"question": "999", "expected": "ცხრაას ოთხმოცდამეცხრამეტე", "answer": "ცხრაას ოთხმოცდაცხრამეტე", "model": "GPT-5.4 mini"}}], "verbsGrid": [{"label": "Who does what to whom", "values": {"claude-haiku-4-5-20251001": 0.47058823529411764, "gpt-5.4-mini-2026-03-17": 0.6470588235294118, "claude-sonnet-4-6-default": 0.6470588235294118, "gpt-5.4-2026-03-05": 0.6470588235294118, "claude-opus-4-8-default": 0.8235294117647058, "gpt-5.5-2026-04-23": 0.7058823529411765, "claude-opus-5-default": 0.7647058823529411}, "n": 17}, {"label": "Build the verb form", "values": {"claude-haiku-4-5-20251001": 0.23529411764705882, "gpt-5.4-mini-2026-03-17": 0.23529411764705882, "claude-sonnet-4-6-default": 0.35294117647058826, "gpt-5.4-2026-03-05": 0.47058823529411764, "claude-opus-4-8-default": 0.6470588235294118, "gpt-5.5-2026-04-23": 0.6470588235294118, "claude-opus-5-default": 0.7647058823529411}, "n": 17}, {"label": "Choose the preverb", "values": {"claude-haiku-4-5-20251001": 0.3125, "gpt-5.4-mini-2026-03-17": 0.375, "claude-sonnet-4-6-default": 0.5625, "gpt-5.4-2026-03-05": 0.5, "claude-opus-4-8-default": 0.5625, "gpt-5.5-2026-04-23": 0.4375, "claude-opus-5-default": 1.0}, "n": 16}], "swaps": {"claude-haiku-4-5-20251001": 6, "gpt-5.4-mini-2026-03-17": 2, "claude-sonnet-4-6-default": 4, "gpt-5.4-2026-03-05": 3, "claude-opus-4-8-default": 3, "gpt-5.5-2026-04-23": 3, "claude-opus-5-default": 4}, "wrongWho": {"claude-haiku-4-5-20251001": 9, "gpt-5.4-mini-2026-03-17": 6, "claude-sonnet-4-6-default": 6, "gpt-5.4-2026-03-05": 6, "claude-opus-4-8-default": 3, "gpt-5.5-2026-04-23": 5, "claude-opus-5-default": 4}, "correction": [{"model": "claude-haiku-4-5-20251001", "needed": 93, "fixed": 29, "missed": 64, "broken": 6}, {"model": "gpt-5.4-mini-2026-03-17", "needed": 93, "fixed": 66, "missed": 27, "broken": 4}, {"model": "claude-sonnet-4-6-default", "needed": 93, "fixed": 43, "missed": 50, "broken": 12}, {"model": "gpt-5.4-2026-03-05", "needed": 93, "fixed": 64, "missed": 29, "broken": 1}, {"model": "claude-opus-4-8-default", "needed": 93, "fixed": 65, "missed": 28, "broken": 3}, {"model": "gpt-5.5-2026-04-23", "needed": 93, "fixed": 68, "missed": 25, "broken": 4}, {"model": "claude-opus-5-default", "needed": 93, "fixed": 72, "missed": 21, "broken": 3}], "clozeGaps": [{"text": "cloze-000", "gap": 1, "expected": "დროში", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "საუკუნეში", "gpt-5.4-mini-2026-03-17": "საუკუნეებში", "claude-sonnet-4-6-default": "საუკუნეებში", "gpt-5.4-2026-03-05": "საუკუნეებში", "claude-opus-4-8-default": "საუკუნეში", "gpt-5.5-2026-04-23": "საუკუნეებში", "claude-opus-5-default": "დროს"}}, {"text": "cloze-000", "gap": 2, "expected": "მოწყობილობას", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "მოწყობილობებს", "gpt-5.4-mini-2026-03-17": "მოწყობილობას", "claude-sonnet-4-6-default": "მოწყობილობას", "gpt-5.4-2026-03-05": "მოწყობილობას", "claude-opus-4-8-default": "მოწყობილობას", "gpt-5.5-2026-04-23": "მოწყობილობებს", "claude-opus-5-default": "მოწყობილობებს"}}, {"text": "cloze-000", "gap": 3, "expected": "იყენებდნენ", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "იყენებდნენ", "gpt-5.4-mini-2026-03-17": "გამოყენებდნენ", "claude-sonnet-4-6-default": "იყენებდნენ", "gpt-5.4-2026-03-05": "იყენებდნენ", "claude-opus-4-8-default": "იყენებდნენ", "gpt-5.5-2026-04-23": "იყენებდნენ", "claude-opus-5-default": "იყენებდნენ"}}, {"text": "cloze-000", "gap": 4, "expected": "გამოიგონეს", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "შეიქმნა", "gpt-5.4-mini-2026-03-17": "შექმნილია", "claude-sonnet-4-6-default": "გამოჩნდა", "gpt-5.4-2026-03-05": "გამოიგონეს", "claude-opus-4-8-default": "შეიქმნა", "gpt-5.5-2026-04-23": "შეიქმნა", "claude-opus-5-default": "გამოიგონეს"}}, {"text": "cloze-000", "gap": 5, "expected": "საუკუნეში", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "საუკუნეში", "gpt-5.4-mini-2026-03-17": "საუკუნის", "claude-sonnet-4-6-default": "საუკუნეში", "gpt-5.4-2026-03-05": "საუკუნეში", "claude-opus-4-8-default": "საუკუნეში", "gpt-5.5-2026-04-23": "საუკუნეში", "claude-opus-5-default": "საუკუნეში"}}, {"text": "cloze-000", "gap": 6, "expected": "მათემატიკოსმა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "მათემატიკოსმა", "gpt-5.4-mini-2026-03-17": "მათემატიკოსმა", "claude-sonnet-4-6-default": "მათემატიკოსმა", "gpt-5.4-2026-03-05": "მათემატიკოსმა", "claude-opus-4-8-default": "მათემატიკოსმა", "gpt-5.5-2026-04-23": "მათემატიკოსმა", "claude-opus-5-default": "მათემატიკოსმა"}}, {"text": "cloze-000", "gap": 7, "expected": "შექმნა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "შექმნა", "gpt-5.4-mini-2026-03-17": "შექმნა", "claude-sonnet-4-6-default": "შექმნა", "gpt-5.4-2026-03-05": "შექმნა", "claude-opus-4-8-default": "შექმნა", "gpt-5.5-2026-04-23": "შექმნა", "claude-opus-5-default": "შექმნა"}}, {"text": "cloze-000", "gap": 8, "expected": "წინაპრად", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "წინაპარი", "gpt-5.4-mini-2026-03-17": "წინაპრად", "claude-sonnet-4-6-default": "წინაპარად", "gpt-5.4-2026-03-05": "წინაპრად", "claude-opus-4-8-default": "წინაპრად", "gpt-5.5-2026-04-23": "წინაპრად", "claude-opus-5-default": "წინაპრად"}}, {"text": "cloze-000", "gap": 9, "expected": "მოასწრო", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "მოსწრება", "gpt-5.4-mini-2026-03-17": "დასრულება", "claude-sonnet-4-6-default": "მოსწრება", "gpt-5.4-2026-03-05": "მოასწრო", "claude-opus-4-8-default": "მოასწრო", "gpt-5.5-2026-04-23": "მოასწრო", "claude-opus-5-default": "მოასწრო"}}, {"text": "cloze-000", "gap": 10, "expected": "პროგრამისტს", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "პროგრამისტი", "gpt-5.4-mini-2026-03-17": "პროგრამისტად", "claude-sonnet-4-6-default": "პროგრამისტს", "gpt-5.4-2026-03-05": "პროგრამისტს", "claude-opus-4-8-default": "პროგრამისტად", "gpt-5.5-2026-04-23": "პროგრამისტს", "claude-opus-5-default": "პროგრამისტს"}}, {"text": "cloze-000", "gap": 11, "expected": "განვითარება", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "განვითარება", "gpt-5.4-mini-2026-03-17": "შექმნა", "claude-sonnet-4-6-default": "განვითარება", "gpt-5.4-2026-03-05": "განვითარება", "claude-opus-4-8-default": "განვითარება", "gpt-5.5-2026-04-23": "განვითარება", "claude-opus-5-default": "განვითარება"}}, {"text": "cloze-000", "gap": 12, "expected": "შეტყობინებების", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "შეტყობინებების", "gpt-5.4-mini-2026-03-17": "შეტყობინებების", "claude-sonnet-4-6-default": "შეტყობინებების", "gpt-5.4-2026-03-05": "შეტყობინებების", "claude-opus-4-8-default": "შეტყობინებების", "gpt-5.5-2026-04-23": "შეტყობინებების", "claude-opus-5-default": "შეტყობინებების"}}, {"text": "cloze-000", "gap": 13, "expected": "ააგეს", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "აიგო", "gpt-5.4-mini-2026-03-17": "გამოჩნდა", "claude-sonnet-4-6-default": "აიგო", "gpt-5.4-2026-03-05": "აიგო", "claude-opus-4-8-default": "აიგო", "gpt-5.5-2026-04-23": "აიგო", "claude-opus-5-default": "გამოჩნდა"}}, {"text": "cloze-000", "gap": 14, "expected": "იწონიდა", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "იწონის", "gpt-5.4-mini-2026-03-17": "იწონიდა", "claude-sonnet-4-6-default": "იწონიდა", "gpt-5.4-2026-03-05": "იწონიდა", "claude-opus-4-8-default": "იწონიდა", "gpt-5.5-2026-04-23": "იწონიდა", "claude-opus-5-default": "იწონიდა"}}, {"text": "cloze-000", "gap": 15, "expected": "წლებში", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "წელს", "gpt-5.4-mini-2026-03-17": "წლებში", "claude-sonnet-4-6-default": "წლებში", "gpt-5.4-2026-03-05": "წლებში", "claude-opus-4-8-default": "წლებში", "gpt-5.5-2026-04-23": "წლებში", "claude-opus-5-default": "წლებში"}}, {"text": "cloze-000", "gap": 16, "expected": "შეამცირა", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "შემცირდა", "gpt-5.4-mini-2026-03-17": "შეამცირა", "claude-sonnet-4-6-default": "შემცირდა", "gpt-5.4-2026-03-05": "შეამცირა", "claude-opus-4-8-default": "შეამცირა", "gpt-5.5-2026-04-23": "შეამცირა", "claude-opus-5-default": "შეამცირა"}}, {"text": "cloze-000", "gap": 17, "expected": "გამოჩნდა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "გამოჩნდა", "gpt-5.4-mini-2026-03-17": "გამოჩნდა", "claude-sonnet-4-6-default": "გამოჩნდნენ", "gpt-5.4-2026-03-05": "გამოჩნდა", "claude-opus-4-8-default": "გამოჩნდა", "gpt-5.5-2026-04-23": "გამოჩნდა", "claude-opus-5-default": "აიგო"}}, {"text": "cloze-000", "gap": 18, "expected": "კომპიუტერი", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "აგებულ", "gpt-5.4-mini-2026-03-17": "კომპიუტერს", "claude-sonnet-4-6-default": "კომპიუტერი", "gpt-5.4-2026-03-05": "კომპიუტერი", "claude-opus-4-8-default": "კომპიუტერი", "gpt-5.5-2026-04-23": "კომპიუტერი", "claude-opus-5-default": "კომპიუტერი"}}, {"text": "cloze-000", "gap": 19, "expected": "ააწყვეს", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "აწყობილი", "gpt-5.4-mini-2026-03-17": "შექმნა", "claude-sonnet-4-6-default": "აწყვეს", "gpt-5.4-2026-03-05": "ააწყვეს", "claude-opus-4-8-default": "შექმნეს", "gpt-5.5-2026-04-23": "ააწყეს", "claude-opus-5-default": "ააწყვეს"}}, {"text": "cloze-000", "gap": 20, "expected": "გავრცელებამ", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "გავრცელებამ", "gpt-5.4-mini-2026-03-17": "გავრცელებამ", "claude-sonnet-4-6-default": "გავრცელებამ", "gpt-5.4-2026-03-05": "გავრცელებამ", "claude-opus-4-8-default": "გავრცელებამ", "gpt-5.5-2026-04-23": "გავრცელებამ", "claude-opus-5-default": "გავრცელებამ"}}, {"text": "cloze-000", "gap": 21, "expected": "შეცვალა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "შეცვალა", "gpt-5.4-mini-2026-03-17": "შეცვალა", "claude-sonnet-4-6-default": "შეცვალა", "gpt-5.4-2026-03-05": "შეცვალა", "claude-opus-4-8-default": "შეცვალა", "gpt-5.5-2026-04-23": "შეცვალა", "claude-opus-5-default": "შეცვალა"}}, {"text": "cloze-000", "gap": 22, "expected": "სახლში", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "სახლში", "gpt-5.4-mini-2026-03-17": "სახლში", "claude-sonnet-4-6-default": "სახლში", "gpt-5.4-2026-03-05": "სახლში", "claude-opus-4-8-default": "სახლში", "gpt-5.5-2026-04-23": "სახლში", "claude-opus-5-default": "სახლში"}}, {"text": "cloze-000", "gap": 23, "expected": "ტელეფონი", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "ტელეფონი", "gpt-5.4-mini-2026-03-17": "ტელეფონი", "claude-sonnet-4-6-default": "ტელეფონი", "gpt-5.4-2026-03-05": "ტელეფონი", "claude-opus-4-8-default": "ტელეფონი", "gpt-5.5-2026-04-23": "ტელეფონი", "claude-opus-5-default": "ტელეფონი"}}, {"text": "cloze-000", "gap": 24, "expected": "დაეშვა", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "გაჩნდა", "gpt-5.4-mini-2026-03-17": "მოწრება", "claude-sonnet-4-6-default": "დაშვა", "gpt-5.4-2026-03-05": "დაშვებულიყო", "claude-opus-4-8-default": "დაეშვა", "gpt-5.5-2026-04-23": "დაეშვა", "claude-opus-5-default": "დაეშვა"}}, {"text": "cloze-000", "gap": 25, "expected": "ამოცანას", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "ამოცანებს", "gpt-5.4-mini-2026-03-17": "ამოცანას", "claude-sonnet-4-6-default": "ამოცანას", "gpt-5.4-2026-03-05": "ამოცანას", "claude-opus-4-8-default": "ამოცანას", "gpt-5.5-2026-04-23": "ამოცანას", "claude-opus-5-default": "ამოცანას"}}, {"text": "cloze-001", "gap": 1, "expected": "იმპერიის", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "იმპერია", "gpt-5.4-mini-2026-03-17": "ისტორია", "claude-sonnet-4-6-default": "იმპერიის", "gpt-5.4-2026-03-05": "სახელმწიფოს", "claude-opus-4-8-default": "არსებობის", "gpt-5.5-2026-04-23": "იმპერიის", "claude-opus-5-default": "სახელმწიფოს"}}, {"text": "cloze-001", "gap": 2, "expected": "დააარსეს", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "დაარსეს", "gpt-5.4-mini-2026-03-17": "დააარსეს", "claude-sonnet-4-6-default": "დააარსეს", "gpt-5.4-2026-03-05": "დააარსეს", "claude-opus-4-8-default": "ააშენეს", "gpt-5.5-2026-04-23": "დააარსეს", "claude-opus-5-default": "დააარსეს"}}, {"text": "cloze-001", "gap": 3, "expected": "მეფეები", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "მეფეები", "gpt-5.4-mini-2026-03-17": "მეფეები", "claude-sonnet-4-6-default": "მეფეები", "gpt-5.4-2026-03-05": "მეფეები", "claude-opus-4-8-default": "მეფეები", "gpt-5.5-2026-04-23": "მეფეები", "claude-opus-5-default": "მეფეები"}}, {"text": "cloze-001", "gap": 4, "expected": "დამყარდა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "დამყარდა", "gpt-5.4-mini-2026-03-17": "დამყარდა", "claude-sonnet-4-6-default": "დამყარდა", "gpt-5.4-2026-03-05": "დამყარდა", "claude-opus-4-8-default": "დამყარდა", "gpt-5.5-2026-04-23": "დამყარდა", "claude-opus-5-default": "დამყარდა"}}, {"text": "cloze-001", "gap": 5, "expected": "სანაპირო", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "სანაპირო", "gpt-5.4-mini-2026-03-17": "ნაწილს", "claude-sonnet-4-6-default": "სანაპირო", "gpt-5.4-2026-03-05": "სანაპირო", "claude-opus-4-8-default": "სანაპირო", "gpt-5.5-2026-04-23": "სანაპირო", "claude-opus-5-default": "სანაპირო"}}, {"text": "cloze-001", "gap": 6, "expected": "ჯარს", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "ჯარს", "gpt-5.4-mini-2026-03-17": "ჯარს", "claude-sonnet-4-6-default": "ჯარს", "gpt-5.4-2026-03-05": "ჯარს", "claude-opus-4-8-default": "ჯარს", "gpt-5.5-2026-04-23": "ჯარს", "claude-opus-5-default": "ჯარს"}}, {"text": "cloze-001", "gap": 7, "expected": "სარდალმა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "სარდალმა", "gpt-5.4-mini-2026-03-17": "იმპერატორმა", "claude-sonnet-4-6-default": "სარდალმა", "gpt-5.4-2026-03-05": "სარდალმა", "claude-opus-4-8-default": "სარდალმა", "gpt-5.5-2026-04-23": "სარდალმა", "claude-opus-5-default": "სარდალმა"}}, {"text": "cloze-001", "gap": 8, "expected": "მოკლეს", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "მოკლეს", "gpt-5.4-mini-2026-03-17": "მოკლეს", "claude-sonnet-4-6-default": "მოკლეს", "gpt-5.4-2026-03-05": "მოკლეს", "claude-opus-4-8-default": "მოკლეს", "gpt-5.5-2026-04-23": "მოკლეს", "claude-opus-5-default": "მოკლეს"}}, {"text": "cloze-001", "gap": 9, "expected": "სიკვდილის", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "მოკვლის", "gpt-5.4-mini-2026-03-17": "სიკვდილის", "claude-sonnet-4-6-default": "სიკვდილის", "gpt-5.4-2026-03-05": "სიკვდილის", "claude-opus-4-8-default": "სიკვდილის", "gpt-5.5-2026-04-23": "სიკვდილის", "claude-opus-5-default": "სიკვდილის"}}, {"text": "cloze-001", "gap": 10, "expected": "იმპერატორი", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "იმპერატორი", "gpt-5.4-mini-2026-03-17": "იმპერატორი", "claude-sonnet-4-6-default": "იმპერატორი", "gpt-5.4-2026-03-05": "იმპერატორი", "claude-opus-4-8-default": "იმპერატორი", "gpt-5.5-2026-04-23": "იმპერატორი", "claude-opus-5-default": "იმპერატორი"}}, {"text": "cloze-001", "gap": 11, "expected": "სიმშვიდის", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "სიმშვიდის", "gpt-5.4-mini-2026-03-17": "სიმშვიდის", "claude-sonnet-4-6-default": "სიმშვიდის", "gpt-5.4-2026-03-05": "სიმშვიდის", "claude-opus-4-8-default": "სიმშვიდის", "gpt-5.5-2026-04-23": "სიმშვიდის", "claude-opus-5-default": "სიმშვიდის"}}, {"text": "cloze-001", "gap": 12, "expected": "აშენებდნენ", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "აშენებდნენ", "gpt-5.4-mini-2026-03-17": "შენებდნენ", "claude-sonnet-4-6-default": "შენდნენ", "gpt-5.4-2026-03-05": "აშენებდნენ", "claude-opus-4-8-default": "აშენებდნენ", "gpt-5.5-2026-04-23": "აშენებდნენ", "claude-opus-5-default": "აშენებდნენ"}}, {"text": "cloze-001", "gap": 13, "expected": "შემორჩენილი", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "შემორჩენილი", "gpt-5.4-mini-2026-03-17": "შემორჩენილია", "claude-sonnet-4-6-default": "შემორჩენილი", "gpt-5.4-2026-03-05": "შემორჩენილი", "claude-opus-4-8-default": "შემორჩენილი", "gpt-5.5-2026-04-23": "შემორჩენილი", "claude-opus-5-default": "შემორჩენილი"}}, {"text": "cloze-001", "gap": 14, "expected": "გადაიტანა", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "გადატანა", "gpt-5.4-mini-2026-03-17": "გადატანა", "claude-sonnet-4-6-default": "გადაიტანა", "gpt-5.4-2026-03-05": "გადაიტანა", "claude-opus-4-8-default": "გადაიტანა", "gpt-5.5-2026-04-23": "გადაიტანა", "claude-opus-5-default": "გადაიტანა"}}, {"text": "cloze-001", "gap": 15, "expected": "დაარქვა", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "დარქვა", "gpt-5.4-mini-2026-03-17": "დარქმევა", "claude-sonnet-4-6-default": "დაარქვეს", "gpt-5.4-2026-03-05": "დაარქვა", "claude-opus-4-8-default": "დაარქვა", "gpt-5.5-2026-04-23": "დაარქვა", "claude-opus-5-default": "დაარქვა"}}, {"text": "cloze-001", "gap": 16, "expected": "ნაწილად", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "ნაწილად", "gpt-5.4-mini-2026-03-17": "ნაწილად", "claude-sonnet-4-6-default": "ნაწილად", "gpt-5.4-2026-03-05": "ნაწილად", "claude-opus-4-8-default": "ნაწილად", "gpt-5.5-2026-04-23": "ნაწილად", "claude-opus-5-default": "ნაწილად"}}, {"text": "cloze-001", "gap": 17, "expected": "სახელმწიფოებად", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "იმპერიაზე", "gpt-5.4-mini-2026-03-17": "იმპერიად", "claude-sonnet-4-6-default": "იმპერიად", "gpt-5.4-2026-03-05": "იმპერიებად", "claude-opus-4-8-default": "იმპერიად", "gpt-5.5-2026-04-23": "სახელმწიფოებად", "claude-opus-5-default": "იმპერიად"}}, {"text": "cloze-001", "gap": 18, "expected": "დაეცა", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "დაიცა", "gpt-5.4-mini-2026-03-17": "დაეცა", "claude-sonnet-4-6-default": "დაეცა", "gpt-5.4-2026-03-05": "დაეცა", "claude-opus-4-8-default": "დაეცა", "gpt-5.5-2026-04-23": "დაეცა", "claude-opus-5-default": "დაეცა"}}, {"text": "cloze-001", "gap": 19, "expected": "მეთაურმა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "მეთაურმა", "gpt-5.4-mini-2026-03-17": "მეთაურის", "claude-sonnet-4-6-default": "მეთაურმა", "gpt-5.4-2026-03-05": "მეთაურმა", "claude-opus-4-8-default": "მეთაურმა", "gpt-5.5-2026-04-23": "მეთაურმა", "claude-opus-5-default": "მეთაურმა"}}, {"text": "cloze-001", "gap": 20, "expected": "ჩამოაგდო", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "ჩამოგდო", "gpt-5.4-mini-2026-03-17": "ჩამოაგდეს", "claude-sonnet-4-6-default": "ჩამოაგდო", "gpt-5.4-2026-03-05": "ჩამოაგდო", "claude-opus-4-8-default": "ჩამოაგდო", "gpt-5.5-2026-04-23": "ჩამოაგდო", "claude-opus-5-default": "ჩამოაგდო"}}, {"text": "cloze-001", "gap": 21, "expected": "არსებობდა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "არსებობდა", "gpt-5.4-mini-2026-03-17": "არსებობდა", "claude-sonnet-4-6-default": "არსებობდა", "gpt-5.4-2026-03-05": "არსებობდა", "claude-opus-4-8-default": "არსებობდა", "gpt-5.5-2026-04-23": "არსებობდა", "claude-opus-5-default": "არსებობდა"}}, {"text": "cloze-001", "gap": 22, "expected": "ენამ", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "ენამ", "gpt-5.4-mini-2026-03-17": "ენა", "claude-sonnet-4-6-default": "ენამ", "gpt-5.4-2026-03-05": "ენამ", "claude-opus-4-8-default": "ენამ", "gpt-5.5-2026-04-23": "ენამ", "claude-opus-5-default": "ენამ"}}, {"text": "cloze-001", "gap": 23, "expected": "გავლენა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": true, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "გავლენა", "gpt-5.4-mini-2026-03-17": "გავლენა", "claude-sonnet-4-6-default": "გავლენა", "gpt-5.4-2026-03-05": "გავლენა", "claude-opus-4-8-default": "გავლენა", "gpt-5.5-2026-04-23": "გავლენა", "claude-opus-5-default": "გავლენა"}}, {"text": "cloze-001", "gap": 24, "expected": "იქონია", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "გახდა", "gpt-5.4-mini-2026-03-17": "ქონა", "claude-sonnet-4-6-default": "იქონია", "gpt-5.4-2026-03-05": "მოახდინა", "claude-opus-4-8-default": "იქონია", "gpt-5.5-2026-04-23": "მოახდინა", "claude-opus-5-default": "ჰქონდა"}}, {"text": "cloze-001", "gap": 25, "expected": "წარმოიშვა", "results": {"claude-haiku-4-5-20251001": true, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": true, "gpt-5.4-2026-03-05": true, "claude-opus-4-8-default": true, "gpt-5.5-2026-04-23": true, "claude-opus-5-default": true}, "answers": {"claude-haiku-4-5-20251001": "წარმოიშვა", "gpt-5.4-mini-2026-03-17": "წარმოშობა", "claude-sonnet-4-6-default": "წარმოიშვა", "gpt-5.4-2026-03-05": "წარმოიშვა", "claude-opus-4-8-default": "წარმოიშვა", "gpt-5.5-2026-04-23": "წარმოიშვა", "claude-opus-5-default": "წარმოიშვა"}}], "clozeAllWrong": [{"text": "cloze-000", "gap": 1, "expected": "დროში", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "საუკუნეში", "gpt-5.4-mini-2026-03-17": "საუკუნეებში", "claude-sonnet-4-6-default": "საუკუნეებში", "gpt-5.4-2026-03-05": "საუკუნეებში", "claude-opus-4-8-default": "საუკუნეში", "gpt-5.5-2026-04-23": "საუკუნეებში", "claude-opus-5-default": "დროს"}}, {"text": "cloze-000", "gap": 13, "expected": "ააგეს", "results": {"claude-haiku-4-5-20251001": false, "gpt-5.4-mini-2026-03-17": false, "claude-sonnet-4-6-default": false, "gpt-5.4-2026-03-05": false, "claude-opus-4-8-default": false, "gpt-5.5-2026-04-23": false, "claude-opus-5-default": false}, "answers": {"claude-haiku-4-5-20251001": "აიგო", "gpt-5.4-mini-2026-03-17": "გამოჩნდა", "claude-sonnet-4-6-default": "აიგო", "gpt-5.4-2026-03-05": "აიგო", "claude-opus-4-8-default": "აიგო", "gpt-5.5-2026-04-23": "აიგო", "claude-opus-5-default": "გამოჩნდა"}}]}, "examples": [{"group": "Typical mistakes", "title": "Eighteenth, in digits", "question": "თვრამეტი (eighteen) → its ordinal in digits", "explain": "Georgian forms the ordinal of a simple number with the prefix მე-: მეთვრამეტე, “eighteenth”. In digits the prefix stays in front: მე-18. The suffix form (21-ე) is only for ordinals whose word does not start with მე-, like ოცდამეერთე.", "expected": "მე-18", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "18-ე", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "18-ე", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "მე-18-ე", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "18-ე", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "მე-18", "ok": true}, {"model": "gpt-5.5-2026-04-23", "answer": "18-ე", "ok": false}, {"model": "claude-opus-5-default", "answer": "მე-18", "ok": true}]}, {"group": "Typical mistakes", "title": "Forty-thousandth, in digits", "question": "ორმოცი ათასი (forty thousand) → its ordinal in digits", "explain": "The same rule for a big round number: მეორმოციათასე starts with მე-, so it is written მე-40000. Almost every model reached for the suffix instead.", "expected": "მე-40000", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "40000-ე", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "40000-ე", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "40 000-ე", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "40000-ე", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "40000-ე", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "40000-ე", "ok": false}, {"model": "claude-opus-5-default", "answer": "მე-40000", "ok": true}]}, {"group": "Typical mistakes", "title": "Twelve-thousandth, in words", "question": "12000 → its ordinal in Georgian words", "explain": "A round number's ordinal is one word: მე- in front, -ე at the end, around the whole number: მე + თორმეტიათას + ე. Models split it, drop the prefix, or attach it to the wrong part.", "expected": "მეთორმეტიათასე", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "ორმეათამეილი", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "მეთორმეტიათასე", "ok": true}, {"model": "claude-sonnet-4-6-default", "answer": "თორმეტი ათასიანი", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "მეთორმეტე ათასე", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "თორმეტათასე", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "თორმეტი მეათასე", "ok": false}, {"model": "claude-opus-5-default", "answer": "მეთორმეტეათასე", "ok": false}]}, {"group": "Typical mistakes", "title": "Ten to the 27th, in words", "question": "1 000 000 000 000 000 000 000 000 000 → Georgian words", "explain": "The expected Georgian name is ოკტალიონი. Models borrow the international -illion forms instead, and some even pick the wrong power of ten (a sextillion is 10²¹).", "expected": "ოკტალიონი", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "ერთი სექსტილიონი", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "ათასი კვადრილიონი", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "ერთი ოქტილიონი", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "ერთი ოქტილიონი", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "ათი ნონილიონი", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "ერთი ოქტილიონი", "ok": false}, {"model": "claude-opus-5-default", "answer": "ერთი ოქტილიონი", "ok": false}]}, {"group": "Typical mistakes", "title": "“I fell in love with you”", "question": "შეყვარება (to fall in love), I → you, aorist", "explain": "Falling in love is an inversion verb in Georgian: the one who loves is marked like an indirect object, so the form is შემიყვარდი, literally “you became loved to me”. Almost every model built the pattern of an ordinary transitive verb instead (შეგიყვარე).", "expected": "შემიყვარდი", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "შენ შეგიყვარე", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "შეგიყვარდა", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "შეგიყვარე", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "შეგიყვარე", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "შეგიყვარე", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "შეგიყვარე", "ok": false}, {"model": "claude-opus-5-default", "answer": "შეგიყვარე", "ok": false}]}, {"group": "Typical mistakes", "title": "Who wrote it?", "question": "დაგიწერია: who did what to whom?", "explain": "In the Georgian perfect the markers flip: the გ- in დაგიწერია marks “you” as the writer, so it means “you have (apparently) written it”. The models scattered across the other readings, including “he wrote it to you”.", "expected": "შენ → ის", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "ის → მე", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "მე → ის", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "ის → მე", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "მე → ის", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "ის → შენ", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "ის → შენ", "ok": false}, {"model": "claude-opus-5-default", "answer": "შენ → ის", "ok": true}]}, {"group": "Typical mistakes", "title": "On or off?", "question": "მან ტელევიზორი ___რთო და დაიძინა. (“He ___ the TV and fell asleep.”)", "explain": "The preverb decides the meaning: ჩართო is “switched on”, გამორთო is “switched off”. Only the context, falling asleep, tells which one fits.", "expected": "გამო", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "ჩა", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "ა", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "ა", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "ა", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "ჩა", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "და", "ok": false}, {"model": "claude-opus-5-default", "answer": "გამო", "ok": true}]}, {"group": "Typical mistakes", "title": "“We sat”", "question": "A paragraph with the planted error ვიჯექით (“we sat”)", "explain": "Georgian uses a different verb root for sitting when the subject is plural: “I sat” is ვიჯექი, but “we sat” is ვისხედით. No model fixed it.", "expected": "ვისხედით", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "ვიჯექით", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "ვიჯექით", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "ვიჯექით", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "ვიჯექით", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "ვიჯექით", "ok": false}, {"model": "gpt-5.5-2026-04-23", "answer": "ვიჯექით", "ok": false}, {"model": "claude-opus-5-default", "answer": "ვიჯექით", "ok": false}]}, {"group": "Conventions", "title": "One million", "question": "1000000 → Georgian words", "explain": "A round million is simply მილიონი, the way 1000 is ათასი, not “one thousand”. Most models add ერთი, “one”, as English does.", "expected": "მილიონი", "answers": [{"model": "claude-haiku-4-5-20251001", "answer": "ერთი მილიონი", "ok": false}, {"model": "gpt-5.4-mini-2026-03-17", "answer": "ერთი მილიონი", "ok": false}, {"model": "claude-sonnet-4-6-default", "answer": "ერთი მილიონი", "ok": false}, {"model": "gpt-5.4-2026-03-05", "answer": "ერთი მილიონი", "ok": false}, {"model": "claude-opus-4-8-default", "answer": "მილიონი", "ok": true}, {"model": "gpt-5.5-2026-04-23", "answer": "ერთი მილიონი", "ok": false}, {"model": "claude-opus-5-default", "answer": "ერთი მილიონი", "ok": false}]}], "itemsPerModel": 287, "tasks": [{"id": "glb-numbers", "name": "Numbers", "items": 158}, {"id": "glb-verbs", "name": "Verbs", "items": 50}, {"id": "glb-translation", "name": "Translation", "items": 12}, {"id": "glb-cloze", "name": "Cloze", "items": 50}, {"id": "glb-correction", "name": "Correction", "items": 17}], "levels": [{"name": "Light", "hint": "fast, cheap", "models": ["claude-haiku-4-5-20251001", "gpt-5.4-mini-2026-03-17"]}, {"name": "Decent", "hint": "everyday workhorse", "models": ["claude-sonnet-4-6-default", "gpt-5.4-2026-03-05"]}, {"name": "Top", "hint": "flagship", "models": ["claude-opus-4-8-default", "gpt-5.5-2026-04-23"]}, {"name": "Newest", "hint": "latest flagship", "models": ["claude-opus-5-default", "gpt-6-astra"]}], "order": ["claude-haiku-4-5-20251001", "gpt-5.4-mini-2026-03-17", "claude-sonnet-4-6-default", "gpt-5.4-2026-03-05", "claude-opus-4-8-default", "gpt-5.5-2026-04-23", "claude-opus-5-default", "gpt-6-astra"], "models": {"claude-haiku-4-5-20251001": {"name": "Claude Haiku 4.5", "vendor": "anthropic", "level": "Light", "scores": {"glb-numbers": 0.2974683544303797, "glb-verbs": 0.34, "glb-translation": 0.9583333333333334, "glb-cloze": 0.54, "glb-correction": 0.25329131652661063}, "thinking": "none", "average": 0.4778186008580647, "cost": 0.099699, "inputTokens": 68755, "outputTokens": 6876}, "gpt-5.4-mini-2026-03-17": {"name": "GPT-5.4 mini", "vendor": "openai", "level": "Light", "scores": {"glb-numbers": 0.41139240506329117, "glb-verbs": 0.42, "glb-translation": 1.0, "glb-cloze": 0.52, "glb-correction": 0.6712885154061624}, "thinking": "none", "average": 0.6045361840938908, "cost": 0.05039299999999999, "inputTokens": 33815, "outputTokens": 5979}, "claude-sonnet-4-6-default": {"name": "Claude Sonnet 4.6", "vendor": "anthropic", "level": "Decent", "scores": {"glb-numbers": 0.3924050632911392, "glb-verbs": 0.52, "glb-translation": 1.0, "glb-cloze": 0.76, "glb-correction": 0.44047619047619047}, "thinking": "none", "average": 0.6225762507534659, "cost": 0.294275, "inputTokens": 68990, "outputTokens": 7002}, "gpt-5.4-2026-03-05": {"name": "GPT-5.4", "vendor": "openai", "level": "Decent", "scores": {"glb-numbers": 0.45569620253164556, "glb-verbs": 0.54, "glb-translation": 1.0, "glb-cloze": 0.88, "glb-correction": 0.6649159663865546}, "thinking": "none", "average": 0.70812243378364, "cost": 0.15054399999999998, "inputTokens": 33805, "outputTokens": 5402}, "claude-opus-4-8-default": {"name": "Claude Opus 4.8", "vendor": "anthropic", "level": "Top", "scores": {"glb-numbers": 0.5443037974683544, "glb-verbs": 0.68, "glb-translation": 1.0, "glb-cloze": 0.84, "glb-correction": 0.6841036414565826}, "thinking": "none", "average": 0.7496814877849874, "cost": 0.578688, "inputTokens": 86077, "outputTokens": 7197}, "gpt-5.5-2026-04-23": {"name": "GPT-5.5", "vendor": "openai", "level": "Top", "scores": {"glb-numbers": 0.5126582278481012, "glb-verbs": 0.6, "glb-translation": 0.9791666666666666, "glb-cloze": 0.88, "glb-correction": 0.7404761904761905}, "thinking": "none", "average": 0.7424602169981916, "cost": 0.298458, "inputTokens": 33798, "outputTokens": 5452}, "claude-opus-5-default": {"name": "Claude Opus 5", "vendor": "anthropic", "level": "Newest", "scores": {"glb-numbers": 0.6455696202531646, "glb-verbs": 0.84, "glb-translation": 1.0, "glb-cloze": 0.86, "glb-correction": 0.7679971988795518}, "thinking": "low", "average": 0.8227133638265431, "cost": 1.2202890000000002, "inputTokens": 86085, "outputTokens": 32882}, "gpt-6-astra": {"name": "GPT-6 Astra", "vendor": "openai", "level": "Newest", "scores": {}, "thinking": "low", "average": null, "cost": null, "inputTokens": 0, "outputTokens": 0}}, "kpis": [{"label": "Best average, no thinking", "value": "0.75", "note": "Claude Opus 4.8, top level", "style": "neon"}, {"label": "Scored items per model", "value": "287", "note": "numbers, verbs, translation, cloze, correction"}, {"label": "Cheapest full run", "value": "$0.05", "note": "GPT-5.4 mini, all 5 tasks"}, {"label": "Georgian token gap", "value": "2.5×", "note": "Claude is billed 2.5 times the input tokens GPT is, for the same Georgian prompts", "style": "hot"}], "findings": [{"head": "Understanding Georgian is solved.", "body": "Every model translates Georgian into English at 0.96 to 1.00."}, {"head": "Producing Georgian is not.", "body": "On numbers the models score 0.30 to 0.65, on grammar correction 0.25 to 0.77."}, {"head": "OpenAI leads at 2 of 3 levels so far,", "body": "and a full GPT run costs less, partly because GPT counts the same Georgian text as fewer tokens."}], "footnote": "SCORES 0 TO 1 · KAGGLE BENCHMARKS · NO THINKING (NEWEST PAIR: LOW) · ONE RUN PER MODEL · UPDATED 2026-10-11", "thinkingNote": "Exception: the newest flagship pair, Claude Opus 5 and GPT-6 Astra, thinks at the lowest level (\"low\"). GPT-6 Astra cannot switch thinking off, so both models of the pair get the same small thinking budget. Compare them with each other, and with the other levels only with that in mind."}</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const color = { anthropic: 'var(--claude)', openai: 'var(--gpt)' };
+  const fmt = (v) => v.toFixed(2);
+  const el = (tag, attrs, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === 'style') n.style.cssText = v; else if (k === 'class') n.className = v; else n.setAttribute(k, v);
+    }
+    for (const kid of kids) n.append(kid);
+    return n;
+  };
+  const neon = (a) => 'rgba(56, 214, 255, ' + a + ')';
+  // A model's name, with a LOW badge when it thinks (the newest pair).
+  const nm = (m, short) => {
+    const s = el('span', {}, short ? m.name.replace('Claude ', '') : m.name);
+    if (m.thinking && m.thinking !== 'none') s.append(el('span', { class: 'badge inline', title: 'Thinks at the lowest level' }, 'LOW'));
+    return s;
+  };
+
+  // Key numbers
+  const kpis = document.getElementById('kpis');
+  for (const k of D.kpis) {
+    kpis.append(el('div', { class: 'kpi ' + (k.style || '') },
+      el('div', { class: 'label' }, k.label),
+      el('div', { class: 'value' }, k.value),
+      el('div', { class: 'note' }, k.note)));
+  }
+
+  // Head to head, level by level
+  const levels = document.getElementById('levels');
+  for (const lv of D.levels) {
+    const bars = el('div', { class: 'bars' });
+    for (const slug of lv.models) {
+      const m = D.models[slug];
+      const done = m.average != null;
+      bars.append(el('div', { class: 'bar' },
+        el('div', { class: 'm', title: m.name }, nm(m)),
+        el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (done ? m.average * 100 : 0) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 14px ' + color[m.vendor] })),
+        el('div', { class: 'v' + (done ? '' : ' pending') }, done ? fmt(m.average) : 'RUNNING')));
+    }
+    const thinks = lv.models.some((s) => D.models[s].thinking !== 'none');
+    const label = el('div', {}, el('div', { class: 'name' }, lv.name), el('div', { class: 'hint' }, lv.hint));
+    if (thinks) label.append(el('div', { class: 'badge' }, 'THINKING: LOW'));
+    levels.append(el('div', { class: 'level' }, label, bars));
+  }
+  const tn = document.getElementById('thinking-note');
+  tn.append(el('b', {}, 'THINKING: LOW  '), D.thinkingNote);
+
+  // Task matrix
+  const heat = document.getElementById('heat');
+  const hdr = el('div', { class: 'row hdr' }, el('div', {}, 'Model'));
+  for (const t of D.tasks) hdr.append(el('div', {}, t.name));
+  hdr.append(el('div', {}, 'Average'));
+  heat.append(hdr);
+  for (const slug of D.order) {
+    const m = D.models[slug];
+    const nameCell = nm(m);
+    const row = el('div', { class: 'row' },
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nameCell));
+    const vals = D.tasks.map((t) => m.scores[t.id]);
+    vals.push(m.average);
+    vals.forEach((v, i) => {
+      if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); return; }
+      row.append(el('div', {
+        class: 'cell' + (i === vals.length - 1 ? ' avg' : ''),
+        style: 'background:' + neon((0.04 + v * 0.36).toFixed(3)) + ';border-color:' + neon((0.12 + v * 0.45).toFixed(3)) + (v >= 0.9 ? ';box-shadow:0 0 14px ' + neon(0.45) : ''),
+      }, fmt(v)));
+    });
+    heat.append(row);
+  }
+
+  // Cost of one full run
+  document.getElementById('cost-sub').textContent = 'All 5 tasks, ' + D.itemsPerModel + ' scored items, paid in Kaggle model credits.';
+  const costs = document.getElementById('costs');
+  const done = D.order.filter((s) => D.models[s].average != null).sort((a, b) => D.models[a].cost - D.models[b].cost);
+  const maxCost = Math.max(...done.map((s) => D.models[s].cost));
+  for (const slug of done) {
+    const m = D.models[slug];
+    costs.append(el('div', { class: 'cost' },
+      el('div', { class: 'm' }, nm(m)),
+      el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (m.cost / maxCost * 100) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 12px ' + color[m.vendor] })),
+      el('div', { class: 'v' }, '$' + m.cost.toFixed(2))));
+  }
+
+  // Findings
+  const findings = document.getElementById('findings');
+  for (const f of D.findings) {
+    const li = el('li', {}, el('strong', {}, f.head), ' ' + f.body);
+    findings.append(li);
+  }
+  document.getElementById('foot-note').textContent = D.footnote;
+
+  // ---- Cost & tokens tab ----
+  const C = D.costTab;
+  const hot = (a) => 'rgba(255, 46, 126, ' + a + ')';
+  const nf = new Intl.NumberFormat('en-US');
+  const barRow = (cls, label, frac, fill, value) => el('div', { class: 'cost ' + cls },
+    el('div', { class: 'm', title: typeof label === 'string' ? label : label.textContent }, label),
+    el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + Math.max(frac * 100, 0.6) + '%;background:' + fill + ';box-shadow:0 0 10px ' + fill })),
+    el('div', { class: 'v' }, value));
+
+  // Cost matrix
+  const cm = document.getElementById('cost-matrix');
+  const cmHdr = el('div', { class: 'row hdr' }, el('div', {}, 'Model'));
+  for (const t of D.tasks) cmHdr.append(el('div', {}, t.name));
+  cmHdr.append(el('div', {}, 'Total'));
+  cm.append(cmHdr);
+  const allCosts = D.order.flatMap((s) => Object.values(C.perTask[s] || {}));
+  const maxTaskCost = Math.max(...allCosts, 0.0001);
+  for (const slug of D.order) {
+    const m = D.models[slug];
+    const row = el('div', { class: 'row' },
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nm(m)));
+    const vals = D.tasks.map((t) => (C.perTask[slug] || {})[t.id]);
+    for (const v of vals) {
+      if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
+      const f = v / maxTaskCost;
+      row.append(el('div', { class: 'cell', style: 'background:' + hot((0.04 + f * 0.4).toFixed(3)) + ';border-color:' + hot((0.12 + f * 0.5).toFixed(3)) }, '$' + v.toFixed(3)));
+    }
+    row.append(m.cost == null ? el('div', { class: 'cell none' }, '…') : el('div', { class: 'cell avg', style: 'border-color:#27405E' }, '$' + m.cost.toFixed(2)));
+    cm.append(row);
+  }
+
+  // Tokens in and out
+  const tok = document.getElementById('tokens');
+  const doneModels = D.order.filter((s) => D.models[s].average != null);
+  const maxTok = Math.max(...doneModels.map((s) => Math.max(D.models[s].inputTokens, D.models[s].outputTokens)));
+  for (const slug of doneModels) {
+    const m = D.models[slug];
+    tok.append(el('div', { class: 'pair' },
+      barRow('', nm(m), m.inputTokens / maxTok, 'var(--neon)', nf.format(m.inputTokens)),
+      barRow('', '', m.outputTokens / maxTok, 'var(--hot)', nf.format(m.outputTokens))));
+  }
+
+  // Token gap per task
+  const pc = document.getElementById('per-call');
+  for (const r of C.perCall) {
+    if (r.anthropic == null || r.openai == null) continue;
+    const mx = Math.max(r.anthropic, r.openai);
+    pc.append(el('div', { class: 'level' },
+      el('div', {}, el('div', { class: 'name' }, r.task), el('div', { class: 'ratio' }, (r.anthropic / r.openai).toFixed(1) + '×')),
+      el('div', { class: 'bars' },
+        barRow('', 'Claude', r.anthropic / mx, 'var(--claude)', nf.format(Math.round(r.anthropic))),
+        barRow('', 'GPT', r.openai / mx, 'var(--gpt)', nf.format(Math.round(r.openai))))));
+  }
+
+  // Cost per correct answer
+  const cpc = document.getElementById('cpc');
+  const cpcRows = C.costPerCorrect.filter((r) => r.cents != null).sort((a, b) => a.cents - b.cents);
+  if (cpcRows.length) {
+    document.getElementById('cpc-sub').textContent = 'Numbers, verbs and cloze, the tasks scored right or wrong per item (' + cpcRows[0].of + ' items). US cents per correct answer.';
+    const maxC = Math.max(...cpcRows.map((r) => r.cents));
+    for (const r of cpcRows) {
+      const m = D.models[r.model];
+      cpc.append(barRow('wide', el('span', {}, nm(m), ' · ' + r.correct + ' right'), r.cents / maxC, color[m.vendor], r.cents.toFixed(3) + '¢'));
+    }
+  }
+
+  // Project spend
+  const sp = document.getElementById('spend');
+  document.getElementById('spend-sub').textContent = 'Every model call of the project, all billed to the same Kaggle model quota.';
+  sp.append(el('div', { class: 'total' }, '$' + C.spendTotal.toFixed(2)));
+  const maxS = Math.max(...C.spend.map((r) => r.cost));
+  for (const r of C.spend) sp.append(barRow('wide', r.label, r.cost / maxS, 'var(--neon)', '$' + r.cost.toFixed(2)));
+
+  // ---- Tasks tab ----
+  const T = D.tasksTab;
+  const who = (slug) => {
+    const m = D.models[slug];
+    return el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nm(m));
+  };
+  // Category rows x model columns, as score cells.
+  const grid = (target, rows) => {
+    const cols = doneModels.length;
+    const tmpl = 'grid-template-columns:240px repeat(' + cols + ', minmax(0, 1fr))';
+    const box = document.getElementById(target);
+    box.style.minWidth = (240 + cols * 110) + 'px';
+    const hdr = el('div', { class: 'row hdr', style: tmpl }, el('div', {}, 'Question type'));
+    for (const s of doneModels) hdr.append(el('div', { title: D.models[s].name }, nm(D.models[s], true)));
+    box.append(hdr);
+    for (const r of rows) {
+      const row = el('div', { class: 'row', style: tmpl }, el('div', { class: 'who' }, el('span', {}, r.label + ' (' + r.n + ')')));
+      for (const s of doneModels) {
+        const v = r.values[s];
+        if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
+        row.append(el('div', { class: 'cell', style: 'background:' + neon((0.04 + v * 0.36).toFixed(3)) + ';border-color:' + neon((0.12 + v * 0.45).toFixed(3)) + (v >= 0.9 ? ';box-shadow:0 0 14px ' + neon(0.45) : '') }, Math.round(v * 100) + '%'));
+      }
+      box.append(row);
+    }
+  };
+  grid('num-grid', T.numbersGrid);
+  grid('verb-grid', T.verbsGrid);
+
+  // Numbers error types
+  const ne = document.getElementById('num-errors');
+  const maxE = Math.max(...T.numbersErrors.map((e) => e.count));
+  for (const e of T.numbersErrors) {
+    const x = e.example;
+    ne.append(el('div', { class: 'err' },
+      el('div', { class: 't' }, e.type),
+      el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (e.count / maxE * 100) + '%;background:var(--hot);box-shadow:0 0 10px var(--hot)' })),
+      el('div', { class: 'v', style: 'font-family:var(--mono);font-weight:600;text-align:right' }, String(e.count)),
+      el('div', { class: 'ex' }, 'e.g. ', el('b', { lang: 'ka' }, x.question), ' → expected ', el('b', { lang: 'ka' }, x.expected), ', ' + x.model + ' wrote ', el('b', { class: 'bad', lang: 'ka' }, x.answer))));
+  }
+
+  // Verbs: swapped participants
+  const sw = doneModels.map((s) => D.models[s].name + (D.models[s].thinking !== 'none' ? ' (thinking: low)' : '') + ' ' + T.swaps[s] + ' of ' + T.wrongWho[s]);
+  document.getElementById('swaps').textContent = 'Wrong "who does what to whom" answers where the model swapped the doer and the receiver: ' + sw.join(' · ') + '.';
+
+  // Correction
+  const corr = document.getElementById('corr');
+  if (T.correction.length) {
+    document.getElementById('corr-sub').textContent = 'Out of ' + T.correction[0].needed + ' planted errors in ' + D.tasks.find((t) => t.id === 'glb-correction').items + ' paragraphs. Broken = correct words the model changed anyway. Counted word by word, so the split is approximate.';
+  }
+  const corrSorted = [...T.correction].sort((a, b) => b.fixed - a.fixed);
+  for (const r of corrSorted) {
+    const m = D.models[r.model];
+    corr.append(el('div', { class: 'cost wide' },
+      el('div', { class: 'm' }, nm(m)),
+      el('div', { class: 'track', style: 'display:flex;height:18px' },
+        el('div', { class: 'fill', title: 'fixed ' + r.fixed, style: 'width:' + (r.fixed / r.needed * 100) + '%;background:var(--neon);box-shadow:0 0 10px var(--neon)' }),
+        el('div', { class: 'fill', title: 'missed ' + r.missed, style: 'width:' + (r.missed / r.needed * 100) + '%;background:#2A3B57' })),
+      el('div', { class: 'v' }, r.fixed + ' / ' + r.needed, el('span', { style: 'color:var(--hot);margin-left:8px' }, '−' + r.broken))));
+  }
+
+  // Cloze grid
+  const cz = document.getElementById('cloze');
+  const texts = [...new Set(T.clozeGaps.map((g) => g.text))];
+  const gh = el('div', { class: 'gaprow hdr' }, el('div', {}, 'Model'));
+  for (const t of texts) gh.append(el('div', {}, t === 'cloze-000' ? 'Text 1: History of computers' : 'Text 2: The Roman Empire'));
+  cz.append(gh);
+  for (const s of doneModels) {
+    const row = el('div', { class: 'gaprow' }, who(s));
+    for (const t of texts) {
+      const sq = el('div', { class: 'squares' });
+      for (const g of T.clozeGaps.filter((g) => g.text === t)) {
+        const ok = g.results[s];
+        sq.append(el('div', { class: 'sq' + (ok ? ' ok' : ''), title: '[' + g.gap + '] ' + g.expected + (ok ? '' : ' · wrote ' + g.answers[s]) }));
+      }
+      row.append(sq);
+    }
+    cz.append(row);
+  }
+  const hard = document.getElementById('cloze-hard');
+  if (T.clozeAllWrong.length) {
+    const box = el('div', { class: 'hard' }, el('div', { class: 'tag', style: 'color:var(--hot)' }, '// GAPS NO MODEL GOT RIGHT'));
+    for (const g of T.clozeAllWrong) {
+      const answers = [...new Set(Object.values(g.answers))].join(', ');
+      box.append(el('div', {}, el('span', { class: 'q' }, (g.text === 'cloze-000' ? 'Text 1' : 'Text 2') + ', gap [' + g.gap + ']: '), 'expected ', el('b', { lang: 'ka' }, g.expected), ', models wrote ', el('b', { lang: 'ka', style: 'color:#FF7FAF' }, answers)));
+    }
+    hard.append(box);
+  }
+
+  // ---- Examples tab ----
+  const eg = document.getElementById('example-groups');
+  const groups = [...new Set(D.examples.map((e) => e.group))];
+  for (const g of groups) {
+    eg.append(el('h3', { class: 'grouptitle' }, g));
+    const gridBox = el('div', { class: 'exgrid' });
+    for (const ex of D.examples.filter((e) => e.group === g)) {
+      const ans = el('div', { class: 'answers' });
+      for (const a of ex.answers) {
+        const m = D.models[a.model];
+        ans.append(el('div', { class: 'ans' },
+          el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] }), nm(m, true)),
+          el('div', { class: 'a' + (a.ok ? ' ok' : ''), lang: 'ka' }, (a.ok ? '✓ ' : '✗ ') + a.answer)));
+      }
+      gridBox.append(el('article', { class: 'excard' },
+        el('h3', {}, ex.title),
+        el('div', { class: 'q', lang: 'ka' }, ex.question),
+        el('div', { class: 'exp' }, 'Expected  ', el('b', { lang: 'ka' }, ex.expected)),
+        ans,
+        el('div', { class: 'why' }, ex.explain)));
+    }
+    eg.append(gridBox);
+  }
+
+  // ---- Method tab ----
+  const mt = document.getElementById('data-table');
+  const thead = el('tr', {});
+  for (const h of ['Task', 'Written', 'In the benchmark', 'How items were kept']) thead.append(el('th', { scope: 'col' }, h));
+  mt.append(el('thead', {}, thead));
+  const tbody = el('tbody', {});
+  for (const r of D.methodTable) {
+    tbody.append(el('tr', {}, el('td', {}, el('strong', {}, r.task)), el('td', { class: 'num' }, r.full), el('td', { class: 'num' }, r.kept), el('td', {}, r.rule)));
+  }
+  mt.append(tbody);
+
+  // Tabs
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  const show = (tab) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    }
+  };
+  for (const t of tabs) t.addEventListener('click', () => show(t));
+})();
+</script>
+</body>
+</html>

@@ -108,14 +108,22 @@ def normalize(text: str) -> str:
 # was 26,600 tokens), keeps the reservation affordable for expensive models.
 OUTPUT_LIMIT = {"max_completion_tokens": 32000}
 # Every model answers directly, without hidden thinking: the same conditions
-# for all models, and affordable within the daily quota.
+# for all models, and affordable within the daily quota. The exception is
+# the newest flagship pair: GPT-6 Astra cannot switch thinking off (its
+# minimum is "low"), so both models of that pair think at "low".
+LOW_THINKING = ("claude-opus-5", "gpt-6-astra")
+
+
+def reasoning_for(llm) -> str:
+    name = getattr(llm, "model", "") or ""
+    return "low" if any(m in name for m in LOW_THINKING) else "none"
 
 
 def ask(llm, prompt: str) -> str:
     # Nested evaluations can't retry failed items, so retry API errors here.
     for attempt in range(3):
         try:
-            return llm.prompt(prompt, schema=Answer, reasoning="none", extra_api_params=OUTPUT_LIMIT).answer
+            return llm.prompt(prompt, schema=Answer, reasoning=reasoning_for(llm), extra_api_params=OUTPUT_LIMIT).answer
         except Exception:
             if attempt == 2:
                 raise

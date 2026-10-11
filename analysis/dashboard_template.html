@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Georgian Language Benchmark</title>
+<meta name="description" content="How well do Claude and GPT handle Georgian? Results of the Georgian Language Benchmark on Kaggle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070D;
+  --panel: rgba(9, 15, 27, 0.92);
+  --line: #1F3554;
+  --line-soft: #18293F;
+  --track: #0F1A2C;
+  --text: #E6F1FF;
+  --text-strong: #F2FAFF;
+  --text-body: #D3DEEE;
+  --text-soft: #B9C7DD;
+  --muted: #8FA3BF;
+  --neon: #38D6FF;
+  --neon-glow: rgba(56, 214, 255, 0.55);
+  --hot: #FF2E7E;
+  --claude: #FFA62B;
+  --gpt: #A98BFF;
+  --display: 'Orbitron', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', 'Noto Sans Georgian', sans-serif;
+  --cut: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+  --cut-sm: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+body {
+  color: var(--text);
+  font-family: var(--sans);
+  background-image:
+    linear-gradient(rgba(64, 200, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(64, 200, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  min-height: 100vh;
+}
+a { color: #5CE1FF; }
+a:hover { color: #B8F3FF; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 52px 32px 72px; display: flex; flex-direction: column; gap: 30px; }
+.eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.eyebrow .dot { width: 10px; height: 10px; background: var(--hot); box-shadow: 0 0 10px var(--hot); }
+.eyebrow .ka { color: var(--neon); text-transform: none; letter-spacing: 0.04em; font-family: var(--sans); }
+h1 { margin: 0; font-family: var(--display); font-size: clamp(30px, 5vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--text-strong); text-shadow: 0 0 22px var(--neon-glow), 0 0 2px var(--neon); }
+.lead { margin: 0; font-size: 18px; line-height: 1.55; color: var(--text-soft); max-width: 780px; }
+header { display: flex; flex-direction: column; gap: 16px; }
+nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+nav button {
+  font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 11px 18px; min-height: 44px; cursor: pointer; clip-path: var(--cut-sm);
+  border: 1px solid #27405E; background: rgba(10, 18, 32, 0.8); color: var(--text-soft);
+}
+nav button[aria-selected="true"] { border-color: var(--neon); background: var(--neon); color: #03121A; font-weight: 600; box-shadow: 0 0 18px var(--neon-glow); }
+nav button:focus-visible { outline: 2px solid var(--text-strong); outline-offset: 2px; }
+.panel { background: var(--panel); border: 1px solid var(--line); box-shadow: 0 0 30px rgba(64, 200, 255, 0.08); padding: 30px; display: flex; flex-direction: column; gap: 22px; clip-path: var(--cut); }
+.panel.hot { border-color: rgba(255, 46, 126, 0.45); box-shadow: 0 0 26px rgba(255, 46, 126, 0.18); }
+.tag { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--neon); }
+.panel.hot .tag { color: var(--hot); }
+h2 { margin: 0; font-family: var(--display); font-size: 24px; font-weight: 600; letter-spacing: 0.03em; color: var(--text-strong); }
+.sub { margin: 0; font-size: 15px; color: var(--muted); line-height: 1.5; }
+.head { display: flex; flex-direction: column; gap: 8px; }
+.head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px; }
+.legend { display: flex; gap: 20px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-soft); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 14px; height: 14px; display: inline-block; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.kpi { background: linear-gradient(180deg, rgba(16, 28, 48, 0.95), rgba(8, 13, 24, 0.95)); border: 1px solid var(--line); box-shadow: inset 0 0 18px rgba(64, 200, 255, 0.05); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+.kpi .label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.kpi .value { font-family: var(--display); font-size: 36px; font-weight: 800; color: var(--text-strong); }
+.kpi .note { font-size: 14px; color: var(--text-soft); line-height: 1.45; }
+.kpi.neon { border-color: rgba(56, 214, 255, 0.45); box-shadow: 0 0 24px rgba(56, 214, 255, 0.25); }
+.kpi.neon .value { color: var(--neon); text-shadow: 0 0 16px rgba(56, 214, 255, 0.5); }
+.kpi.hot { border-color: rgba(255, 46, 126, 0.5); box-shadow: 0 0 24px rgba(255, 46, 126, 0.22); }
+.kpi.hot .value { color: var(--hot); text-shadow: 0 0 16px rgba(255, 46, 126, 0.5); }
+.levels { display: flex; flex-direction: column; gap: 20px; }
+.level { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 18px; align-items: center; border-top: 1px dashed var(--line-soft); padding-top: 12px; }
+.level .name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-strong); }
+.level .hint { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar { display: grid; grid-template-columns: 170px minmax(0, 1fr) 76px; gap: 12px; align-items: center; }
+.bar .m { font-size: 14px; color: var(--text-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track { height: 18px; background: var(--track); border: 1px solid #1A2D47; overflow: hidden; }
+.fill { height: 100%; }
+.bar .v { font-family: var(--mono); font-size: 15px; font-weight: 600; text-align: right; color: var(--text-strong); }
+.bar .v.pending { color: var(--hot); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .bar .v.pending { animation: none; } }
+.scroll { overflow-x: auto; }
+.heat { min-width: 780px; display: flex; flex-direction: column; gap: 6px; }
+.heat .row { display: grid; grid-template-columns: 200px repeat(6, minmax(0, 1fr)); gap: 6px; align-items: center; }
+.heat .hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.heat .hdr div:not(:first-child) { text-align: center; }
+.heat .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-body); }
+.heat .who .sw { width: 10px; height: 10px; flex: none; }
+.cell { height: 44px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 15px; color: var(--text-strong); border: 1px solid; }
+.cell.none { background: rgba(15, 26, 44, 0.6); border-color: #132238; color: #5D6F8C; }
+.cell.avg { font-weight: 600; }
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.duo .panel { gap: 18px; }
+.cost { display: grid; grid-template-columns: 150px minmax(0, 1fr) 70px; gap: 12px; align-items: center; }
+.cost .track { height: 14px; }
+.cost .m { font-size: 14px; color: var(--text-body); }
+.cost .v { font-family: var(--mono); font-size: 14px; font-weight: 600; text-align: right; color: var(--text-strong); }
+.costs { display: flex; flex-direction: column; gap: 12px; }
+ol.findings { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.55; color: var(--text-body); }
+ol.findings strong { color: var(--text-strong); }
+.soon { font-family: var(--mono); color: var(--muted); font-size: 15px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 13px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 20px; }
+.tabpage { display: flex; flex-direction: column; gap: 30px; }
+.cost.wide { grid-template-columns: 200px minmax(0, 1fr) 90px; }
+.pair { display: flex; flex-direction: column; gap: 4px; }
+.pair .track { height: 12px; }
+.ratio { font-family: var(--display); font-size: 20px; font-weight: 800; color: var(--hot); text-shadow: 0 0 12px rgba(255, 46, 126, 0.5); }
+.total { font-family: var(--display); font-size: 30px; font-weight: 800; color: var(--text-strong); }
+.errs { display: flex; flex-direction: column; gap: 14px; }
+.err { display: grid; grid-template-columns: 250px minmax(0, 1fr) 56px; gap: 14px; align-items: center; }
+.err .t { font-size: 15px; color: var(--text-strong); font-weight: 500; }
+.err .ex { grid-column: 1 / -1; font-size: 14px; color: var(--muted); margin-top: -6px; }
+.err .ex b { font-weight: 500; color: var(--text-body); }
+.err .ex .bad { color: #FF7FAF; }
+.gapgrid { min-width: 860px; display: flex; flex-direction: column; gap: 6px; }
+.gaprow { display: grid; grid-template-columns: 170px 1fr 1fr; gap: 16px; align-items: center; }
+.gaprow .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-body); }
+.gaprow .who .sw { width: 10px; height: 10px; flex: none; }
+.squares { display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 3px; }
+.sq { aspect-ratio: 1; border: 1px solid var(--hot); background: transparent; }
+.sq.ok { border-color: var(--neon); background: var(--neon); box-shadow: 0 0 6px rgba(56, 214, 255, 0.6); }
+.gaprow.hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.hard { display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--text-body); line-height: 1.5; }
+.hard .q { color: var(--text-strong); font-weight: 500; }
+.badge { display: inline-block; margin-top: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 3px 7px; border: 1px solid var(--hot); color: var(--hot); box-shadow: 0 0 8px rgba(255, 46, 126, 0.35); }
+.badge.inline { margin: 0 0 0 8px; padding: 1px 5px; font-size: 10px; }
+.note { font-size: 14px; line-height: 1.5; color: var(--text-soft); border: 1px dashed rgba(255, 46, 126, 0.5); padding: 12px 14px; }
+.note b { color: var(--hot); font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em; }
+.prose { display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.6; color: var(--text-body); max-width: 900px; }
+.prose p { margin: 0; }
+.prose ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; }
+.prose strong { color: var(--text-strong); }
+.prose code { font-family: var(--mono); font-size: 14px; color: var(--neon); }
+.defs { margin: 0; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 12px 20px; }
+.defs dt { font-family: var(--display); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--neon); padding-top: 3px; }
+.defs dd { margin: 0; }
+.tbl { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+.tbl th { text-align: left; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 400; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.tbl td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); }
+.tbl td.num { font-family: var(--mono); text-align: right; }
+@media (max-width: 640px) { .defs { grid-template-columns: 1fr; gap: 4px; } .defs dd { margin-bottom: 10px; } }
+.exgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.excard { background: var(--panel); border: 1px solid var(--line); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+.excard h3 { margin: 0; font-family: var(--display); font-size: 17px; letter-spacing: 0.04em; color: var(--text-strong); }
+.excard .q { font-size: 15px; color: var(--text-soft); }
+.excard .exp { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.excard .exp b { font-family: var(--sans); font-size: 17px; color: var(--neon); font-weight: 600; text-shadow: 0 0 10px rgba(56, 214, 255, 0.45); }
+.answers { display: flex; flex-direction: column; gap: 5px; }
+.ans { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; font-size: 15px; align-items: baseline; }
+.ans .who { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.ans .who .sw { width: 8px; height: 8px; flex: none; }
+.ans .a { color: #FF7FAF; word-break: break-word; }
+.ans .a.ok { color: var(--neon); }
+.excard .why { font-size: 14px; line-height: 1.55; color: var(--text-body); border-top: 1px dashed var(--line-soft); padding-top: 10px; }
+.grouptitle { font-family: var(--display); font-size: 20px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-strong); margin: 4px 0 -12px; }
+[hidden] { display: none !important; }
+@media (max-width: 640px) {
+  .wrap { padding: 32px 16px 48px; }
+  .panel { padding: 22px 18px; }
+  .level { grid-template-columns: 1fr; gap: 6px; }
+  .bar { grid-template-columns: 110px minmax(0, 1fr) 64px; }
+  .cost { grid-template-columns: 110px minmax(0, 1fr) 60px; }
+  .duo { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span class="dot" aria-hidden="true"></span><span>DEV × Kaggle Benchmarking Challenge</span><span aria-hidden="true" style="color:#3A4A66">//</span><span class="ka" lang="ka">ქართული ენის ბენჩმარქი</span></div>
+    <h1>Georgian Language Benchmark</h1>
+    <p class="lead">How well do Claude and GPT handle Georgian? Five tasks written by a native speaker and reviewed by a language specialist. Every model answers directly, without hidden thinking, under identical conditions.</p>
+    <nav role="tablist" aria-label="Dashboard sections">
+      <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Overview</button>
+      <button role="tab" id="tab-cost" aria-controls="cost" aria-selected="false">Cost &amp; tokens</button>
+      <button role="tab" id="tab-tasks" aria-controls="tasks" aria-selected="false">Tasks</button>
+      <button role="tab" id="tab-examples" aria-controls="examples" aria-selected="false">Examples</button>
+      <button role="tab" id="tab-method" aria-controls="method" aria-selected="false">Method</button>
+    </nav>
+  </header>
+
+  <main id="overview" role="tabpanel" aria-labelledby="tab-overview" style="display:flex;flex-direction:column;gap:30px">
+    <section class="kpis" id="kpis" aria-label="Key numbers"></section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 01 HEAD TO HEAD</div>
+          <h2>Anthropic vs OpenAI, level by level</h2>
+          <p class="sub">Average score across all 5 tasks, 0 to 1. Each level pairs comparable models.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--claude);box-shadow:0 0 10px var(--claude)"></span>Anthropic</span><span><span class="sw" style="background:var(--gpt);box-shadow:0 0 10px var(--gpt)"></span>OpenAI</span></div>
+      </div>
+      <div class="levels" id="levels"></div>
+      <p class="note" id="thinking-note"></p>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 02 TASK MATRIX</div>
+        <h2>Scores by task</h2>
+        <p class="sub">Brighter cells mean higher scores. Numbers and verbs keep only the hard items left after trimming, so their scores are low by design.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="heat"></div></div>
+    </section>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 03 COST</div>
+          <h2>Cost of one full run</h2>
+          <p class="sub" id="cost-sub"></p>
+        </div>
+        <div class="costs" id="costs"></div>
+      </section>
+      <section class="panel hot">
+        <div class="tag">// 04 SIGNAL</div>
+        <h2>What stands out</h2>
+        <ol class="findings" id="findings"></ol>
+      </section>
+    </div>
+  </main>
+
+  <div id="cost" role="tabpanel" aria-labelledby="tab-cost" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 05 COST MATRIX</div>
+        <h2>What each model paid per task</h2>
+        <p class="sub">US dollars per complete task run, in Kaggle model credits. Hotter cells cost more.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="cost-matrix"></div></div>
+    </section>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 06 TOKENS</div>
+          <h2>Tokens in and out</h2>
+          <p class="sub">All 5 tasks. Input is our prompts as each vendor counts them; output is the models' answers, with no hidden thinking.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Input</span><span><span class="sw" style="background:var(--hot);box-shadow:0 0 10px var(--hot)"></span>Output</span></div>
+        <div class="costs" id="tokens"></div>
+      </section>
+      <section class="panel hot">
+        <div class="head">
+          <div class="tag">// 07 TOKEN GAP</div>
+          <h2>The Georgian token gap</h2>
+          <p class="sub">Average input tokens per call for identical prompts. Same text, different bill.</p>
+        </div>
+        <div class="levels" id="per-call"></div>
+      </section>
+    </div>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 08 VALUE</div>
+          <h2>Cost per correct answer</h2>
+          <p class="sub" id="cpc-sub"></p>
+        </div>
+        <div class="costs" id="cpc"></div>
+      </section>
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 09 BUDGET</div>
+          <h2>What the whole project cost</h2>
+          <p class="sub" id="spend-sub"></p>
+        </div>
+        <div class="costs" id="spend"></div>
+      </section>
+    </div>
+  </div>
+  <div id="tasks" role="tabpanel" aria-labelledby="tab-tasks" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 10 NUMBERS</div>
+        <h2>Numbers, by question type</h2>
+        <p class="sub">Share answered exactly right. Georgian counts in twenties, and ordinals add the prefix მე- inside the word or before the digits.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="num-grid"></div></div>
+    </section>
+
+    <section class="panel hot">
+      <div class="head">
+        <div class="tag">// 11 ERROR TYPES</div>
+        <h2>How the models get numbers wrong</h2>
+        <p class="sub">All wrong numbers answers of the compared models, sorted into types automatically, with one real example each.</p>
+      </div>
+      <div class="errs" id="num-errors"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 12 VERBS</div>
+        <h2>Verbs, by question type</h2>
+        <p class="sub">Georgian verbs mark who does what to whom inside the verb itself. Share answered right.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="verb-grid"></div></div>
+      <p class="sub" id="swaps"></p>
+    </section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 13 CORRECTION</div>
+          <h2>Grammar correction: fixed, missed, broken</h2>
+          <p class="sub" id="corr-sub"></p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Fixed</span><span><span class="sw" style="background:#2A3B57"></span>Missed</span><span><span class="sw" style="background:var(--hot);box-shadow:0 0 10px var(--hot)"></span>Broken</span></div>
+      </div>
+      <div class="costs" id="corr"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 14 CLOZE</div>
+          <h2>Cloze, gap by gap</h2>
+          <p class="sub">Two articles with 25 gaps each. Every square is one gap; lit means the exact right word form.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Right</span><span><span class="sw" style="border:1px solid var(--hot)"></span>Wrong</span></div>
+      </div>
+      <div class="scroll"><div class="gapgrid" id="cloze"></div></div>
+      <div id="cloze-hard"></div>
+    </section>
+  </div>
+  <div id="examples" role="tabpanel" aria-labelledby="tab-examples" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 20 EXAMPLES</div>
+        <h2>Real answers, real mistakes</h2>
+        <p class="sub">Hand-picked items with every model's actual answer. Lit answers are right; pink ones are wrong.</p>
+      </div>
+    </section>
+    <div id="example-groups" class="tabpage"></div>
+  </div>
+  <div id="method" role="tabpanel" aria-labelledby="tab-method" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 15 DATA</div>
+        <h2>Where the questions come from</h2>
+      </div>
+      <div class="prose">
+        <p>Every item was written by hand by a native Georgian speaker: no machine-generated or translated text. The full sets were then trimmed to the items that actually separate models, because every question costs model credits. Easy items were removed using a thinking model (Gemini 3 Flash) as a probe; every item it got wrong was kept.</p>
+        <div class="scroll"><table class="tbl" id="data-table"></table></div>
+        <p>The full, untrimmed sets are kept in the repository's <code>archive/</code> folder for later testing.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 16 SCORING</div>
+        <h2>How each task is scored</h2>
+      </div>
+      <div class="prose">
+        <dl class="defs">
+          <dt>Numbers</dt><dd>Write a number in Georgian words, or a Georgian number in digits, as cardinal and as ordinal. One call per question, exact match after Unicode normalization. Dash variants count as the same character.</dd>
+          <dt>Verbs</dt><dd>Read who does what to whom from a verb form, choose the right preverb (multiple choice, answered with a letter), or build a verb form for given persons and tense (exact match).</dd>
+          <dt>Translation</dt><dd>Translate a Georgian paragraph into English. A fixed judge model (Gemini 3 Flash, without thinking) compares the meaning with a native speaker's reference on a 5-level scale; wording and style do not count, and he/she/they choices are never penalized where Georgian has no gender.</dd>
+          <dt>Cloze</dt><dd>Fill 25 numbered gaps in an article with the right grammatical form of words from a list that also contains distractors. Every gap counts on its own: right word, right form, right place.</dd>
+          <dt>Correction</dt><dd>Fix planted grammar, spelling and punctuation errors in a paragraph. Partial credit, word by word: every fixed error counts, and every correct word the model changes counts against it, exactly like a missed error.</dd>
+        </dl>
+        <p>Task scores run from 0 to 1. A model's average is the plain mean of its 5 task scores, each task counting equally.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 17 CONDITIONS</div>
+        <h2>Same conditions for every model</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>No thinking.</strong> Every model answers directly, without hidden reasoning. Default settings would have mixed models that think with models that don't, which is not a fair comparison.</li>
+          <li><strong>One exception, clearly marked.</strong> GPT-6 Astra cannot switch thinking off; its minimum is "low". So the newest pair, Claude Opus 5 and GPT-6 Astra, both think at "low". They are marked <span class="badge inline" style="margin:0">LOW</span> everywhere.</li>
+          <li><strong>Pairs of comparable models.</strong> Each level pairs an Anthropic and an OpenAI model of the same class: light, decent, top, newest.</li>
+          <li><strong>Same prompts, same code.</strong> All models run the same task version on Kaggle Benchmarks, with English instructions and Georgian content.</li>
+          <li><strong>An output limit of 32,000 tokens per answer</strong>, far above any answer in the runs. It only exists because Kaggle reserves the worst-case cost of every call before sending it.</li>
+          <li><strong>One run per model.</strong> Re-runs of the same model differed by about ±0.03 per task.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 18 BUDGET</div>
+        <h2>Built on a free quota</h2>
+      </div>
+      <div class="prose">
+        <p>Kaggle provides model credits of $10 per day. Before each call, Kaggle reserves the worst possible cost (the model's maximum answer length × its price) and refuses the call if that does not fit, even when the real answer costs a fraction of a cent. That shaped the benchmark: trimmed item sets, two parallel calls instead of four, the output limit, and no thinking. The Cost &amp; tokens tab shows where every dollar went.</p>
+      </div>
+    </section>
+
+    <section class="panel hot">
+      <div class="head">
+        <div class="tag">// 19 LIMITS</div>
+        <h2>Read the results with this in mind</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>The sets are hard by design.</strong> Numbers and verbs keep mostly items a strong model got wrong, so absolute scores are low. The ranking between models is the meaningful part.</li>
+          <li><strong>Small sets.</strong> Some tasks have only 12 to 17 items, so differences of a few points are not significant.</li>
+          <li><strong>Some answers are debatable.</strong> In a few items every model agrees with each other against the expected answer; these are shown in the Tasks tab.</li>
+          <li><strong>The token gap includes format overhead.</strong> Input tokens cover the prompt plus each vendor's answer-format instructions, so part of the gap is not Georgian text itself.</li>
+          <li><strong>The judge is a model.</strong> Translation scores depend on Gemini 3 Flash's judgment of meaning.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <span id="foot-note"></span>
+    <span><a href="https://www.kaggle.com/benchmarks">Benchmark on Kaggle</a> · <a href="https://github.com/georgekobaidze/georgian-language-benchmarks">Code and data on GitHub</a></span>
+  </footer>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const color = { anthropic: 'var(--claude)', openai: 'var(--gpt)' };
+  const fmt = (v) => v.toFixed(2);
+  const el = (tag, attrs, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === 'style') n.style.cssText = v; else if (k === 'class') n.className = v; else n.setAttribute(k, v);
+    }
+    for (const kid of kids) n.append(kid);
+    return n;
+  };
+  const neon = (a) => 'rgba(56, 214, 255, ' + a + ')';
+  // A model's name, with a LOW badge when it thinks (the newest pair).
+  const nm = (m, short) => {
+    const s = el('span', {}, short ? m.name.replace('Claude ', '') : m.name);
+    if (m.thinking && m.thinking !== 'none') s.append(el('span', { class: 'badge inline', title: 'Thinks at the lowest level' }, 'LOW'));
+    return s;
+  };
+
+  // Key numbers
+  const kpis = document.getElementById('kpis');
+  for (const k of D.kpis) {
+    kpis.append(el('div', { class: 'kpi ' + (k.style || '') },
+      el('div', { class: 'label' }, k.label),
+      el('div', { class: 'value' }, k.value),
+      el('div', { class: 'note' }, k.note)));
+  }
+
+  // Head to head, level by level
+  const levels = document.getElementById('levels');
+  for (const lv of D.levels) {
+    const bars = el('div', { class: 'bars' });
+    for (const slug of lv.models) {
+      const m = D.models[slug];
+      const done = m.average != null;
+      bars.append(el('div', { class: 'bar' },
+        el('div', { class: 'm', title: m.name }, nm(m)),
+        el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (done ? m.average * 100 : 0) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 14px ' + color[m.vendor] })),
+        el('div', { class: 'v' + (done ? '' : ' pending') }, done ? fmt(m.average) : 'RUNNING')));
+    }
+    const thinks = lv.models.some((s) => D.models[s].thinking !== 'none');
+    const label = el('div', {}, el('div', { class: 'name' }, lv.name), el('div', { class: 'hint' }, lv.hint));
+    if (thinks) label.append(el('div', { class: 'badge' }, 'THINKING: LOW'));
+    levels.append(el('div', { class: 'level' }, label, bars));
+  }
+  const tn = document.getElementById('thinking-note');
+  tn.append(el('b', {}, 'THINKING: LOW  '), D.thinkingNote);
+
+  // Task matrix
+  const heat = document.getElementById('heat');
+  const hdr = el('div', { class: 'row hdr' }, el('div', {}, 'Model'));
+  for (const t of D.tasks) hdr.append(el('div', {}, t.name));
+  hdr.append(el('div', {}, 'Average'));
+  heat.append(hdr);
+  for (const slug of D.order) {
+    const m = D.models[slug];
+    const nameCell = nm(m);
+    const row = el('div', { class: 'row' },
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nameCell));
+    const vals = D.tasks.map((t) => m.scores[t.id]);
+    vals.push(m.average);
+    vals.forEach((v, i) => {
+      if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); return; }
+      row.append(el('div', {
+        class: 'cell' + (i === vals.length - 1 ? ' avg' : ''),
+        style: 'background:' + neon((0.04 + v * 0.36).toFixed(3)) + ';border-color:' + neon((0.12 + v * 0.45).toFixed(3)) + (v >= 0.9 ? ';box-shadow:0 0 14px ' + neon(0.45) : ''),
+      }, fmt(v)));
+    });
+    heat.append(row);
+  }
+
+  // Cost of one full run
+  document.getElementById('cost-sub').textContent = 'All 5 tasks, ' + D.itemsPerModel + ' scored items, paid in Kaggle model credits.';
+  const costs = document.getElementById('costs');
+  const done = D.order.filter((s) => D.models[s].average != null).sort((a, b) => D.models[a].cost - D.models[b].cost);
+  const maxCost = Math.max(...done.map((s) => D.models[s].cost));
+  for (const slug of done) {
+    const m = D.models[slug];
+    costs.append(el('div', { class: 'cost' },
+      el('div', { class: 'm' }, nm(m)),
+      el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (m.cost / maxCost * 100) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 12px ' + color[m.vendor] })),
+      el('div', { class: 'v' }, '$' + m.cost.toFixed(2))));
+  }
+
+  // Findings
+  const findings = document.getElementById('findings');
+  for (const f of D.findings) {
+    const li = el('li', {}, el('strong', {}, f.head), ' ' + f.body);
+    findings.append(li);
+  }
+  document.getElementById('foot-note').textContent = D.footnote;
+
+  // ---- Cost & tokens tab ----
+  const C = D.costTab;
+  const hot = (a) => 'rgba(255, 46, 126, ' + a + ')';
+  const nf = new Intl.NumberFormat('en-US');
+  const barRow = (cls, label, frac, fill, value) => el('div', { class: 'cost ' + cls },
+    el('div', { class: 'm', title: typeof label === 'string' ? label : label.textContent }, label),
+    el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + Math.max(frac * 100, 0.6) + '%;background:' + fill + ';box-shadow:0 0 10px ' + fill })),
+    el('div', { class: 'v' }, value));
+
+  // Cost matrix
+  const cm = document.getElementById('cost-matrix');
+  const cmHdr = el('div', { class: 'row hdr' }, el('div', {}, 'Model'));
+  for (const t of D.tasks) cmHdr.append(el('div', {}, t.name));
+  cmHdr.append(el('div', {}, 'Total'));
+  cm.append(cmHdr);
+  const allCosts = D.order.flatMap((s) => Object.values(C.perTask[s] || {}));
+  const maxTaskCost = Math.max(...allCosts, 0.0001);
+  for (const slug of D.order) {
+    const m = D.models[slug];
+    const row = el('div', { class: 'row' },
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nm(m)));
+    const vals = D.tasks.map((t) => (C.perTask[slug] || {})[t.id]);
+    for (const v of vals) {
+      if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
+      const f = v / maxTaskCost;
+      row.append(el('div', { class: 'cell', style: 'background:' + hot((0.04 + f * 0.4).toFixed(3)) + ';border-color:' + hot((0.12 + f * 0.5).toFixed(3)) }, '$' + v.toFixed(3)));
+    }
+    row.append(m.cost == null ? el('div', { class: 'cell none' }, '…') : el('div', { class: 'cell avg', style: 'border-color:#27405E' }, '$' + m.cost.toFixed(2)));
+    cm.append(row);
+  }
+
+  // Tokens in and out
+  const tok = document.getElementById('tokens');
+  const doneModels = D.order.filter((s) => D.models[s].average != null);
+  const maxTok = Math.max(...doneModels.map((s) => Math.max(D.models[s].inputTokens, D.models[s].outputTokens)));
+  for (const slug of doneModels) {
+    const m = D.models[slug];
+    tok.append(el('div', { class: 'pair' },
+      barRow('', nm(m), m.inputTokens / maxTok, 'var(--neon)', nf.format(m.inputTokens)),
+      barRow('', '', m.outputTokens / maxTok, 'var(--hot)', nf.format(m.outputTokens))));
+  }
+
+  // Token gap per task
+  const pc = document.getElementById('per-call');
+  for (const r of C.perCall) {
+    if (r.anthropic == null || r.openai == null) continue;
+    const mx = Math.max(r.anthropic, r.openai);
+    pc.append(el('div', { class: 'level' },
+      el('div', {}, el('div', { class: 'name' }, r.task), el('div', { class: 'ratio' }, (r.anthropic / r.openai).toFixed(1) + '×')),
+      el('div', { class: 'bars' },
+        barRow('', 'Claude', r.anthropic / mx, 'var(--claude)', nf.format(Math.round(r.anthropic))),
+        barRow('', 'GPT', r.openai / mx, 'var(--gpt)', nf.format(Math.round(r.openai))))));
+  }
+
+  // Cost per correct answer
+  const cpc = document.getElementById('cpc');
+  const cpcRows = C.costPerCorrect.filter((r) => r.cents != null).sort((a, b) => a.cents - b.cents);
+  if (cpcRows.length) {
+    document.getElementById('cpc-sub').textContent = 'Numbers, verbs and cloze, the tasks scored right or wrong per item (' + cpcRows[0].of + ' items). US cents per correct answer.';
+    const maxC = Math.max(...cpcRows.map((r) => r.cents));
+    for (const r of cpcRows) {
+      const m = D.models[r.model];
+      cpc.append(barRow('wide', el('span', {}, nm(m), ' · ' + r.correct + ' right'), r.cents / maxC, color[m.vendor], r.cents.toFixed(3) + '¢'));
+    }
+  }
+
+  // Project spend
+  const sp = document.getElementById('spend');
+  document.getElementById('spend-sub').textContent = 'Every model call of the project, all billed to the same Kaggle model quota.';
+  sp.append(el('div', { class: 'total' }, '$' + C.spendTotal.toFixed(2)));
+  const maxS = Math.max(...C.spend.map((r) => r.cost));
+  for (const r of C.spend) sp.append(barRow('wide', r.label, r.cost / maxS, 'var(--neon)', '$' + r.cost.toFixed(2)));
+
+  // ---- Tasks tab ----
+  const T = D.tasksTab;
+  const who = (slug) => {
+    const m = D.models[slug];
+    return el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nm(m));
+  };
+  // Category rows x model columns, as score cells.
+  const grid = (target, rows) => {
+    const cols = doneModels.length;
+    const tmpl = 'grid-template-columns:240px repeat(' + cols + ', minmax(0, 1fr))';
+    const box = document.getElementById(target);
+    box.style.minWidth = (240 + cols * 110) + 'px';
+    const hdr = el('div', { class: 'row hdr', style: tmpl }, el('div', {}, 'Question type'));
+    for (const s of doneModels) hdr.append(el('div', { title: D.models[s].name }, nm(D.models[s], true)));
+    box.append(hdr);
+    for (const r of rows) {
+      const row = el('div', { class: 'row', style: tmpl }, el('div', { class: 'who' }, el('span', {}, r.label + ' (' + r.n + ')')));
+      for (const s of doneModels) {
+        const v = r.values[s];
+        if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
+        row.append(el('div', { class: 'cell', style: 'background:' + neon((0.04 + v * 0.36).toFixed(3)) + ';border-color:' + neon((0.12 + v * 0.45).toFixed(3)) + (v >= 0.9 ? ';box-shadow:0 0 14px ' + neon(0.45) : '') }, Math.round(v * 100) + '%'));
+      }
+      box.append(row);
+    }
+  };
+  grid('num-grid', T.numbersGrid);
+  grid('verb-grid', T.verbsGrid);
+
+  // Numbers error types
+  const ne = document.getElementById('num-errors');
+  const maxE = Math.max(...T.numbersErrors.map((e) => e.count));
+  for (const e of T.numbersErrors) {
+    const x = e.example;
+    ne.append(el('div', { class: 'err' },
+      el('div', { class: 't' }, e.type),
+      el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (e.count / maxE * 100) + '%;background:var(--hot);box-shadow:0 0 10px var(--hot)' })),
+      el('div', { class: 'v', style: 'font-family:var(--mono);font-weight:600;text-align:right' }, String(e.count)),
+      el('div', { class: 'ex' }, 'e.g. ', el('b', { lang: 'ka' }, x.question), ' → expected ', el('b', { lang: 'ka' }, x.expected), ', ' + x.model + ' wrote ', el('b', { class: 'bad', lang: 'ka' }, x.answer))));
+  }
+
+  // Verbs: swapped participants
+  const sw = doneModels.map((s) => D.models[s].name + (D.models[s].thinking !== 'none' ? ' (thinking: low)' : '') + ' ' + T.swaps[s] + ' of ' + T.wrongWho[s]);
+  document.getElementById('swaps').textContent = 'Wrong "who does what to whom" answers where the model swapped the doer and the receiver: ' + sw.join(' · ') + '.';
+
+  // Correction
+  const corr = document.getElementById('corr');
+  if (T.correction.length) {
+    document.getElementById('corr-sub').textContent = 'Out of ' + T.correction[0].needed + ' planted errors in ' + D.tasks.find((t) => t.id === 'glb-correction').items + ' paragraphs. Broken = correct words the model changed anyway. Counted word by word, so the split is approximate.';
+  }
+  const corrSorted = [...T.correction].sort((a, b) => b.fixed - a.fixed);
+  for (const r of corrSorted) {
+    const m = D.models[r.model];
+    corr.append(el('div', { class: 'cost wide' },
+      el('div', { class: 'm' }, nm(m)),
+      el('div', { class: 'track', style: 'display:flex;height:18px' },
+        el('div', { class: 'fill', title: 'fixed ' + r.fixed, style: 'width:' + (r.fixed / r.needed * 100) + '%;background:var(--neon);box-shadow:0 0 10px var(--neon)' }),
+        el('div', { class: 'fill', title: 'missed ' + r.missed, style: 'width:' + (r.missed / r.needed * 100) + '%;background:#2A3B57' })),
+      el('div', { class: 'v' }, r.fixed + ' / ' + r.needed, el('span', { style: 'color:var(--hot);margin-left:8px' }, '−' + r.broken))));
+  }
+
+  // Cloze grid
+  const cz = document.getElementById('cloze');
+  const texts = [...new Set(T.clozeGaps.map((g) => g.text))];
+  const gh = el('div', { class: 'gaprow hdr' }, el('div', {}, 'Model'));
+  for (const t of texts) gh.append(el('div', {}, t === 'cloze-000' ? 'Text 1: History of computers' : 'Text 2: The Roman Empire'));
+  cz.append(gh);
+  for (const s of doneModels) {
+    const row = el('div', { class: 'gaprow' }, who(s));
+    for (const t of texts) {
+      const sq = el('div', { class: 'squares' });
+      for (const g of T.clozeGaps.filter((g) => g.text === t)) {
+        const ok = g.results[s];
+        sq.append(el('div', { class: 'sq' + (ok ? ' ok' : ''), title: '[' + g.gap + '] ' + g.expected + (ok ? '' : ' · wrote ' + g.answers[s]) }));
+      }
+      row.append(sq);
+    }
+    cz.append(row);
+  }
+  const hard = document.getElementById('cloze-hard');
+  if (T.clozeAllWrong.length) {
+    const box = el('div', { class: 'hard' }, el('div', { class: 'tag', style: 'color:var(--hot)' }, '// GAPS NO MODEL GOT RIGHT'));
+    for (const g of T.clozeAllWrong) {
+      const answers = [...new Set(Object.values(g.answers))].join(', ');
+      box.append(el('div', {}, el('span', { class: 'q' }, (g.text === 'cloze-000' ? 'Text 1' : 'Text 2') + ', gap [' + g.gap + ']: '), 'expected ', el('b', { lang: 'ka' }, g.expected), ', models wrote ', el('b', { lang: 'ka', style: 'color:#FF7FAF' }, answers)));
+    }
+    hard.append(box);
+  }
+
+  // ---- Examples tab ----
+  const eg = document.getElementById('example-groups');
+  const groups = [...new Set(D.examples.map((e) => e.group))];
+  for (const g of groups) {
+    eg.append(el('h3', { class: 'grouptitle' }, g));
+    const gridBox = el('div', { class: 'exgrid' });
+    for (const ex of D.examples.filter((e) => e.group === g)) {
+      const ans = el('div', { class: 'answers' });
+      for (const a of ex.answers) {
+        const m = D.models[a.model];
+        ans.append(el('div', { class: 'ans' },
+          el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] }), nm(m, true)),
+          el('div', { class: 'a' + (a.ok ? ' ok' : ''), lang: 'ka' }, (a.ok ? '✓ ' : '✗ ') + a.answer)));
+      }
+      gridBox.append(el('article', { class: 'excard' },
+        el('h3', {}, ex.title),
+        el('div', { class: 'q', lang: 'ka' }, ex.question),
+        el('div', { class: 'exp' }, 'Expected  ', el('b', { lang: 'ka' }, ex.expected)),
+        ans,
+        el('div', { class: 'why' }, ex.explain)));
+    }
+    eg.append(gridBox);
+  }
+
+  // ---- Method tab ----
+  const mt = document.getElementById('data-table');
+  const thead = el('tr', {});
+  for (const h of ['Task', 'Written', 'In the benchmark', 'How items were kept']) thead.append(el('th', { scope: 'col' }, h));
+  mt.append(el('thead', {}, thead));
+  const tbody = el('tbody', {});
+  for (const r of D.methodTable) {
+    tbody.append(el('tr', {}, el('td', {}, el('strong', {}, r.task)), el('td', { class: 'num' }, r.full), el('td', { class: 'num' }, r.kept), el('td', {}, r.rule)));
+  }
+  mt.append(tbody);
+
+  // Tabs
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  const show = (tab) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    }
+  };
+  for (const t of tabs) t.addEventListener('click', () => show(t));
+})();
+</script>
+</body>
+</html>

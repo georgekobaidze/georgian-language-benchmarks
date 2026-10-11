@@ -72,13 +72,15 @@ def main():
     runs, items = [], []
     for d, task, model, source, run in run_dirs():
         totals = [0, 0, 0, 0.0]
-        score = start = end = None
+        score = start = end = state = None
         n_items = 0
         for f in sorted(glob.glob(os.path.join(d, "*.run.json"))):
             data = json.load(open(f, encoding="utf-8"))
             if "-item-" not in os.path.basename(f):
                 score = result_value(data)
                 start, end = data.get("startTime"), data.get("endTime")
+                # COMPLETED or ERRORED; an errored run has no real score.
+                state = (data.get("state") or "").rsplit("_", 1)[-1]
                 continue
             n_items += 1
             calls, tin, tout, cost = usage(data)
@@ -96,7 +98,7 @@ def main():
                 "calls": calls, "input_tokens": tin, "output_tokens": tout, "cost_usd": round(cost, 6),
             })
         runs.append({
-            "task": task, "model": model, "source": source, "run": run, "score": score,
+            "task": task, "model": model, "source": source, "run": run, "state": state, "score": score,
             "items": n_items, "calls": totals[0], "input_tokens": totals[1],
             "output_tokens": totals[2], "cost_usd": round(totals[3], 6), "start": start, "end": end,
         })
