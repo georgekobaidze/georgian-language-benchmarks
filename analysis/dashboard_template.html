@@ -211,7 +211,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
       <div class="head">
         <div class="tag">// 02 TASK MATRIX</div>
         <h2>Scores by task</h2>
-        <p class="sub">Brighter cells mean higher scores. Numbers and verbs keep only the hard items left after trimming, so their scores are low by design.</p>
+        <p class="sub">Brighter cells mean higher scores. Numbers and verbs keep only the hard items left after trimming, so their scores are lower by design.</p>
       </div>
       <div class="scroll"><div class="heat" id="heat"></div></div>
     </section>
@@ -410,9 +410,8 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
       </div>
       <div class="prose">
         <ul>
-          <li><strong>The sets are hard by design.</strong> Numbers and verbs keep mostly items a strong model got wrong, so absolute scores are low. The ranking between models is the meaningful part.</li>
+          <li><strong>The sets are hard by design.</strong> Numbers and verbs keep mostly items a probe model got wrong, so absolute scores are lower than they'd be on an easy set. The ranking between models is the meaningful part.</li>
           <li><strong>Small sets.</strong> Some tasks have only 12 to 17 items, so differences of a few points are not significant.</li>
-          <li><strong>Some answers are debatable.</strong> In a few items every model agrees with each other against the expected answer; these are shown in the Tasks tab.</li>
           <li><strong>The token gap includes format overhead.</strong> Input tokens cover the prompt plus each vendor's answer-format instructions, so part of the gap is not Georgian text itself.</li>
           <li><strong>The judge is a model.</strong> Translation scores depend on Gemini 3 Flash's judgment of meaning.</li>
         </ul>

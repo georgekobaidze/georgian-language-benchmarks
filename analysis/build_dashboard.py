@@ -404,9 +404,10 @@ def main():
     co_lo, co_hi = task_range("glb-correction")
     pairs = [(lv, c, g) for lv, _, c, g in LEVELS if c in done and g in done]
     gpt_wins = sum(models[g]["average"] > models[c]["average"] for _, c, g in pairs)
-    lead = ("OpenAI leads at every level so far" if gpt_wins == len(pairs)
-            else "Anthropic leads at every level so far" if gpt_wins == 0
-            else f"OpenAI leads at {gpt_wins} of {len(pairs)} levels so far")
+    so_far = "" if len(pairs) == len(LEVELS) else " so far"
+    lead = (f"OpenAI leads at every level{so_far}" if gpt_wins == len(pairs)
+            else f"Anthropic leads at every level{so_far}" if gpt_wins == 0
+            else f"OpenAI leads at {gpt_wins} of {len(pairs)} levels{so_far}")
 
     # Cost & tokens tab.
     per_call = []

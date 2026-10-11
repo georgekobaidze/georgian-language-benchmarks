@@ -27,6 +27,8 @@ glb-cloze,claude-opus-5-default,kaggle,v5/4631619,cloze-000,21.0,"[""დრო�
 glb-cloze,claude-opus-5-default,kaggle,v5/4631619,cloze-001,22.0,"[""სახელმწიფოს"", ""დააარსეს"", ""მეფეები"", ""დამყარდა"", ""სანაპირო"", ""ჯარს"", ""სარდალმა"", ""მოკლეს"", ""სიკვდილის"", ""იმპერატორი"", ""სიმშვიდის"", ""აშენებდნენ"", ""შემორჩენილი"", ""გადაიტანა"", ""დაარქვა"", ""ნაწილად"", ""იმპერიად"", ""დაეცა"", ""მეთაურმა"", ""ჩამოაგდო"", ""არსებობდა"", ""ენამ"", ""გავლენა"", ""ჰქონდა"", ""წარმოიშვა""]",,cloze-001 [1]: იმპერიის (got: სახელმწიფოს) || cloze-001 [2]: დააარსეს (got: დააარსეს) || cloze-001 [3]: მეფეები (got: მეფეები) || cloze-001 [4]: დამყარდა (got: დამყარდა) || cloze-001 [5]: სანაპირო (got: სანაპირო) || cloze-001 [6]: ჯარს (got: ჯარს) || cloze-001 [7]: სარდალმა (got: სარდალმა) || cloze-001 [8]: მოკლეს (got: მოკლეს) || cloze-001 [9]: სიკვდილის (got: სიკვდილის) || cloze-001 [10]: იმპერატორი (got: იმპერატორი) || cloze-001 [11]: სიმშვიდის (got: სიმშვიდის) || cloze-001 [12]: აშენებდნენ (got: აშენებდნენ) || cloze-001 [13]: შემორჩენილი (got: შემორჩენილი) || cloze-001 [14]: გადაიტანა (got: გადაიტანა) || cloze-001 [15]: დაარქვა (got: დაარქვა) || cloze-001 [16]: ნაწილად (got: ნაწილად) || cloze-001 [17]: სახელმწიფოებად (got: იმპერიად) || cloze-001 [18]: დაეცა (got: დაეცა) || cloze-001 [19]: მეთაურმა (got: მეთაურმა) || cloze-001 [20]: ჩამოაგდო (got: ჩამოაგდო) || cloze-001 [21]: არსებობდა (got: არსებობდა) || cloze-001 [22]: ენამ (got: ენამ) || cloze-001 [23]: გავლენა (got: გავლენა) || cloze-001 [24]: იქონია (got: ჰქონდა) || cloze-001 [25]: წარმოიშვა (got: წარმოიშვა),1,1453,1155,0.03614
 glb-cloze,gemini-3.7-flash,kaggle,v5/4631587,cloze-000,21.0,"[""დროს"", ""მოწყობილობას"", ""იყენებდნენ"", ""შეიქმნა"", ""საუკუნეში"", ""მათემატიკოსმა"", ""შექმნა"", ""წინაპრად"", ""მოასწრო"", ""პროგრამისტად"", ""განვითარება"", ""შეტყობინებების"", ""აიგო"", ""იწონიდა"", ""წლებში"", ""შეამცირა"", ""გამოჩნდა"", ""კომპიუტერი"", ""ააწყვეს"", ""გავრცელებამ"", ""შეცვალა"", ""სახლში"", ""ტელეფონი"", ""დაეშვა"", ""ამოცანას""]",,cloze-000 [1]: დროში (got: დროს) || cloze-000 [2]: მოწყობილობას (got: მოწყობილობას) || cloze-000 [3]: იყენებდნენ (got: იყენებდნენ) || cloze-000 [4]: გამოიგონეს (got: შეიქმნა) || cloze-000 [5]: საუკუნეში (got: საუკუნეში) || cloze-000 [6]: მათემატიკოსმა (got: მათემატიკოსმა) || cloze-000 [7]: შექმნა (got: შექმნა) || cloze-000 [8]: წინაპრად (got: წინაპრად) || cloze-000 [9]: მოასწრო (got: მოასწრო) || cloze-000 [10]: პროგრამისტს (got: პროგრამისტად) || cloze-000 [11]: განვითარება (got: განვითარება) || cloze-000 [12]: შეტყობინებების (got: შეტყობინებების) || cloze-000 [13]: ააგეს (got: აიგო) || cloze-000 [14]: იწონიდა (got: იწონიდა) || cloze-000 [15]: წლებში (got: წლებში) || cloze-000 [16]: შეამცირა (got: შეამცირა) || cloze-000 [17]: გამოჩნდა (got: გამოჩნდა) || cloze-000 [18]: კომპიუტერი (got: კომპიუტერი) || cloze-000 [19]: ააწყვეს (got: ააწყვეს) || cloze-000 [20]: გავრცელებამ (got: გავრცელებამ) || cloze-000 [21]: შეცვალა (got: შეცვალა) || cloze-000 [22]: სახლში (got: სახლში) || cloze-000 [23]: ტელეფონი (got: ტელეფონი) || cloze-000 [24]: დაეშვა (got: დაეშვა) || cloze-000 [25]: ამოცანას (got: ამოცანას),1,807,220,0.00143
 glb-cloze,gemini-3.7-flash,kaggle,v5/4631587,cloze-001,24.0,"[""იმპერიის"", ""დააარსეს"", ""მეფეები"", ""დამყარდა"", ""სანაპირო"", ""ჯარს"", ""სარდალმა"", ""მოკლეს"", ""სიკვდილის"", ""იმპერატორი"", ""სიმშვიდის"", ""აშენებდნენ"", ""შემორჩენილი"", ""გადაიტანა"", ""დაარქვა"", ""ნაწილად"", ""იმპერიად"", ""დაეცა"", ""მეთაურმა"", ""ჩამოაგდო"", ""არსებობდა"", ""ენამ"", ""გავლენა"", ""იქონია"", ""წარმოიშვა""]",,cloze-001 [1]: იმპერიის (got: იმპერიის) || cloze-001 [2]: დააარსეს (got: დააარსეს) || cloze-001 [3]: მეფეები (got: მეფეები) || cloze-001 [4]: დამყარდა (got: დამყარდა) || cloze-001 [5]: სანაპირო (got: სანაპირო) || cloze-001 [6]: ჯარს (got: ჯარს) || cloze-001 [7]: სარდალმა (got: სარდალმა) || cloze-001 [8]: მოკლეს (got: მოკლეს) || cloze-001 [9]: სიკვდილის (got: სიკვდილის) || cloze-001 [10]: იმპერატორი (got: იმპერატორი) || cloze-001 [11]: სიმშვიდის (got: სიმშვიდის) || cloze-001 [12]: აშენებდნენ (got: აშენებდნენ) || cloze-001 [13]: შემორჩენილი (got: შემორჩენილი) || cloze-001 [14]: გადაიტანა (got: გადაიტანა) || cloze-001 [15]: დაარქვა (got: დაარქვა) || cloze-001 [16]: ნაწილად (got: ნაწილად) || cloze-001 [17]: სახელმწიფოებად (got: იმპერიად) || cloze-001 [18]: დაეცა (got: დაეცა) || cloze-001 [19]: მეთაურმა (got: მეთაურმა) || cloze-001 [20]: ჩამოაგდო (got: ჩამოაგდო) || cloze-001 [21]: არსებობდა (got: არსებობდა) || cloze-001 [22]: ენამ (got: ენამ) || cloze-001 [23]: გავლენა (got: გავლენა) || cloze-001 [24]: იქონია (got: იქონია) || cloze-001 [25]: წარმოიშვა (got: წარმოიშვა),1,847,213,0.001434
+glb-cloze,gpt-6-astra,kaggle,v5/4634247,cloze-000,25.0,"[""დროში"", ""მოწყობილობას"", ""იყენებდნენ"", ""გამოიგონეს"", ""საუკუნეში"", ""მათემატიკოსმა"", ""შექმნა"", ""წინაპრად"", ""მოასწრო"", ""პროგრამისტს"", ""განვითარება"", ""შეტყობინებების"", ""ააგეს"", ""იწონიდა"", ""წლებში"", ""შეამცირა"", ""გამოჩნდა"", ""კომპიუტერი"", ""ააწყვეს"", ""გავრცელებამ"", ""შეცვალა"", ""სახლში"", ""ტელეფონი"", ""დაეშვა"", ""ამოცანას""]",,cloze-000 [1]: დროში (got: დროში) || cloze-000 [2]: მოწყობილობას (got: მოწყობილობას) || cloze-000 [3]: იყენებდნენ (got: იყენებდნენ) || cloze-000 [4]: გამოიგონეს (got: გამოიგონეს) || cloze-000 [5]: საუკუნეში (got: საუკუნეში) || cloze-000 [6]: მათემატიკოსმა (got: მათემატიკოსმა) || cloze-000 [7]: შექმნა (got: შექმნა) || cloze-000 [8]: წინაპრად (got: წინაპრად) || cloze-000 [9]: მოასწრო (got: მოასწრო) || cloze-000 [10]: პროგრამისტს (got: პროგრამისტს) || cloze-000 [11]: განვითარება (got: განვითარება) || cloze-000 [12]: შეტყობინებების (got: შეტყობინებების) || cloze-000 [13]: ააგეს (got: ააგეს) || cloze-000 [14]: იწონიდა (got: იწონიდა) || cloze-000 [15]: წლებში (got: წლებში) || cloze-000 [16]: შეამცირა (got: შეამცირა) || cloze-000 [17]: გამოჩნდა (got: გამოჩნდა) || cloze-000 [18]: კომპიუტერი (got: კომპიუტერი) || cloze-000 [19]: ააწყვეს (got: ააწყვეს) || cloze-000 [20]: გავრცელებამ (got: გავრცელებამ) || cloze-000 [21]: შეცვალა (got: შეცვალა) || cloze-000 [22]: სახლში (got: სახლში) || cloze-000 [23]: ტელეფონი (got: ტელეფონი) || cloze-000 [24]: დაეშვა (got: დაეშვა) || cloze-000 [25]: ამოცანას (got: ამოცანას),1,675,385,0.026
+glb-cloze,gpt-6-astra,kaggle,v5/4634247,cloze-001,23.0,"[""სახელმწიფოს"", ""დააარსეს"", ""მეფეები"", ""დამყარდა"", ""სანაპირო"", ""ჯარს"", ""სარდალმა"", ""მოკლეს"", ""სიკვდილის"", ""იმპერატორი"", ""სიმშვიდის"", ""აშენებდნენ"", ""შემორჩენილი"", ""გადაიტანა"", ""დაარქვა"", ""ნაწილად"", ""იმპერიებად"", ""დაეცა"", ""მეთაურმა"", ""ჩამოაგდო"", ""არსებობდა"", ""ენამ"", ""გავლენა"", ""იქონია"", ""წარმოიშვა""]",,cloze-001 [1]: იმპერიის (got: სახელმწიფოს) || cloze-001 [2]: დააარსეს (got: დააარსეს) || cloze-001 [3]: მეფეები (got: მეფეები) || cloze-001 [4]: დამყარდა (got: დამყარდა) || cloze-001 [5]: სანაპირო (got: სანაპირო) || cloze-001 [6]: ჯარს (got: ჯარს) || cloze-001 [7]: სარდალმა (got: სარდალმა) || cloze-001 [8]: მოკლეს (got: მოკლეს) || cloze-001 [9]: სიკვდილის (got: სიკვდილის) || cloze-001 [10]: იმპერატორი (got: იმპერატორი) || cloze-001 [11]: სიმშვიდის (got: სიმშვიდის) || cloze-001 [12]: აშენებდნენ (got: აშენებდნენ) || cloze-001 [13]: შემორჩენილი (got: შემორჩენილი) || cloze-001 [14]: გადაიტანა (got: გადაიტანა) || cloze-001 [15]: დაარქვა (got: დაარქვა) || cloze-001 [16]: ნაწილად (got: ნაწილად) || cloze-001 [17]: სახელმწიფოებად (got: იმპერიებად) || cloze-001 [18]: დაეცა (got: დაეცა) || cloze-001 [19]: მეთაურმა (got: მეთაურმა) || cloze-001 [20]: ჩამოაგდო (got: ჩამოაგდო) || cloze-001 [21]: არსებობდა (got: არსებობდა) || cloze-001 [22]: ენამ (got: ენამ) || cloze-001 [23]: გავლენა (got: გავლენა) || cloze-001 [24]: იქონია (got: იქონია) || cloze-001 [25]: წარმოიშვა (got: წარმოიშვა),1,723,337,0.02408
 glb-correction,claude-sonnet-4-6-default,kaggle,v2/4629243,correction-000,0.5714285714285714,"ჩემი ძმა ყოველ დილით სირბილზე დადის, რათა ექიმმა მას მეტი მოძრაობა ურჩია. გუშინ მან ხუთი კილომეტრი გაირბინა და ძალიან დაიღალა. სახლში დაბრუნებულმა ცივი შხაპი მიიღო და ცოტა ხნით დაისვენა.",,"correction-000: 7 errors before, 3 left after (score 0.57)",1,366,144,0.003258
 glb-correction,claude-sonnet-4-6-default,kaggle,v2/4629243,correction-010,0.625,ჩვენმა გუნდმა ფინალში ძლიერ მეტოქეს ორი ერთით მოუგო. გულშემატკივრები ქუჩებზე გამოვიდნენ და დილამდე იზეიმეს. მეორე დღეს მოთამაშეებს აეროპორტში ათასობით ადამიანი დახვდა.,,"correction-010: 8 errors before, 3 left after (score 0.62)",1,356,132,0.003048
 glb-correction,claude-sonnet-4-6-default,kaggle,v2/4629243,correction-011,0.4,"დედაჩემი ყოველ დილით ერთ ფინჯან ყავას ლევს. ჩაის ის მხოლოდ საღამოს ლევს, ხოლო ტკბილეულს თითქმის არასოდეს სჭამს. ექიმი ამბობს, რომ სწორედ ამიტომ არის ის ასეთი ჯანმრთელი.",,"correction-011: 5 errors before, 3 left after (score 0.40)",1,361,139,0.003168
@@ -265,6 +267,23 @@ glb-correction,gemini-3.7-flash,kaggle,v5/4631595,correction-006,0.8333333333333
 glb-correction,gemini-3.7-flash,kaggle,v5/4631595,correction-007,1.0,"ჩემმა დამ, რომელიც გერმანიაში ცხოვრობს, გრძელი წერილი გამომიგზავნა. მასში ის თავის ახალ სამსახურსა და კოლეგებზე მიყვებოდა. წერილის ბოლოს მან დაწერა, რომ ზაფხულში სახლში ჩამოსვლას აპირებს.",,"correction-007: 4 errors before, 0 left after (score 1.00)",1,139,446,0.001777
 glb-correction,gemini-3.7-flash,kaggle,v5/4631595,correction-008,0.75,"ნიკამ გუშინ ტელეფონი დაკარგა. მთელი დღე ეძებდა სახლშიც და სამსახურშიც, მაგრამ ვერსად იპოვა. საღამოს ტაქსის შოფერმა მის მეუღლეს დაურეკა და უთხრა, რომ ტელეფონი მის მანქანაში დარჩა.",,"correction-008: 4 errors before, 1 left after (score 0.75)",1,145,905,0.003502
 glb-correction,gemini-3.7-flash,kaggle,v5/4631595,correction-009,1.0,"ძლიერმა ქარმა ღამით ქალაქში ბევრი ხე წააქცია. რამდენიმე ქუჩა დილამდე ჩაკეტილი იყო, რადგან ხეები გზას ეღობებოდა. დილით მუშებმა ქუჩები გაწმინდეს და მოძრაობა აღდგა.",,"correction-009: 7 errors before, 0 left after (score 1.00)",1,143,86,0.00043
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-000,0.7142857142857143,"ჩემი ძმა ყოველ დილით სირბილზე დადის, რადგან ექიმმა მას მეტი მოძრაობა ურჩია. გუშინ მან ხუთი კილომეტრი გაირბინა და ძალიან დაიღალა. სახლში დაბრუნებულმა ცივი შხაპი მიიღო და ცოტა ხნით დაისვენა.",,"correction-000: 7 errors before, 2 left after (score 0.71)",1,166,195,0.01141
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-010,0.625,ჩვენმა გუნდმა ფინალში ძლიერ მეტოქეს ორი ერთით მოუგო. გულშემატკივრები ქუჩებზე გამოვიდნენ და დილამდე იზეიმეს. მეორე დღეს მოთამაშეებს აეროპორტში ათასობით ადამიანი დახვდა.,,"correction-010: 8 errors before, 3 left after (score 0.62)",1,154,307,0.01689
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-011,0.8,"დედაჩემი ყოველ დილით ერთ ცალ ფინჯან ყავას სვამს. ჩაის ის მხოლოდ საღამოს სვამს, ხოლო ტკბილეულს თითქმის არასოდეს ჭამს. ექიმი ამბობს, რომ სწორედ ამიტომ არის ის ასეთი ჯანმრთელი.",,"correction-011: 5 errors before, 1 left after (score 0.80)",1,155,263,0.0147
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-012,1.0,ჩვენს ქალაქში ყოველ შემოდგომაზე ღვინის ფესტივალი იმართება. მასზე მთელი ქვეყნიდან ჩამოდიან მეღვინეები და სტუმრები. წელს ფესტივალს რეკორდული რაოდენობის ხალხი დაესწრო.,,"correction-012: 5 errors before, 0 left after (score 1.00)",1,151,184,0.01071
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-013,0.8,"ირაკლი პროგრამისტია და უკვე მე-5 წელია, სახლიდან მუშაობს. ამის წყალობით ის ხშირად მოგზაურობს და სხვადასხვა ქალაქიდან მუშაობს. მისი თქმით, ასეთი ცხოვრება ოფისში მუშაობას ბევრად ჯობს.",,"correction-013: 5 errors before, 1 left after (score 0.80)",1,147,202,0.01157
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-014,1.0,მამამ შვილს ველოსიპედის ტარება გასულ ზაფხულს ასწავლა. პირველ დღეს ბავშვი რამდენჯერმე წაიქცა და მუხლები გადაიტყავა. ერთი კვირის შემდეგ კი ის უკვე თავისუფლად დადიოდა ველოსიპედით.,,"correction-014: 3 errors before, 0 left after (score 1.00)",1,162,110,0.00712
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-015,1.0,"ზღვაზე ძლიერი ქარიშხალი იყო. მეთევზეებმა გადაწყვიტეს, რომ იმ დღეს ზღვაში არ გასულიყვნენ. მეორე დილით ამინდი დაწყნარდა და მათ ბევრი თევზი დაიჭირეს.",,"correction-015: 4 errors before, 0 left after (score 1.00)",1,149,128,0.00789
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-016,1.0,"თამარმა დისთვის საქორწილო კაბა თავად შეკერა. მას ამაზე თითქმის ორი თვე დასჭირდა. ქორწილზე ყველა სტუმარმა აღნიშნა, რომ კაბა ძალიან ლამაზი გამოვიდა.",,"correction-016: 3 errors before, 0 left after (score 1.00)",1,144,143,0.00859
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-001,0.625,"ბებიამ საღამოთი გემრიელი ხაჭაპური გამოაცხო, რადგან შვილიშვილებს სტუმრად ელოდა. მთელი ოჯახი მაგიდასთან დაჯდა და ერთად ვივახშმეთ. ვახშმის შემდეგ ბაბუამ ძველი ფოტოები გვაჩვენა და თავისი ახალგაზრდობის ამბები მოგვიყვა.",,"correction-001: 8 errors before, 3 left after (score 0.62)",1,171,155,0.00946
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-002,0.75,"ჩვენი სკოლის ეზოში დიდი კაკლის ხე დგას, რომელიც სკოლის პირველ დირექტორმა დარგო. ზაფხულში ბავშვები მის ჩრდილში თამაშობენ, შემოდგომაზე კი კაკალს აგროვებენ. მასწავლებლები ამბობენ, რომ ეს ხე ასზე მეტი წლისაა.",,"correction-002: 4 errors before, 1 left after (score 0.75)",1,169,119,0.00764
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-003,0.625,"მასწავლებელმა მოსწავლეებს საინტერესო ამბავი მოუყვა ძველი თბილისის შესახებ. ბავშვები ისე ყურადღებით უსმენდნენ, რომ ზარის დარეკვაც კი არ შეამჩნიეს. გაკვეთილის ბოლოს ბევრმა მოსწავლემ დამატებითი კითხვები დასვა.",,"correction-003: 8 errors before, 3 left after (score 0.62)",1,161,178,0.01051
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-004,1.0,"ლევანს ფეხბურთი ბავშვობიდან უყვარს. ის ყოველ კვირას მეგობრებთან ერთად სტადიონზე თამაშობს, ტელევიზორით კი ყველა მნიშვნელოვან მატჩს უყურებს. მისი ოცნებაა, ერთ დღეს მსოფლიო ჩემპიონატს სტადიონზე დაესწროს.",,"correction-004: 6 errors before, 0 left after (score 1.00)",1,164,216,0.01244
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-005,0.5,"დედამ დილით ბაზარიდან ხილი და ბოსტნეული მოიტანა. საღამოთი მე და ჩემმა დამ სალათი გავაკეთეთ, მამამ კი მწვადი შეწვა. ვახშამზე მეზობლებიც მოვიდნენ და გვიანობამდე ვიჯექით.",,"correction-005: 6 errors before, 3 left after (score 0.50)",1,164,191,0.01119
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-006,0.8333333333333334,"დავითი ყოველ საღამოს ძილის წინ წიგნს კითხულობს. ამჟამად ის ილია ჭავჭავაძის მოთხრობებს კითხულობს, რომლებიც სკოლაში ჯერ კიდევ არ წაუკითხია. მას განსაკუთრებით „კაცია-ადამიანი?!“ მოეწონა.",,"correction-006: 6 errors before, 1 left after (score 0.83)",1,162,201,0.01167
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-007,1.0,"ჩემმა დამ, რომელიც გერმანიაში ცხოვრობს, გრძელი წერილი გამომიგზავნა. მასში ის თავის ახალ სამსახურსა და კოლეგებზე მიყვებოდა. წერილის ბოლოს მან დაწერა, რომ ზაფხულში სახლში ჩამოსვლას აპირებს.",,"correction-007: 4 errors before, 0 left after (score 1.00)",1,155,254,0.01425
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-008,0.75,"ნიკამ გუშინ ტელეფონი დაკარგა. მთელი დღე ეძებდა სახლშიც და სამსახურშიც, მაგრამ ვერსად იპოვა. საღამოს ტაქსის შოფერმა მის მეუღლეს დაურეკა და უთხრა, რომ ტელეფონი მის მანქანაში დარჩა.",,"correction-008: 4 errors before, 1 left after (score 0.75)",1,164,120,0.00764
+glb-correction,gpt-6-astra,kaggle,v5/4634249,correction-009,1.0,"ძლიერმა ქარმა ღამით ქალაქში ბევრი ხე წააქცია. რამდენიმე ქუჩა დილამდე ჩაკეტილი იყო, რადგან ხეები გზას ეღობებოდა. დილით მუშებმა ქუჩები გაწმინდეს და მოძრაობა აღდგა.",,"correction-009: 7 errors before, 0 left after (score 1.00)",1,159,172,0.01019
 glb-numbers,claude-sonnet-4-6-default,kaggle,v2/4629230,numbers-000-cardinal,1.0,ოცდასამი,,numbers-000-cardinal: 23 -> ოცდასამი,1,194,14,0.000792
 glb-numbers,claude-sonnet-4-6-default,kaggle,v2/4629230,numbers-053-cardinal,1.0,12000,,numbers-053-cardinal: თორმეტი ათასი -> 12000,1,283,9,0.000984
 glb-numbers,claude-sonnet-4-6-default,kaggle,v2/4629230,numbers-053-ordinal,0.0,12000-ე,,numbers-053-ordinal: თორმეტი ათასი -> მე-12000,1,224,12,0.000852
@@ -2550,6 +2569,164 @@ glb-numbers,gemini-3.7-flash,kaggle,v5/4631616,numbers-051-ordinal,0.0,მე-99
 glb-numbers,gemini-3.7-flash,kaggle,v5/4631616,numbers-052-cardinal,1.0,10000,,numbers-052-cardinal: ათი ათასი -> 10000,1,114,48,0.000266
 glb-numbers,gemini-3.7-flash,kaggle,v5/4631616,numbers-052-ordinal,1.0,მე-10000,,numbers-052-ordinal: ათი ათასი -> მე-10000,1,58,445,0.001712
 glb-numbers,gemini-3.7-flash,kaggle,v5/4631616,numbers-004-ordinal,1.0,ორმოცდამეცხრამეტე,,numbers-004-ordinal: 59 -> ორმოცდამეცხრამეტე,1,43,278,0.001075
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-000-cardinal,1.0,ოცდასამი,,numbers-000-cardinal: 23 -> ოცდასამი,1,66,32,0.00226
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-053-cardinal,1.0,12000,,numbers-053-cardinal: თორმეტი ათასი -> 12000,1,147,12,0.00207
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-053-ordinal,1.0,მე-12000,,numbers-053-ordinal: თორმეტი ათასი -> მე-12000,1,91,181,0.00996
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-054-cardinal,1.0,12567,,numbers-054-cardinal: თორმეტი ათას ხუთას სამოცდაშვიდი -> 12567,1,156,30,0.00306
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-054-ordinal,1.0,12567-ე,,numbers-054-ordinal: თორმეტი ათას ხუთას სამოცდაშვიდი -> 12567-ე,1,100,169,0.00945
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-055-cardinal,1.0,13000,,numbers-055-cardinal: ცამეტი ათასი -> 13000,1,147,12,0.00207
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-055-ordinal,1.0,მე-13000,,numbers-055-ordinal: ცამეტი ათასი -> მე-13000,1,91,209,0.01136
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-056-cardinal,1.0,20000,,numbers-056-cardinal: ოცი ათასი -> 20000,1,146,12,0.00206
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-056-ordinal,1.0,მე-20000,,numbers-056-ordinal: ოცი ათასი -> მე-20000,1,90,188,0.0103
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-057-cardinal,1.0,30000,,numbers-057-cardinal: ოცდაათი ათასი -> 30000,1,147,12,0.00207
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-057-ordinal,1.0,მე-30000,,numbers-057-ordinal: ოცდაათი ათასი -> მე-30000,1,91,61,0.00396
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-005-cardinal,1.0,ოთხმოცდაათი,,numbers-005-cardinal: 90 -> ოთხმოცდაათი,1,66,34,0.00236
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-058-cardinal,1.0,30003,,numbers-058-cardinal: ოცდაათი ათას სამი -> 30003,1,148,12,0.00208
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-058-ordinal,1.0,30003-ე,,numbers-058-ordinal: ოცდაათი ათას სამი -> 30003-ე,1,92,255,0.01367
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-059-cardinal,1.0,40000,,numbers-059-cardinal: ორმოცი ათასი -> 40000,1,147,12,0.00207
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-059-ordinal,1.0,მე-40000,,numbers-059-ordinal: ორმოცი ათასი -> მე-40000,1,91,172,0.00951
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-060-cardinal,1.0,50000,,numbers-060-cardinal: ორმოცდაათი ათასი -> 50000,1,149,12,0.00209
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-060-ordinal,1.0,მე-50000,,numbers-060-ordinal: ორმოცდაათი ათასი -> მე-50000,1,93,81,0.00498
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-061-cardinal,1.0,77000,,numbers-061-cardinal: სამოცდაჩვიდმეტი ათასი -> 77000,1,151,38,0.00341
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-061-ordinal,1.0,მე-77000,,numbers-061-ordinal: სამოცდაჩვიდმეტი ათასი -> მე-77000,1,95,170,0.00945
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-062-cardinal,1.0,99000,,numbers-062-cardinal: ოთხმოცდაცხრამეტი ათასი -> 99000,1,152,34,0.00322
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-062-ordinal,0.0,99000-ე,,numbers-062-ordinal: ოთხმოცდაცხრამეტი ათასი -> მე-99000,1,96,425,0.02221
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-005-ordinal,1.0,ოთხმოცდამეათე,,numbers-005-ordinal: 90 -> ოთხმოცდამეათე,1,81,71,0.00436
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-063-cardinal,1.0,100000,,numbers-063-cardinal: ასი ათასი -> 100000,1,146,12,0.00206
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-063-ordinal,1.0,მე-100000,,numbers-063-ordinal: ასი ათასი -> მე-100000,1,90,148,0.0083
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-064-cardinal,1.0,179000,,numbers-064-cardinal: ას სამოცდაცხრამეტი ათასი -> 179000,1,152,52,0.00412
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-064-ordinal,1.0,მე-179000,,numbers-064-ordinal: ას სამოცდაცხრამეტი ათასი -> მე-179000,1,96,341,0.01801
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-065-cardinal,1.0,672867,,numbers-065-cardinal: ექვსას სამოცდათორმეტი ათას რვაას სამოცდაშვიდი -> 672867,1,162,49,0.00407
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-065-ordinal,0.0,მე-672867,,numbers-065-ordinal: ექვსას სამოცდათორმეტი ათას რვაას სამოცდაშვიდი -> 672867-ე,1,106,88,0.00546
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-066-cardinal,1.0,1000000,,numbers-066-cardinal: მილიონი -> 1000000,1,144,13,0.00209
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-066-ordinal,1.0,მე-1000000,,numbers-066-ordinal: მილიონი -> მე-1000000,1,88,73,0.00453
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-067-cardinal,1.0,1458724,,numbers-067-cardinal: მილიონ ოთხას ორმოცდათვრამეტი ათას შვიდას ოცდაოთხი -> 1458724,1,163,36,0.00343
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-067-ordinal,1.0,1458724-ე,,numbers-067-ordinal: მილიონ ოთხას ორმოცდათვრამეტი ათას შვიდას ოცდაოთხი -> 1458724-ე,1,107,142,0.00817
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-006-cardinal,1.0,ოთხმოცდაცხრამეტი,,numbers-006-cardinal: 99 -> ოთხმოცდაცხრამეტი,1,66,44,0.00286
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-068-cardinal,1.0,15000000,,numbers-068-cardinal: თხუთმეტი მილიონი -> 15000000,1,149,13,0.00214
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-068-ordinal,1.0,მე-15000000,,numbers-068-ordinal: თხუთმეტი მილიონი -> მე-15000000,1,93,70,0.00443
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-069-cardinal,1.0,15000015,,numbers-069-cardinal: თხუთმეტი მილიონ თხუთმეტი -> 15000015,1,153,13,0.00218
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-069-ordinal,1.0,15000015-ე,,numbers-069-ordinal: თხუთმეტი მილიონ თხუთმეტი -> 15000015-ე,1,97,219,0.01192
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-070-cardinal,1.0,1000000000,,numbers-070-cardinal: მილიარდი -> 1000000000,1,146,14,0.00216
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-070-ordinal,1.0,მე-1000000000,,numbers-070-ordinal: მილიარდი -> მე-1000000000,1,90,133,0.00755
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-071-cardinal,1.0,976000000000,,numbers-071-cardinal: ცხრაას სამოცდათექვსმეტი მილიარდი -> 976000000000,1,156,42,0.00366
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-071-ordinal,1.0,მე-976000000000,,numbers-071-ordinal: ცხრაას სამოცდათექვსმეტი მილიარდი -> მე-976000000000,1,100,376,0.0198
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-072-cardinal,1.0,1000000000000,,numbers-072-cardinal: ტრილიონი -> 1000000000000,1,146,15,0.00221
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-072-ordinal,1.0,მე-1000000000000,,numbers-072-ordinal: ტრილიონი -> მე-1000000000000,1,90,75,0.00465
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-006-ordinal,1.0,ოთხმოცდამეცხრამეტე,,numbers-006-ordinal: 99 -> ოთხმოცდამეცხრამეტე,1,81,116,0.00661
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-073-cardinal,1.0,1000000000000000,,numbers-073-cardinal: კვადრილიონი -> 1000000000000000,1,148,33,0.00313
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-073-ordinal,1.0,მე-1000000000000000,,numbers-073-ordinal: კვადრილიონი -> მე-1000000000000000,1,92,124,0.00712
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-074-cardinal,1.0,1000000000000000000,,numbers-074-cardinal: კვინტილიონი -> 1000000000000000000,1,148,46,0.00378
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-074-ordinal,1.0,მე-1000000000000000000,,numbers-074-ordinal: კვინტილიონი -> მე-1000000000000000000,1,92,164,0.00912
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-075-cardinal,1.0,1000000000000000000000,,numbers-075-cardinal: სექსტილიონი -> 1000000000000000000000,1,148,119,0.00743
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-075-ordinal,1.0,მე-1000000000000000000000,,numbers-075-ordinal: სექსტილიონი -> მე-1000000000000000000000,1,92,149,0.00837
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-076-cardinal,1.0,1000000000000000000000000,,numbers-076-cardinal: სეპტილიონი -> 1000000000000000000000000,1,148,162,0.00958
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-076-ordinal,1.0,მე-1000000000000000000000000,,numbers-076-ordinal: სეპტილიონი -> მე-1000000000000000000000000,1,92,349,0.01837
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-077-cardinal,1.0,1000000000000000000000000000,,numbers-077-cardinal: ოკტალიონი -> 1000000000000000000000000000,1,148,115,0.00723
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-077-ordinal,1.0,მე-1000000000000000000000000000,,numbers-077-ordinal: ოკტალიონი -> მე-1000000000000000000000000000,1,92,267,0.01427
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-007-cardinal,1.0,ცხრაას ოთხმოცდაცხრამეტი,,numbers-007-cardinal: 999 -> ცხრაას ოთხმოცდაცხრამეტი,1,66,79,0.00461
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-078-cardinal,1.0,1000000000000000000000000000000,,numbers-078-cardinal: ნონალიონი -> 1000000000000000000000000000000,1,147,88,0.00587
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-078-ordinal,1.0,მე-1000000000000000000000000000000,,numbers-078-ordinal: ნონალიონი -> მე-1000000000000000000000000000000,1,91,167,0.00926
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-079-cardinal,1.0,1000000000000000000000000000000000,,numbers-079-cardinal: დეკალონი -> 1000000000000000000000000000000000,1,145,330,0.01795
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-079-ordinal,1.0,მე-1000000000000000000000000000000000,,numbers-079-ordinal: დეკალონი -> მე-1000000000000000000000000000000000,1,89,378,0.01979
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-080-cardinal,0.0,1000000000000000000000000000000000000000000000000000000000000000000,,numbers-080-cardinal: ენდეკალონი -> 1000000000000000000000000000000000000,1,147,511,0.02702
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-080-ordinal,1.0,მე-1000000000000000000000000000000000000,,numbers-080-ordinal: ენდეკალონი -> მე-1000000000000000000000000000000000000,1,91,377,0.01976
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-081-cardinal,0.0,1000000000000000000000000000000000000000000000000000000000000000000000000,,numbers-081-cardinal: დოდეკალონი -> 1000000000000000000000000000000000000000,1,147,499,0.02642
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-081-ordinal,0.0,მე-1000000000000000000000000000000000000000000000000000000000000000000000000,,numbers-081-ordinal: დოდეკალონი -> მე-1000000000000000000000000000000000000000,1,91,914,0.04661
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-007-ordinal,1.0,ცხრაას ოთხმოცდამეცხრამეტე,,numbers-007-ordinal: 999 -> ცხრაას ოთხმოცდამეცხრამეტე,1,81,148,0.00821
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-008-cardinal,1.0,თორმეტი ათასი,,numbers-008-cardinal: 12000 -> თორმეტი ათასი,1,67,31,0.00222
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-008-ordinal,1.0,მეთორმეტიათასე,,numbers-008-ordinal: 12000 -> მეთორმეტიათასე,1,82,278,0.01472
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-009-cardinal,1.0,ას სამოცდაცხრამეტი ათასი,,numbers-009-cardinal: 179000 -> ას სამოცდაცხრამეტი ათასი,1,67,84,0.00487
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-009-ordinal,1.0,მეასსამოცდაცხრამეტიათასე,,numbers-009-ordinal: 179000 -> მეასსამოცდაცხრამეტიათასე,1,82,862,0.04392
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-000-ordinal,1.0,ოცდამესამე,,numbers-000-ordinal: 23 -> ოცდამესამე,1,81,55,0.00356
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-010-cardinal,1.0,ექვსას სამოცდათორმეტი ათას რვაას სამოცდაშვიდი,,numbers-010-cardinal: 672867 -> ექვსას სამოცდათორმეტი ათას რვაას სამოცდაშვიდი,1,67,188,0.01007
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-010-ordinal,1.0,ექვსას სამოცდათორმეტი ათას რვაას სამოცდამეშვიდე,,numbers-010-ordinal: 672867 -> ექვსას სამოცდათორმეტი ათას რვაას სამოცდამეშვიდე,1,82,390,0.02032
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-011-cardinal,0.0,ერთი მილიონი,,numbers-011-cardinal: 1000000 -> მილიონი,1,68,26,0.00198
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-011-ordinal,1.0,მემილიონე,,numbers-011-ordinal: 1000000 -> მემილიონე,1,83,87,0.00518
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-012-cardinal,0.0,ერთი მილიონ ოთხას ორმოცდათვრამეტი ათას შვიდას ოცდაოთხი,,numbers-012-cardinal: 1458724 -> მილიონ ოთხას ორმოცდათვრამეტი ათას შვიდას ოცდაოთხი,1,68,270,0.01418
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-012-ordinal,0.0,ერთი მილიონ ოთხას ორმოცდათვრამეტი ათას შვიდას ოცდამეოთხე,,numbers-012-ordinal: 1458724 -> მილიონ ოთხას ორმოცდათვრამეტი ათას შვიდას ოცდამეოთხე,1,83,351,0.01838
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-013-cardinal,1.0,თხუთმეტი მილიონი,,numbers-013-cardinal: 15000000 -> თხუთმეტი მილიონი,1,68,34,0.00238
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-013-ordinal,0.0,მეთხუთმეტმილიონე,,numbers-013-ordinal: 15000000 -> მეთხუთმეტიმილიონე,1,83,856,0.04363
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-014-cardinal,0.0,ერთი მილიარდი,,numbers-014-cardinal: 1000000000 -> მილიარდი,1,69,30,0.00219
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-014-ordinal,1.0,მემილიარდე,,numbers-014-ordinal: 1000000000 -> მემილიარდე,1,84,67,0.00419
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-001-cardinal,1.0,ოცდაათი,,numbers-001-cardinal: 30 -> ოცდაათი,1,66,13,0.00131
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-015-cardinal,1.0,ცხრაას სამოცდათექვსმეტი მილიარდი,,numbers-015-cardinal: 976000000000 -> ცხრაას სამოცდათექვსმეტი მილიარდი,1,69,118,0.00659
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-015-ordinal,0.0,ცხრაას სამოცდათექვსმეტი მემილიარდე,,numbers-015-ordinal: 976000000000 -> მეცხრაასსამოცდათექვსმეტიმილიარდე,1,84,1062,0.05394
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-016-cardinal,0.0,ერთი ტრილიონი,,numbers-016-cardinal: 1000000000000 -> ტრილიონი,1,70,50,0.0032
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-016-ordinal,1.0,მეტრილიონე,,numbers-016-ordinal: 1000000000000 -> მეტრილიონე,1,85,83,0.005
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-017-cardinal,0.0,ერთი კვადრილიონი,,numbers-017-cardinal: 1000000000000000 -> კვადრილიონი,1,71,78,0.00461
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-017-ordinal,1.0,მეკვადრილიონე,,numbers-017-ordinal: 1000000000000000 -> მეკვადრილიონე,1,86,113,0.00651
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-018-cardinal,0.0,ერთი კვინტილიონი,,numbers-018-cardinal: 1000000000000000000 -> კვინტილიონი,1,72,128,0.00712
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-018-ordinal,1.0,მეკვინტილიონე,,numbers-018-ordinal: 1000000000000000000 -> მეკვინტილიონე,1,87,118,0.00677
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-019-cardinal,0.0,ერთი სექსტილიონი,,numbers-019-cardinal: 1000000000000000000000 -> სექსტილიონი,1,73,172,0.00933
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-019-ordinal,1.0,მესექსტილიონე,,numbers-019-ordinal: 1000000000000000000000 -> მესექსტილიონე,1,88,139,0.00783
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-001-ordinal,1.0,ოცდამეათე,,numbers-001-ordinal: 30 -> ოცდამეათე,1,81,59,0.00376
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-020-cardinal,0.0,ერთი სეპტილიონი,,numbers-020-cardinal: 1000000000000000000000000 -> სეპტილიონი,1,74,162,0.00884
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-020-ordinal,1.0,მესეპტილიონე,,numbers-020-ordinal: 1000000000000000000000000 -> მესეპტილიონე,1,89,154,0.00859
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-021-cardinal,0.0,ერთი ოქტილიონი,,numbers-021-cardinal: 1000000000000000000000000000 -> ოკტალიონი,1,75,129,0.0072
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-021-ordinal,0.0,მეოქტილიონე,,numbers-021-ordinal: 1000000000000000000000000000 -> მეოკტალიონე,1,90,169,0.00935
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-022-cardinal,0.0,ერთი ნონილიონი,,numbers-022-cardinal: 1000000000000000000000000000000 -> ნონალიონი,1,76,224,0.01196
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-022-ordinal,0.0,მენონილიონე,,numbers-022-ordinal: 1000000000000000000000000000000 -> მენონალიონე,1,91,177,0.00976
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-023-cardinal,0.0,ერთი დეცილიონი,,numbers-023-cardinal: 1000000000000000000000000000000000 -> დეკალონი,1,77,141,0.00782
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-023-ordinal,0.0,მედეცილიონე,,numbers-023-ordinal: 1000000000000000000000000000000000 -> მედეკალონე,1,92,169,0.00937
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-024-cardinal,0.0,ერთი უნდეცილიონი,,numbers-024-cardinal: 1000000000000000000000000000000000000 -> ენდეკალონი,1,78,209,0.01123
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-024-ordinal,0.0,მეუნდეცილიონე,,numbers-024-ordinal: 1000000000000000000000000000000000000 -> მეენდეკალონე,1,93,224,0.01213
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-002-cardinal,1.0,ოცდათექვსმეტი,,numbers-002-cardinal: 36 -> ოცდათექვსმეტი,1,66,56,0.00346
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-025-cardinal,0.0,ერთი დუოდეცილიონი,,numbers-025-cardinal: 1000000000000000000000000000000000000000 -> დოდეკალონი,1,79,267,0.01414
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-025-ordinal,0.0,მედუოდეცილიონე,,numbers-025-ordinal: 1000000000000000000000000000000000000000 -> მედოდეკალონე,1,94,273,0.01459
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-026-cardinal,1.0,ას ოცდასამი შვიდას ოთხმოცდამერვედი,,numbers-026-cardinal: 123/788 -> ას ოცდასამი შვიდას ოთხმოცდამერვედი,1,68,176,0.00948
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-027-cardinal,1.0,მინუს თორმეტი ათას ორას ოთხმოცდაცხრა ხუთი ათას ექვსას სამოცდამესამედი,,numbers-027-cardinal: -12289/5663 -> მინუს თორმეტი ათას ორას ოთხმოცდაცხრა ხუთი ათას ექვსას სამოცდამესამედი,1,70,244,0.0129
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-028-cardinal,1.0,ოცდათორმეტი მთელი სამოცდათექვსმეტი ას ოცდამეჩვიდმეტედი,,numbers-028-cardinal: 32 76/137 -> ოცდათორმეტი მთელი სამოცდათექვსმეტი ას ოცდამეჩვიდმეტედი,1,70,159,0.00865
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-029-cardinal,1.0,მინუს სამი მთელი ერთი ათას ორას ოთხმოცდამეცხრამეტედი,,numbers-029-cardinal: -3 1/1299 -> მინუს სამი მთელი ერთი ათას ორას ოთხმოცდამეცხრამეტედი,1,71,240,0.01271
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-030-cardinal,1.0,მინუს ას ოცდაცხრა ათას ორმოცდათექვსმეტი მთელი ცხრა ათას რვაას ერთი მემილიონედი,,numbers-030-cardinal: -129056.009801 -> მინუს ას ოცდაცხრა ათას ორმოცდათექვსმეტი მთელი ცხრა ათას რვაას ერთი მემილიონედი,1,70,232,0.0123
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-031-cardinal,1.0,ნული მთელი ათი ათას ას ოთხმოცდაცხრამეტი მეასიათასედი,,numbers-031-cardinal: 0.10199 -> ნული მთელი ათი ათას ას ოთხმოცდაცხრამეტი მეასიათასედი,1,69,205,0.01094
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-032-cardinal,1.0,1,,numbers-032-cardinal: ერთი -> 1,1,143,11,0.00198
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-032-ordinal,0.0,1-ლი,,numbers-032-ordinal: ერთი -> 1-ელი,1,87,36,0.00267
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-002-ordinal,1.0,ოცდამეთექვსმეტე,,numbers-002-ordinal: 36 -> ოცდამეთექვსმეტე,1,81,110,0.00631
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-033-cardinal,1.0,2,,numbers-033-cardinal: ორი -> 2,1,143,11,0.00198
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-033-ordinal,1.0,მე-2,,numbers-033-ordinal: ორი -> მე-2,1,87,30,0.00237
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-034-cardinal,1.0,4,,numbers-034-cardinal: ოთხი -> 4,1,144,11,0.00199
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-034-ordinal,1.0,მე-4,,numbers-034-ordinal: ოთხი -> მე-4,1,88,28,0.00228
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-035-cardinal,1.0,5,,numbers-035-cardinal: ხუთი -> 5,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-035-ordinal,1.0,მე-5,,numbers-035-ordinal: ხუთი -> მე-5,1,89,42,0.00299
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-036-cardinal,1.0,6,,numbers-036-cardinal: ექვსი -> 6,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-036-ordinal,1.0,მე-6,,numbers-036-ordinal: ექვსი -> მე-6,1,89,29,0.00234
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-037-cardinal,1.0,10,,numbers-037-cardinal: ათი -> 10,1,144,11,0.00199
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-037-ordinal,1.0,მე-10,,numbers-037-ordinal: ათი -> მე-10,1,88,41,0.00293
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-003-cardinal,1.0,ორმოცდაოთხი,,numbers-003-cardinal: 44 -> ორმოცდაოთხი,1,66,37,0.00251
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-038-cardinal,1.0,11,,numbers-038-cardinal: თერთმეტი -> 11,1,146,11,0.00201
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-038-ordinal,1.0,მე-11,,numbers-038-ordinal: თერთმეტი -> მე-11,1,90,44,0.0031
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-039-cardinal,1.0,12,,numbers-039-cardinal: თორმეტი -> 12,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-039-ordinal,1.0,მე-12,,numbers-039-ordinal: თორმეტი -> მე-12,1,89,46,0.00319
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-040-cardinal,1.0,13,,numbers-040-cardinal: ცამეტი -> 13,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-040-ordinal,1.0,მე-13,,numbers-040-ordinal: ცამეტი -> მე-13,1,89,47,0.00324
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-041-cardinal,1.0,14,,numbers-041-cardinal: თოთხმეტი -> 14,1,146,11,0.00201
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-041-ordinal,1.0,მე-14,,numbers-041-ordinal: თოთხმეტი -> მე-14,1,90,43,0.00305
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-042-cardinal,1.0,15,,numbers-042-cardinal: თხუთმეტი -> 15,1,147,11,0.00202
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-042-ordinal,1.0,მე-15,,numbers-042-ordinal: თხუთმეტი -> მე-15,1,91,75,0.00466
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-003-ordinal,1.0,ორმოცდამეოთხე,,numbers-003-ordinal: 44 -> ორმოცდამეოთხე,1,81,80,0.00481
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-043-cardinal,1.0,17,,numbers-043-cardinal: ჩვიდმეტი -> 17,1,146,11,0.00201
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-043-ordinal,1.0,მე-17,,numbers-043-ordinal: ჩვიდმეტი -> მე-17,1,90,45,0.00315
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-044-cardinal,1.0,18,,numbers-044-cardinal: თვრამეტი -> 18,1,146,11,0.00201
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-044-ordinal,1.0,მე-18,,numbers-044-ordinal: თვრამეტი -> მე-18,1,90,46,0.0032
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-045-cardinal,1.0,19,,numbers-045-cardinal: ცხრამეტი -> 19,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-045-ordinal,1.0,მე-19,,numbers-045-ordinal: ცხრამეტი -> მე-19,1,89,43,0.00304
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-046-cardinal,1.0,40,,numbers-046-cardinal: ორმოცი -> 40,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-046-ordinal,1.0,მე-40,,numbers-046-ordinal: ორმოცი -> მე-40,1,89,71,0.00444
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-047-cardinal,1.0,60,,numbers-047-cardinal: სამოცი -> 60,1,144,11,0.00199
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-047-ordinal,1.0,მე-60,,numbers-047-ordinal: სამოცი -> მე-60,1,88,150,0.00838
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-004-cardinal,1.0,ორმოცდაცხრამეტი,,numbers-004-cardinal: 59 -> ორმოცდაცხრამეტი,1,66,50,0.00316
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-048-cardinal,1.0,80,,numbers-048-cardinal: ოთხმოცი -> 80,1,145,11,0.002
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-048-ordinal,1.0,მე-80,,numbers-048-ordinal: ოთხმოცი -> მე-80,1,89,52,0.00349
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-049-cardinal,1.0,100,,numbers-049-cardinal: ასი -> 100,1,144,11,0.00199
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-049-ordinal,1.0,მე-100,,numbers-049-ordinal: ასი -> მე-100,1,88,48,0.00328
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-050-cardinal,1.0,200,,numbers-050-cardinal: ორასი -> 200,1,144,11,0.00199
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-050-ordinal,1.0,მე-200,,numbers-050-ordinal: ორასი -> მე-200,1,88,76,0.00468
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-051-cardinal,1.0,999,,numbers-051-cardinal: ცხრაას ოთხმოცდაცხრამეტი -> 999,1,153,36,0.00333
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-051-ordinal,1.0,999-ე,,numbers-051-ordinal: ცხრაას ოთხმოცდაცხრამეტი -> 999-ე,1,97,227,0.01232
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-052-cardinal,1.0,10000,,numbers-052-cardinal: ათი ათასი -> 10000,1,146,12,0.00206
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-052-ordinal,1.0,მე-10000,,numbers-052-ordinal: ათი ათასი -> მე-10000,1,90,69,0.00435
+glb-numbers,gpt-6-astra,kaggle,v5/4634253,numbers-004-ordinal,1.0,ორმოცდამეცხრამეტე,,numbers-004-ordinal: 59 -> ორმოცდამეცხრამეტე,1,81,82,0.00491
 glb-translation,claude-sonnet-4-6-default,kaggle,v2/4629237,translation-000,1.0,"The mother read her child a fairy tale before bed. The child listened attentively at first, but soon fell asleep. The mother turned off the light and quietly left the room.","{""level"": 4, ""reason"": ""The candidate translation accurately conveys the full meaning of the original Georgian text with no missing or incorrect details.""}",translation-000: level 4/4. The candidate translation accurately conveys the full meaning of the original Georgian text with no missing or incorrect details.,2,761,290,0.002533
 glb-translation,claude-sonnet-4-6-default,kaggle,v2/4629237,translation-010,1.0,The children found a hungry kitten on the street and brought it home. They gave the kitten food and milk. The parents gave permission for the kitten to stay in the house.,"{""level"": 4, ""reason"": ""The candidate translation accurately conveys the full meaning of the original text with no errors.""}",translation-010: level 4/4. The candidate translation accurately conveys the full meaning of the original text with no errors.,2,755,483,0.003102
 glb-translation,claude-sonnet-4-6-default,kaggle,v2/4629237,translation-011,1.0,Lasha proposed to his girlfriend on the seashore. He had bought a ring in advance and also shared his plan with his friends. The wedding will be next summer.,"{""level"": 4, ""reason"": ""The translation is accurate and conveys the exact meaning of the Georgian text without any omissions or errors.""}",translation-011: level 4/4. The translation is accurate and conveys the exact meaning of the Georgian text without any omissions or errors.,2,757,399,0.002837
@@ -2718,6 +2895,18 @@ glb-translation,gemini-3.7-flash,kaggle,v5/4631586,translation-006,1.0,"In autum
 glb-translation,gemini-3.7-flash,kaggle,v5/4631586,translation-007,1.0,"My brother has a physics exam tomorrow. He studied all night and hardly slept at all. In the morning, our mother made him a strong cup of coffee.","{""level"": 4, ""reason"": ""The translation is accurate and conveys the exact same meaning as the reference text.""}",translation-007: level 4/4. The translation is accurate and conveys the exact same meaning as the reference text.,2,507,67,0.000505
 glb-translation,gemini-3.7-flash,kaggle,v5/4631586,translation-008,1.0,"The wind was blowing so hard that my umbrella broke. There was no sign of a bus, so I walked all the way home. I got home soaking wet.","{""level"": 4, ""reason"": ""The translation perfectly captures the meaning of the original text with natural English phrasing.""}",translation-008: level 4/4. The translation perfectly captures the meaning of the original text with natural English phrasing.,2,516,64,0.000499
 glb-translation,gemini-3.7-flash,kaggle,v5/4631586,translation-009,1.0,Our neighbor planted ten apple trees in the garden. He says that in two years the trees will bear their first fruit. He promised to share the first harvest with us.,"{""level"": 4, ""reason"": ""The translation is accurate and captures all details, including the omission of 'too' which doesn't alter the core meaning.""}","translation-009: level 4/4. The translation is accurate and captures all details, including the omission of 'too' which doesn't alter the core meaning.",2,565,339,0.001551
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-000,1.0,"The mother read her child a fairy tale before bed. At first, the child listened attentively, but soon fell asleep. The mother turned off the light and quietly left the room.","{""level"": 4, ""reason"": ""The translation is accurate and conveys the exact same meaning as the reference.""}",translation-000: level 4/4. The translation is accurate and conveys the exact same meaning as the reference.,2,576,72,0.003758
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-010,1.0,The children found a hungry kitten on the street and brought it home. They gave the kitten food and milk. Their parents let them keep the kitten at home.,"{""level"": 4, ""reason"": ""The candidate translation conveys the exact same meaning as the original text and reference translation.""}",translation-010: level 4/4. The candidate translation conveys the exact same meaning as the original text and reference translation.,2,575,69,0.003609
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-011,1.0,Lasha proposed to his girlfriend by the sea. He had bought a ring in advance and told his friends about his plan. The wedding will be next summer.,"{""level"": 4, ""reason"": ""The candidate translation conveys the exact same meaning as the reference translation with no missing or added information.""}",translation-011: level 4/4. The candidate translation conveys the exact same meaning as the reference translation with no missing or added information.,2,568,72,0.003528
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-001,1.0,"A group of tourists decided to climb Mount Kazbek. They took warm clothes, food, and tents with them. It took them three days to reach the summit.","{""level"": 4, ""reason"": ""The candidate translation accurately conveys the same meaning as the reference with no omissions or errors.""}",translation-001: level 4/4. The candidate translation accurately conveys the same meaning as the reference with no omissions or errors.,2,558,71,0.003596
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-002,1.0,"In the evening, the whole family was watching TV. The news said there would be heavy snow tomorrow. Dad decided not to drive to work.","{""level"": 4, ""reason"": ""The candidate translation perfectly preserves the meaning of the original Georgian text with no missing or added information.""}",translation-002: level 4/4. The candidate translation perfectly preserves the meaning of the original Georgian text with no missing or added information.,2,559,69,0.003364
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-003,1.0,The librarian found the book the elderly reader needed. The reader thanked the librarian warmly. They said they had been looking for that book for years.,"{""level"": 4, ""reason"": ""The candidate translation accurately conveys the full meaning of the original Georgian text.""}",translation-003: level 4/4. The candidate translation accurately conveys the full meaning of the original Georgian text.,2,556,158,0.008095
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-004,1.0,The guests thanked their hosts for the warm welcome. They said they hadn’t had such a delicious dinner in a long time. The hosts invited them back next year.,"{""level"": 4, ""reason"": ""The candidate translation conveys the exact same meaning as the reference and the original Georgian text.""}",translation-004: level 4/4. The candidate translation conveys the exact same meaning as the reference and the original Georgian text.,2,596,71,0.003691
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-005,1.0,The child got sick and couldn't go to school. The doctor took the child's temperature and advised staying home for a few days. The mother made the child some hot tea with honey.,"{""level"": 4, ""reason"": ""The candidate translation accurately conveys the full meaning of the original text with no errors or omissions.""}",translation-005: level 4/4. The candidate translation accurately conveys the full meaning of the original text with no errors or omissions.,2,584,75,0.003705
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-006,0.75,"In autumn, grapes are very cheap at the market. Mom bought five kilograms to make churchkhela. We helped her all evening.","{""level"": 3, ""reason"": ""The candidate translation is almost perfect but omits the word 'too' or 'also' which corresponds to 'ჩვენც' in the original text.""}",translation-006: level 3/4. The candidate translation is almost perfect but omits the word 'too' or 'also' which corresponds to 'ჩვენც' in the original text.,2,540,78,0.003307
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-007,1.0,"My brother has a physics exam tomorrow. He studied all night and barely slept. In the morning, my mother made him some strong coffee.","{""level"": 4, ""reason"": ""The translation is accurate and conveys the exact meaning of the original Georgian text.""}",translation-007: level 4/4. The translation is accurate and conveys the exact meaning of the original Georgian text.,2,522,64,0.003227
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-008,1.0,"The wind was blowing so hard that my umbrella broke. There was no bus in sight, so I walked home. I got home soaking wet.","{""level"": 4, ""reason"": ""The candidate translation accurately conveys the full meaning of the original text with no missing or added information.""}",translation-008: level 4/4. The candidate translation accurately conveys the full meaning of the original text with no missing or added information.,2,529,69,0.003283
+glb-translation,gpt-6-astra,kaggle,v5/4634243,translation-009,1.0,Our neighbor planted ten apple trees in the garden. He says the trees will bear their first fruit in two years. He promised to share the first harvest with us.,"{""level"": 4, ""reason"": ""The translation is accurate and captures the entire meaning of the original text.""}",translation-009: level 4/4. The translation is accurate and captures the entire meaning of the original text.,2,586,68,0.003648
 glb-verbs,claude-opus-4-8-default,kaggle,v2/4629344,,0.0,"Georgian verb form: მიყვარხარ
 Who does what to whom? Participants are written as subject → indirect object → direct object, listing only those the verb has, each as a pronoun in the case this verb form requires. For example, უყიდა ('he bought it for him') is მან → მას → ის.
 
@@ -4198,6 +4387,142 @@ glb-verbs,gemini-3.7-flash,kaggle,v5/4631566,verbs-006,1.0,B,,verbs-006: მი�
 glb-verbs,gemini-3.7-flash,kaggle,v5/4631566,verbs-007,1.0,C,,verbs-007: გიცნობ -> C,1,111,434,0.001711
 glb-verbs,gemini-3.7-flash,kaggle,v5/4631566,verbs-008,1.0,A,,verbs-008: დაგირეკე -> A,1,112,247,0.00101
 glb-verbs,gemini-3.7-flash,kaggle,v5/4631566,verbs-009,0.0,B,,verbs-009: მიყვარდი -> A,1,111,735,0.00284
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,,0.0,"Georgian verb form: მიყვარხარ
+Who does what to whom? Participants are written as subject → indirect object → direct object, listing only those the verb has, each as a pronoun in the case this verb form requires. For example, უყიდა ('he bought it for him') is მან → მას → ის.
+
+A) ის → შენ
+B) მე → ის
+C) შენ → მე
+D) მე → შენ
+
+Put only the letter of the correct option in the `answer` field.",,,1,0,0,0.0
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,,0.0,"Georgian verb form: დამიწერია
+Who does what to whom? Participants are written as subject → indirect object → direct object, listing only those the verb has, each as a pronoun in the case this verb form requires. For example, უყიდა ('he bought it for him') is მან → მას → ის.
+
+A) მე → ის
+B) ჩვენ → ის
+C) ის → მე
+D) შენ → ის
+
+Put only the letter of the correct option in the `answer` field.",,,1,0,0,0.0
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-011,1.0,D,,verbs-011: დაგიწერია -> D,1,146,52,0.00406
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-012,1.0,C,,verbs-012: გინახივარ -> C,1,148,89,0.00593
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-013,1.0,C,,verbs-013: მიჭმიე -> C,1,163,119,0.00758
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-014,1.0,D,,verbs-014: გაჩუქე -> D,1,155,58,0.00445
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-015,1.0,A,,verbs-015: მაპატიე -> A,1,155,28,0.00295
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,,0.0,"Georgian verb form: გაპატიე
+Who does what to whom? Participants are written as subject → indirect object → direct object, listing only those the verb has, each as a pronoun in the case this verb form requires. For example, უყიდა ('he bought it for him') is მან → მას → ის.
+
+A) მე → შენ → ის
+B) მე → მას → ის
+C) შენ → მე → ის
+D) მან → შენ → ის
+
+Put only the letter of the correct option in the `answer` field.",,,1,0,0,0.0
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-017,1.0,დავწერთ,,verbs-017: დაწერა; ჩვენ → მას; future -> დავწერთ,1,136,57,0.00421
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-018,1.0,დაგინახე,,verbs-018: დანახვა; მე → შენ; aorist -> დაგინახე,1,140,52,0.004
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-019,1.0,მოგცემ,,verbs-019: მიცემა; მე → შენ → მას; future -> მოგცემ,1,139,55,0.00414
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-001,0.0,B,,verbs-001: გვიყვარხართ -> A,1,148,67,0.00483
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-020,1.0,გაჩუქე,,verbs-020: ჩუქება; მე → შენ → ის; aorist -> გაჩუქე,1,142,62,0.00452
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-021,1.0,გაჩუქებთ,,verbs-021: ჩუქება; ჩვენ → თქვენ → მას; future -> გაჩუქებთ,1,139,112,0.00699
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-022,0.0,გაგიგზავნე,,verbs-022: გაგზავნა; მე → შენ → ის; aorist -> გამოგიგზავნე,1,142,68,0.00482
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-023,1.0,დაგვირეკა,,verbs-023: დარეკვა; მან → ჩვენ; aorist -> დაგვირეკა,1,141,51,0.00396
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-024,1.0,დამირეკე,,verbs-024: დარეკვა; შენ → მე; aorist -> დამირეკე,1,141,47,0.00376
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,,0.0,"Write the form of the Georgian verb with the verbal noun სიყვარული for მას → მე, in the present (აწმყო).
+Participants are written as subject → indirect object → direct object, listing only those the verb has, each as a pronoun in the case this verb form requires. For example, უყიდა ('he bought it for him') is მან → მას → ის.
+Put only the verb form, in Mkhedruli script, in the `answer` field.",,,1,0,0,0.0
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-026,0.0,გიყვარდი,,verbs-026: სიყვარული; მე → შენ; imperfect -> მიყვარდი,1,138,250,0.01388
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-027,0.0,შეგიყვარდი,,verbs-027: შეყვარება; მე → შენ; aorist -> შემიყვარდი,1,140,301,0.01645
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-028,0.0,მოგენატრე,,verbs-028: მონატრება; მე → შენ; aorist -> მომენატრე,1,140,117,0.00725
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,,0.0,"Write the form of the Georgian verb with the verbal noun ყოლა for მას → შენ, in the present (აწმყო).
+Participants are written as subject → indirect object → direct object, listing only those the verb has, each as a pronoun in the case this verb form requires. For example, უყიდა ('he bought it for him') is მან → მას → ის.
+Put only the verb form, in Mkhedruli script, in the `answer` field.",,,1,0,0,0.0
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-002,0.0,C,,verbs-002: გენატრები -> A,1,146,79,0.00541
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-030,0.0,გცნობ,,verbs-030: ცნობა; მე → შენ; present -> გიცნობ,1,139,50,0.00389
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-031,1.0,დაუხატავს,,verbs-031: დახატვა; მას → ის; perfect -> დაუხატავს,1,140,62,0.0045
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-032,1.0,გითხარი,,verbs-032: თქმა; მე → შენ → ის; aorist -> გითხარი,1,140,100,0.0064
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-033,1.0,გეტყვი,,verbs-033: თქმა; მე → შენ → მას; future -> გეტყვი,1,137,44,0.00357
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-034,1.0,A,,verbs-034: გიორგი ოთახიდან ___ვიდა. -> A,1,97,26,0.00227
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-035,1.0,D,,verbs-035: ჩემი კოლეგა საზღვარგარეთიდან ___ვიდა. -> D,1,106,28,0.00246
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-036,1.0,C,,verbs-036: მასწავლებელი კლასში ___ვიდა და ჩვენ ავდექით. -> C,1,106,44,0.00326
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-037,1.0,C,,verbs-037: ის ოთახიდან ___ვიდა და მომესალმა. -> C,1,102,38,0.00292
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-038,1.0,B,,verbs-038: მან ცას ___ხედა. -> B,1,97,46,0.00327
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,,0.0,"Fill in the blank (___) in this Georgian sentence with the correct preverb.
+Sentence: მან ჭაში ___ხედა.
+
+A) გა
+B) ა
+C) ჩა
+D) ჩაი
+
+Put only the letter of the correct option in the `answer` field.",,,1,0,0,0.0
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-003,1.0,D,,verbs-003: ვენატრები -> D,1,147,109,0.00692
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-040,1.0,C,,verbs-040: მან ფანჯრიდან ___იხედა. -> C,1,100,35,0.00275
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-041,1.0,D,,verbs-041: მათ ახალი სახლი ___აშენეს. -> D,1,99,53,0.00364
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-042,1.0,B,,verbs-042: მან წიგნი ___იკითხა. -> B,1,98,33,0.00263
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-043,1.0,C,,verbs-043: მან ვაშლი ___ჭამა. -> C,1,98,30,0.00248
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-044,1.0,C,,verbs-044: მან ტელევიზორი ___რთო და დაიძინა. -> C,1,103,30,0.00253
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-045,1.0,B,,verbs-045: სახლში შესვლისას მან ქურთუკი ___იხადა. -> B,1,103,34,0.00273
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-046,1.0,C,,verbs-046: მან ჩანთა მაგიდიდან ___იღო. -> C,1,100,30,0.0025
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-047,1.0,A,,verbs-047: მან წიგნი თაროზე ___დო. -> A,1,100,32,0.0026
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-048,1.0,B,,verbs-048: მან ფული ჯიბეში ___დო. -> B,1,99,59,0.00394
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-049,1.0,D,,verbs-049: ის ცხენზე ___ჯდა. -> D,1,161,42,0.00371
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-004,1.0,B,,verbs-004: ჰყავხარ -> B,1,148,51,0.00403
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-005,0.0,B,,verbs-005: გყავვარ -> A,1,147,54,0.00417
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-006,1.0,B,,verbs-006: მიცნობ -> B,1,146,39,0.00341
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-007,1.0,C,,verbs-007: გიცნობ -> C,1,146,29,0.00291
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-008,1.0,A,,verbs-008: დაგირეკე -> A,1,147,28,0.00287
+glb-verbs,gpt-6-astra,kaggle,v5/4631654,verbs-009,0.0,B,,verbs-009: მიყვარდი -> A,1,147,140,0.00847
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-000,1.0,D,,verbs-000: მიყვარხარ -> D,1,148,55,0.00423
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-010,1.0,A,,verbs-010: დამიწერია -> A,1,146,42,0.00356
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-011,1.0,D,,verbs-011: დაგიწერია -> D,1,146,45,0.00371
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-012,1.0,C,,verbs-012: გინახივარ -> C,1,148,56,0.00428
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-013,1.0,C,,verbs-013: მიჭმიე -> C,1,163,73,0.00528
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-014,1.0,D,,verbs-014: გაჩუქე -> D,1,155,50,0.00405
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-015,1.0,A,,verbs-015: მაპატიე -> A,1,155,27,0.0029
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-016,1.0,A,,verbs-016: გაპატიე -> A,1,155,50,0.00405
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-017,1.0,დავწერთ,,verbs-017: დაწერა; ჩვენ → მას; future -> დავწერთ,1,136,62,0.00446
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-018,1.0,დაგინახე,,verbs-018: დანახვა; მე → შენ; aorist -> დაგინახე,1,140,46,0.0037
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-019,1.0,მოგცემ,,verbs-019: მიცემა; მე → შენ → მას; future -> მოგცემ,1,139,59,0.00434
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-001,0.0,B,,verbs-001: გვიყვარხართ -> A,1,148,110,0.00698
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-020,1.0,გაჩუქე,,verbs-020: ჩუქება; მე → შენ → ის; aorist -> გაჩუქე,1,142,85,0.00567
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-021,1.0,გაჩუქებთ,,verbs-021: ჩუქება; ჩვენ → თქვენ → მას; future -> გაჩუქებთ,1,139,81,0.00544
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-022,0.0,გაგიგზავნე,,verbs-022: გაგზავნა; მე → შენ → ის; aorist -> გამოგიგზავნე,1,142,155,0.00917
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-023,1.0,დაგვირეკა,,verbs-023: დარეკვა; მან → ჩვენ; aorist -> დაგვირეკა,1,141,48,0.00381
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-024,1.0,დამირეკე,,verbs-024: დარეკვა; შენ → მე; aorist -> დამირეკე,1,141,47,0.00376
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-025,1.0,ვუყვარვარ,,verbs-025: სიყვარული; მას → მე; present -> ვუყვარვარ,1,138,61,0.00443
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-026,1.0,მიყვარდი,,verbs-026: სიყვარული; მე → შენ; imperfect -> მიყვარდი,1,138,283,0.01553
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-027,1.0,შემიყვარდი,,verbs-027: შეყვარება; მე → შენ; aorist -> შემიყვარდი,1,140,204,0.0116
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-028,0.0,მოგენატრე,,verbs-028: მონატრება; მე → შენ; aorist -> მომენატრე,1,140,461,0.02445
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-029,1.0,ჰყავხარ,,verbs-029: ყოლა; მას → შენ; present -> ჰყავხარ,1,139,62,0.00449
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-002,0.0,C,,verbs-002: გენატრები -> A,1,146,82,0.00556
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-030,0.0,გცნობ,,verbs-030: ცნობა; მე → შენ; present -> გიცნობ,1,139,67,0.00474
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-031,1.0,დაუხატავს,,verbs-031: დახატვა; მას → ის; perfect -> დაუხატავს,1,140,64,0.0046
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-032,1.0,გითხარი,,verbs-032: თქმა; მე → შენ → ის; aorist -> გითხარი,1,140,42,0.0035
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-033,1.0,გეტყვი,,verbs-033: თქმა; მე → შენ → მას; future -> გეტყვი,1,137,133,0.00802
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-034,1.0,A,,verbs-034: გიორგი ოთახიდან ___ვიდა. -> A,1,97,24,0.00217
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-035,1.0,D,,verbs-035: ჩემი კოლეგა საზღვარგარეთიდან ___ვიდა. -> D,1,106,27,0.00241
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-036,1.0,C,,verbs-036: მასწავლებელი კლასში ___ვიდა და ჩვენ ავდექით. -> C,1,106,39,0.00301
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-037,1.0,C,,verbs-037: ის ოთახიდან ___ვიდა და მომესალმა. -> C,1,102,46,0.00332
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-038,1.0,B,,verbs-038: მან ცას ___ხედა. -> B,1,97,55,0.00372
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-039,1.0,D,,verbs-039: მან ჭაში ___ხედა. -> D,1,97,180,0.00997
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-003,1.0,D,,verbs-003: ვენატრები -> D,1,147,96,0.00627
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-040,1.0,C,,verbs-040: მან ფანჯრიდან ___იხედა. -> C,1,100,39,0.00295
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-041,1.0,D,,verbs-041: მათ ახალი სახლი ___აშენეს. -> D,1,99,50,0.00349
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-042,1.0,B,,verbs-042: მან წიგნი ___იკითხა. -> B,1,98,33,0.00263
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-043,1.0,C,,verbs-043: მან ვაშლი ___ჭამა. -> C,1,98,28,0.00238
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-044,1.0,C,,verbs-044: მან ტელევიზორი ___რთო და დაიძინა. -> C,1,103,35,0.00278
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-045,1.0,B,,verbs-045: სახლში შესვლისას მან ქურთუკი ___იხადა. -> B,1,103,33,0.00268
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-046,1.0,C,,verbs-046: მან ჩანთა მაგიდიდან ___იღო. -> C,1,100,30,0.0025
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-047,1.0,A,,verbs-047: მან წიგნი თაროზე ___დო. -> A,1,100,32,0.0026
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-048,1.0,B,,verbs-048: მან ფული ჯიბეში ___დო. -> B,1,99,55,0.00374
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-049,1.0,D,,verbs-049: ის ცხენზე ___ჯდა. -> D,1,98,35,0.00273
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-004,1.0,B,,verbs-004: ჰყავხარ -> B,1,148,38,0.00338
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-005,1.0,A,,verbs-005: გყავვარ -> A,1,147,58,0.00437
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-006,1.0,B,,verbs-006: მიცნობ -> B,1,146,33,0.00311
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-007,1.0,C,,verbs-007: გიცნობ -> C,1,146,29,0.00291
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-008,1.0,A,,verbs-008: დაგირეკე -> A,1,147,34,0.00317
+glb-verbs,gpt-6-astra,kaggle,v5/4634215,verbs-009,1.0,A,,verbs-009: მიყვარდი -> A,1,147,281,0.01552
 glb-cloze,gemini-3-flash-preview,local,2026-10-10-180520,cloze-000,23.0,"[""დროში"", ""მოწყობილობას"", ""იყენებდნენ"", ""გამოიგონეს"", ""საუკუნეში"", ""მათემატიკოსმა"", ""შექმნა"", ""წინაპრად"", ""მოასწრო"", ""პროგრამისტად"", ""განვითარება"", ""შეტყობინებების"", ""აიგო"", ""იწონიდა"", ""წლებში"", ""შეამცირა"", ""გამოჩნდა"", ""კომპიუტერი"", ""ააწყვეს"", ""გავრცელებამ"", ""შეცვალა"", ""სახლში"", ""ტელეფონი"", ""დაეშვა"", ""ამოცანას""]",,cloze-000 [1]: დროში (got: დროში) || cloze-000 [2]: მოწყობილობას (got: მოწყობილობას) || cloze-000 [3]: იყენებდნენ (got: იყენებდნენ) || cloze-000 [4]: გამოიგონეს (got: გამოიგონეს) || cloze-000 [5]: საუკუნეში (got: საუკუნეში) || cloze-000 [6]: მათემატიკოსმა (got: მათემატიკოსმა) || cloze-000 [7]: შექმნა (got: შექმნა) || cloze-000 [8]: წინაპრად (got: წინაპრად) || cloze-000 [9]: მოასწრო (got: მოასწრო) || cloze-000 [10]: პროგრამისტს (got: პროგრამისტად) || cloze-000 [11]: განვითარება (got: განვითარება) || cloze-000 [12]: შეტყობინებების (got: შეტყობინებების) || cloze-000 [13]: ააგეს (got: აიგო) || cloze-000 [14]: იწონიდა (got: იწონიდა) || cloze-000 [15]: წლებში (got: წლებში) || cloze-000 [16]: შეამცირა (got: შეამცირა) || cloze-000 [17]: გამოჩნდა (got: გამოჩნდა) || cloze-000 [18]: კომპიუტერი (got: კომპიუტერი) || cloze-000 [19]: ააწყვეს (got: ააწყვეს) || cloze-000 [20]: გავრცელებამ (got: გავრცელებამ) || cloze-000 [21]: შეცვალა (got: შეცვალა) || cloze-000 [22]: სახლში (got: სახლში) || cloze-000 [23]: ტელეფონი (got: ტელეფონი) || cloze-000 [24]: დაეშვა (got: დაეშვა) || cloze-000 [25]: ამოცანას (got: ამოცანას),1,807,13988,0.042368
 glb-cloze,gemini-3-flash-preview,local,2026-10-10-180520,cloze-001,24.0,"[""იმპერიის"", ""დააარსეს"", ""მეფეები"", ""დამყარდა"", ""სანაპირო"", ""ჯარს"", ""სარდალმა"", ""მოკლეს"", ""სიკვდილის"", ""იმპერატორი"", ""სიმშვიდის"", ""აშენებდნენ"", ""შემორჩენილი"", ""გადაიტანა"", ""დაარქვა"", ""ნაწილად"", ""სახელმწიფოდ"", ""დაეცა"", ""მეთაურმა"", ""ჩამოაგდო"", ""არსებობდა"", ""ენამ"", ""გავლენა"", ""იქონია"", ""წარმოიშვა""]",,cloze-001 [1]: იმპერიის (got: იმპერიის) || cloze-001 [2]: დააარსეს (got: დააარსეს) || cloze-001 [3]: მეფეები (got: მეფეები) || cloze-001 [4]: დამყარდა (got: დამყარდა) || cloze-001 [5]: სანაპირო (got: სანაპირო) || cloze-001 [6]: ჯარს (got: ჯარს) || cloze-001 [7]: სარდალმა (got: სარდალმა) || cloze-001 [8]: მოკლეს (got: მოკლეს) || cloze-001 [9]: სიკვდილის (got: სიკვდილის) || cloze-001 [10]: იმპერატორი (got: იმპერატორი) || cloze-001 [11]: სიმშვიდის (got: სიმშვიდის) || cloze-001 [12]: აშენებდნენ (got: აშენებდნენ) || cloze-001 [13]: შემორჩენილი (got: შემორჩენილი) || cloze-001 [14]: გადაიტანა (got: გადაიტანა) || cloze-001 [15]: დაარქვა (got: დაარქვა) || cloze-001 [16]: ნაწილად (got: ნაწილად) || cloze-001 [17]: სახელმწიფოებად (got: სახელმწიფოდ) || cloze-001 [18]: დაეცა (got: დაეცა) || cloze-001 [19]: მეთაურმა (got: მეთაურმა) || cloze-001 [20]: ჩამოაგდო (got: ჩამოაგდო) || cloze-001 [21]: არსებობდა (got: არსებობდა) || cloze-001 [22]: ენამ (got: ენამ) || cloze-001 [23]: გავლენა (got: გავლენა) || cloze-001 [24]: იქონია (got: იქონია) || cloze-001 [25]: წარმოიშვა (got: წარმოიშვა),1,847,19862,0.06001
 glb-correction,gemini-3-flash-preview,local,2026-10-10-185629,correction-000,0.7142857142857143,"ჩემი ძმა ყოველ დილით სირბილზე დადის, რადგან ექიმმა მას მეტი მოძრაობა ურჩია. გუშინ მან ხუთი კილომეტრი გაირბინა და ძალიან დაიღალა. სახლში დაბრუნებულმა ცივი შხაპი მიიღო და ცოტა ხნით დაისვენა.",,"correction-000: 7 errors before, 2 left after (score 0.71)",1,149,2493,0.007554
