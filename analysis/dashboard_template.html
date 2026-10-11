@@ -134,6 +134,23 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .gaprow.hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .hard { display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--text-body); line-height: 1.5; }
 .hard .q { color: var(--text-strong); font-weight: 500; }
+.badge { display: inline-block; margin-top: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 3px 7px; border: 1px solid var(--hot); color: var(--hot); box-shadow: 0 0 8px rgba(255, 46, 126, 0.35); }
+.badge.inline { margin: 0 0 0 8px; padding: 1px 5px; font-size: 10px; }
+.note { font-size: 14px; line-height: 1.5; color: var(--text-soft); border: 1px dashed rgba(255, 46, 126, 0.5); padding: 12px 14px; }
+.note b { color: var(--hot); font-family: var(--mono); font-weight: 600; letter-spacing: 0.06em; }
+.prose { display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.6; color: var(--text-body); max-width: 900px; }
+.prose p { margin: 0; }
+.prose ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; }
+.prose strong { color: var(--text-strong); }
+.prose code { font-family: var(--mono); font-size: 14px; color: var(--neon); }
+.defs { margin: 0; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 12px 20px; }
+.defs dt { font-family: var(--display); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--neon); padding-top: 3px; }
+.defs dd { margin: 0; }
+.tbl { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+.tbl th { text-align: left; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 400; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.tbl td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); }
+.tbl td.num { font-family: var(--mono); text-align: right; }
+@media (max-width: 640px) { .defs { grid-template-columns: 1fr; gap: 4px; } .defs dd { margin-bottom: 10px; } }
 [hidden] { display: none !important; }
 @media (max-width: 640px) {
   .wrap { padding: 32px 16px 48px; }
@@ -173,6 +190,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
         <div class="legend"><span><span class="sw" style="background:var(--claude);box-shadow:0 0 10px var(--claude)"></span>Anthropic</span><span><span class="sw" style="background:var(--gpt);box-shadow:0 0 10px var(--gpt)"></span>OpenAI</span></div>
       </div>
       <div class="levels" id="levels"></div>
+      <p class="note" id="thinking-note"></p>
     </section>
 
     <section class="panel">
@@ -305,7 +323,79 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     </section>
   </div>
   <section id="examples" role="tabpanel" aria-labelledby="tab-examples" class="panel" hidden><p class="soon">Examples: in the next build.</p></section>
-  <section id="method" role="tabpanel" aria-labelledby="tab-method" class="panel" hidden><p class="soon">Method: in the next build.</p></section>
+  <div id="method" role="tabpanel" aria-labelledby="tab-method" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 15 DATA</div>
+        <h2>Where the questions come from</h2>
+      </div>
+      <div class="prose">
+        <p>Every item was written by hand by a native Georgian speaker: no machine-generated or translated text. The full sets were then trimmed to the items that actually separate models, because every question costs model credits. Easy items were removed using a thinking model (Gemini 3 Flash) as a probe; every item it got wrong was kept.</p>
+        <div class="scroll"><table class="tbl" id="data-table"></table></div>
+        <p>The full, untrimmed sets are kept in the repository's <code>archive/</code> folder for later testing.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 16 SCORING</div>
+        <h2>How each task is scored</h2>
+      </div>
+      <div class="prose">
+        <dl class="defs">
+          <dt>Numbers</dt><dd>Write a number in Georgian words, or a Georgian number in digits, as cardinal and as ordinal. One call per question, exact match after Unicode normalization. Dash variants count as the same character.</dd>
+          <dt>Verbs</dt><dd>Read who does what to whom from a verb form, choose the right preverb (multiple choice, answered with a letter), or build a verb form for given persons and tense (exact match).</dd>
+          <dt>Translation</dt><dd>Translate a Georgian paragraph into English. A fixed judge model (Gemini 3 Flash, without thinking) compares the meaning with a native speaker's reference on a 5-level scale; wording and style do not count, and he/she/they choices are never penalized where Georgian has no gender.</dd>
+          <dt>Cloze</dt><dd>Fill 25 numbered gaps in an article with the right grammatical form of words from a list that also contains distractors. Every gap counts on its own: right word, right form, right place.</dd>
+          <dt>Correction</dt><dd>Fix planted grammar, spelling and punctuation errors in a paragraph. Partial credit, word by word: every fixed error counts, and every correct word the model changes counts against it, exactly like a missed error.</dd>
+        </dl>
+        <p>Task scores run from 0 to 1. A model's average is the plain mean of its 5 task scores, each task counting equally.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 17 CONDITIONS</div>
+        <h2>Same conditions for every model</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>No thinking.</strong> Every model answers directly, without hidden reasoning. Default settings would have mixed models that think with models that don't, which is not a fair comparison.</li>
+          <li><strong>One exception, clearly marked.</strong> GPT-6 Astra cannot switch thinking off; its minimum is "low". So the newest pair, Claude Opus 5 and GPT-6 Astra, both think at "low". They are marked <span class="badge inline" style="margin:0">LOW</span> everywhere.</li>
+          <li><strong>Pairs of comparable models.</strong> Each level pairs an Anthropic and an OpenAI model of the same class: light, decent, top, newest.</li>
+          <li><strong>Same prompts, same code.</strong> All models run the same task version on Kaggle Benchmarks, with English instructions and Georgian content.</li>
+          <li><strong>An output limit of 32,000 tokens per answer</strong>, far above any answer in the runs. It only exists because Kaggle reserves the worst-case cost of every call before sending it.</li>
+          <li><strong>One run per model.</strong> Re-runs of the same model differed by about ±0.03 per task.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 18 BUDGET</div>
+        <h2>Built on a free quota</h2>
+      </div>
+      <div class="prose">
+        <p>Kaggle provides model credits of $10 per day. Before each call, Kaggle reserves the worst possible cost (the model's maximum answer length × its price) and refuses the call if that does not fit, even when the real answer costs a fraction of a cent. That shaped the benchmark: trimmed item sets, two parallel calls instead of four, the output limit, and no thinking. The Cost &amp; tokens tab shows where every dollar went.</p>
+      </div>
+    </section>
+
+    <section class="panel hot">
+      <div class="head">
+        <div class="tag">// 19 LIMITS</div>
+        <h2>Read the results with this in mind</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>The sets are hard by design.</strong> Numbers and verbs keep mostly items a strong model got wrong, so absolute scores are low. The ranking between models is the meaningful part.</li>
+          <li><strong>Small sets.</strong> Some tasks have only 12 to 17 items, so differences of a few points are not significant.</li>
+          <li><strong>Some answers are debatable.</strong> In a few items every model agrees with each other against the expected answer; these are shown in the Tasks tab.</li>
+          <li><strong>The token gap includes format overhead.</strong> Input tokens cover the prompt plus each vendor's answer-format instructions, so part of the gap is not Georgian text itself.</li>
+          <li><strong>The judge is a model.</strong> Translation scores depend on Gemini 3 Flash's judgment of meaning.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
 
   <footer>
     <span id="foot-note"></span>
@@ -328,6 +418,12 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     return n;
   };
   const neon = (a) => 'rgba(56, 214, 255, ' + a + ')';
+  // A model's name, with a LOW badge when it thinks (the newest pair).
+  const nm = (m, short) => {
+    const s = el('span', {}, short ? m.name.replace('Claude ', '') : m.name);
+    if (m.thinking && m.thinking !== 'none') s.append(el('span', { class: 'badge inline', title: 'Thinks at the lowest level' }, 'LOW'));
+    return s;
+  };
 
   // Key numbers
   const kpis = document.getElementById('kpis');
@@ -346,14 +442,17 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
       const m = D.models[slug];
       const done = m.average != null;
       bars.append(el('div', { class: 'bar' },
-        el('div', { class: 'm', title: m.name }, m.name),
+        el('div', { class: 'm', title: m.name }, nm(m)),
         el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (done ? m.average * 100 : 0) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 14px ' + color[m.vendor] })),
         el('div', { class: 'v' + (done ? '' : ' pending') }, done ? fmt(m.average) : 'RUNNING')));
     }
-    levels.append(el('div', { class: 'level' },
-      el('div', {}, el('div', { class: 'name' }, lv.name), el('div', { class: 'hint' }, lv.hint)),
-      bars));
+    const thinks = lv.models.some((s) => D.models[s].thinking !== 'none');
+    const label = el('div', {}, el('div', { class: 'name' }, lv.name), el('div', { class: 'hint' }, lv.hint));
+    if (thinks) label.append(el('div', { class: 'badge' }, 'THINKING: LOW'));
+    levels.append(el('div', { class: 'level' }, label, bars));
   }
+  const tn = document.getElementById('thinking-note');
+  tn.append(el('b', {}, 'THINKING: LOW  '), D.thinkingNote);
 
   // Task matrix
   const heat = document.getElementById('heat');
@@ -363,8 +462,9 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   heat.append(hdr);
   for (const slug of D.order) {
     const m = D.models[slug];
+    const nameCell = nm(m);
     const row = el('div', { class: 'row' },
-      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), el('span', {}, m.name)));
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nameCell));
     const vals = D.tasks.map((t) => m.scores[t.id]);
     vals.push(m.average);
     vals.forEach((v, i) => {
@@ -385,7 +485,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   for (const slug of done) {
     const m = D.models[slug];
     costs.append(el('div', { class: 'cost' },
-      el('div', { class: 'm' }, m.name),
+      el('div', { class: 'm' }, nm(m)),
       el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (m.cost / maxCost * 100) + '%;background:' + color[m.vendor] + ';box-shadow:0 0 12px ' + color[m.vendor] })),
       el('div', { class: 'v' }, '$' + m.cost.toFixed(2))));
   }
@@ -403,7 +503,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   const hot = (a) => 'rgba(255, 46, 126, ' + a + ')';
   const nf = new Intl.NumberFormat('en-US');
   const barRow = (cls, label, frac, fill, value) => el('div', { class: 'cost ' + cls },
-    el('div', { class: 'm', title: label }, label),
+    el('div', { class: 'm', title: typeof label === 'string' ? label : label.textContent }, label),
     el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + Math.max(frac * 100, 0.6) + '%;background:' + fill + ';box-shadow:0 0 10px ' + fill })),
     el('div', { class: 'v' }, value));
 
@@ -418,7 +518,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   for (const slug of D.order) {
     const m = D.models[slug];
     const row = el('div', { class: 'row' },
-      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), el('span', {}, m.name)));
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nm(m)));
     const vals = D.tasks.map((t) => (C.perTask[slug] || {})[t.id]);
     for (const v of vals) {
       if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
@@ -436,7 +536,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   for (const slug of doneModels) {
     const m = D.models[slug];
     tok.append(el('div', { class: 'pair' },
-      barRow('', m.name, m.inputTokens / maxTok, 'var(--neon)', nf.format(m.inputTokens)),
+      barRow('', nm(m), m.inputTokens / maxTok, 'var(--neon)', nf.format(m.inputTokens)),
       barRow('', '', m.outputTokens / maxTok, 'var(--hot)', nf.format(m.outputTokens))));
   }
 
@@ -460,7 +560,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     const maxC = Math.max(...cpcRows.map((r) => r.cents));
     for (const r of cpcRows) {
       const m = D.models[r.model];
-      cpc.append(barRow('wide', m.name + ' · ' + r.correct + ' right', r.cents / maxC, color[m.vendor], r.cents.toFixed(3) + '¢'));
+      cpc.append(barRow('wide', el('span', {}, nm(m), ' · ' + r.correct + ' right'), r.cents / maxC, color[m.vendor], r.cents.toFixed(3) + '¢'));
     }
   }
 
@@ -475,7 +575,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   const T = D.tasksTab;
   const who = (slug) => {
     const m = D.models[slug];
-    return el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), el('span', {}, m.name));
+    return el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), nm(m));
   };
   // Category rows x model columns, as score cells.
   const grid = (target, rows) => {
@@ -484,7 +584,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     const box = document.getElementById(target);
     box.style.minWidth = (240 + cols * 110) + 'px';
     const hdr = el('div', { class: 'row hdr', style: tmpl }, el('div', {}, 'Question type'));
-    for (const s of doneModels) hdr.append(el('div', { title: D.models[s].name }, D.models[s].name.replace('Claude ', '')));
+    for (const s of doneModels) hdr.append(el('div', { title: D.models[s].name }, nm(D.models[s], true)));
     box.append(hdr);
     for (const r of rows) {
       const row = el('div', { class: 'row', style: tmpl }, el('div', { class: 'who' }, el('span', {}, r.label + ' (' + r.n + ')')));
@@ -512,7 +612,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   }
 
   // Verbs: swapped participants
-  const sw = doneModels.map((s) => D.models[s].name + ' ' + T.swaps[s] + ' of ' + T.wrongWho[s]);
+  const sw = doneModels.map((s) => D.models[s].name + (D.models[s].thinking !== 'none' ? ' (thinking: low)' : '') + ' ' + T.swaps[s] + ' of ' + T.wrongWho[s]);
   document.getElementById('swaps').textContent = 'Wrong "who does what to whom" answers where the model swapped the doer and the receiver: ' + sw.join(' · ') + '.';
 
   // Correction
@@ -524,7 +624,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   for (const r of corrSorted) {
     const m = D.models[r.model];
     corr.append(el('div', { class: 'cost wide' },
-      el('div', { class: 'm' }, m.name),
+      el('div', { class: 'm' }, nm(m)),
       el('div', { class: 'track', style: 'display:flex;height:18px' },
         el('div', { class: 'fill', title: 'fixed ' + r.fixed, style: 'width:' + (r.fixed / r.needed * 100) + '%;background:var(--neon);box-shadow:0 0 10px var(--neon)' }),
         el('div', { class: 'fill', title: 'missed ' + r.missed, style: 'width:' + (r.missed / r.needed * 100) + '%;background:#2A3B57' })),
@@ -558,6 +658,17 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     }
     hard.append(box);
   }
+
+  // ---- Method tab ----
+  const mt = document.getElementById('data-table');
+  const thead = el('tr', {});
+  for (const h of ['Task', 'Written', 'In the benchmark', 'How items were kept']) thead.append(el('th', { scope: 'col' }, h));
+  mt.append(el('thead', {}, thead));
+  const tbody = el('tbody', {});
+  for (const r of D.methodTable) {
+    tbody.append(el('tr', {}, el('td', {}, el('strong', {}, r.task)), el('td', { class: 'num' }, r.full), el('td', { class: 'num' }, r.kept), el('td', {}, r.rule)));
+  }
+  mt.append(tbody);
 
   // Tabs
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));

@@ -20,6 +20,15 @@ OUT = REPO / "docs" / "index.html"
 # Only runs of this task version count: no thinking, same code for every model.
 VERSION = "v4"
 
+# The newest flagship pair ran on version 5 with thinking at "low": GPT-6
+# Astra cannot switch thinking off, so both models of that pair think a little.
+LOW_THINKING_VERSION = "v5"
+LOW_THINKING = {"claude-opus-5-default", "gpt-6-astra"}
+
+
+def version_of(model: str) -> str:
+    return LOW_THINKING_VERSION if model in LOW_THINKING else VERSION
+
 TASKS = [
     ("glb-numbers", "Numbers"),
     ("glb-verbs", "Verbs"),
@@ -67,11 +76,11 @@ def scored_items() -> dict[str, int]:
 
 
 def latest_runs() -> dict[tuple[str, str], dict]:
-    """The latest completed run of each (model, task) at VERSION."""
+    """The latest completed run of each (model, task) at that model's version."""
     best = {}
     with open(REPO / "analysis" / "runs.csv", encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
-            if r["source"] != "kaggle" or r["state"] != "COMPLETED" or not r["run"].startswith(VERSION + "/"):
+            if r["source"] != "kaggle" or r["state"] != "COMPLETED" or not r["run"].startswith(version_of(r["model"]) + "/"):
                 continue
             key = (r["model"], r["task"])
             if key not in best or (r["end"] or "") > (best[key]["end"] or ""):
@@ -204,7 +213,8 @@ def tasks_tab(runs: dict, done: list, models: dict) -> dict:
             e["count"] += 1
             if e["example"] is None:
                 e["example"] = {"question": r["input"], "expected": r["expected_" + f].split("|")[0],
-                                "answer": it["answer"], "model": models[s]["name"]}
+                                "answer": it["answer"],
+                                "model": models[s]["name"] + (" (thinking: low)" if s in LOW_THINKING else "")}
     num_errors = sorted(({"type": k, **v} for k, v in errors.items()), key=lambda x: -x["count"])
 
     # Verbs: accuracy per kind, and swapped participants.
@@ -290,12 +300,14 @@ def main():
             complete = len(scores) == len(TASKS)
             models[slug] = {
                 "name": NAMES[slug], "vendor": vendor, "level": level, "scores": scores,
+                "thinking": "low" if slug in LOW_THINKING else "none",
                 "average": sum(scores.values()) / len(TASKS) if complete else None,
                 "cost": cost if complete else None, "inputTokens": tin, "outputTokens": tout,
             }
 
     done = [s for s in models if models[s]["average"] is not None]
-    best = max(done, key=lambda s: models[s]["average"])
+    # The headline best is among the models without thinking (the newest pair thinks).
+    best = max((s for s in done if s not in LOW_THINKING), key=lambda s: models[s]["average"])
     cheapest = min(done, key=lambda s: models[s]["cost"])
 
     # Tokenizer gap: input tokens for the same prompts, Claude vs GPT.
@@ -347,7 +359,7 @@ def main():
                 spend["Local test runs"] += c
             elif r["model"].startswith("gemini-3.7-flash"):
                 spend["Kaggle's automatic push runs"] += c
-            elif r["run"].startswith(VERSION + "/") and r["model"] in models:
+            elif r["run"].startswith(version_of(r["model"]) + "/") and r["model"] in models:
                 spend["Final comparison runs"] += c
             else:
                 spend["Earlier runs and probes"] += c
@@ -360,8 +372,25 @@ def main():
         "spendTotal": sum(spend.values()),
     }
 
+    def rows_in(path):
+        with open(path, encoding="utf-8") as fh:
+            return sum(1 for _ in csv.DictReader(fh))
+    method_table = [
+        {"task": "Numbers", "full": f"{rows_in(REPO / 'archive' / 'numbers_full.csv')} rows",
+         "kept": f"{rows_in(REPO / 'data' / 'numbers.csv')} rows, {items['glb-numbers']} questions",
+         "rule": "rows where the probe model got at least one answer wrong"},
+        {"task": "Verbs", "full": str(rows_in(REPO / "archive" / "verbs_full.csv")), "kept": str(items["glb-verbs"]),
+         "rule": "every item the probe got wrong, plus the right answers it struggled with most"},
+        {"task": "Translation", "full": str(rows_in(REPO / "archive" / "translation_full.csv")), "kept": str(items["glb-translation"]),
+         "rule": "the paragraphs with the most Georgian-specific traps"},
+        {"task": "Cloze", "full": "2 texts", "kept": f"2 texts, {items['glb-cloze']} gaps", "rule": "kept in full"},
+        {"task": "Correction", "full": str(rows_in(REPO / "archive" / "correction_full.csv")), "kept": str(items["glb-correction"]),
+         "rule": "chosen by hand"},
+    ]
+
     data = {
         "generated": date.today().isoformat(),
+        "methodTable": method_table,
         "costTab": cost_tab,
         "tasksTab": tasks_tab(runs, done, models),
         "itemsPerModel": sum(items.values()),
@@ -370,7 +399,7 @@ def main():
         "order": [s for _, _, c, g in LEVELS for s in (c, g)],
         "models": models,
         "kpis": [
-            {"label": "Best average so far", "value": f"{models[best]['average']:.2f}",
+            {"label": "Best average, no thinking", "value": f"{models[best]['average']:.2f}",
              "note": f"{models[best]['name']}, {models[best]['level'].lower()} level", "style": "neon"},
             {"label": "Scored items per model", "value": str(sum(items.values())),
              "note": "numbers, verbs, translation, cloze, correction"},
@@ -387,7 +416,10 @@ def main():
             {"head": lead + ",",
              "body": "and a full GPT run costs less, partly because GPT counts the same Georgian text as fewer tokens."},
         ],
-        "footnote": f"SCORES 0 TO 1 · KAGGLE BENCHMARKS · TASK {VERSION.upper()} · NO THINKING · ONE RUN PER MODEL · UPDATED {date.today().isoformat()}",
+        "footnote": f"SCORES 0 TO 1 · KAGGLE BENCHMARKS · NO THINKING (NEWEST PAIR: LOW) · ONE RUN PER MODEL · UPDATED {date.today().isoformat()}",
+        "thinkingNote": "Exception: the newest flagship pair, Claude Opus 5 and GPT-6 Astra, thinks at the lowest level (\"low\"). "
+                        "GPT-6 Astra cannot switch thinking off, so both models of the pair get the same small thinking budget. "
+                        "Compare them with each other, and with the other levels only with that in mind.",
     }
 
     html = TEMPLATE.read_text(encoding="utf-8")
