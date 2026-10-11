@@ -112,6 +112,12 @@ ol.findings { margin: 0; padding-left: 22px; display: flex; flex-direction: colu
 ol.findings strong { color: var(--text-strong); }
 .soon { font-family: var(--mono); color: var(--muted); font-size: 15px; }
 footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 13px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 20px; }
+.tabpage { display: flex; flex-direction: column; gap: 30px; }
+.cost.wide { grid-template-columns: 200px minmax(0, 1fr) 90px; }
+.pair { display: flex; flex-direction: column; gap: 4px; }
+.pair .track { height: 12px; }
+.ratio { font-family: var(--display); font-size: 20px; font-weight: 800; color: var(--hot); text-shadow: 0 0 12px rgba(255, 46, 126, 0.5); }
+.total { font-family: var(--display); font-size: 30px; font-weight: 800; color: var(--text-strong); }
 [hidden] { display: none !important; }
 @media (max-width: 640px) {
   .wrap { padding: 32px 16px 48px; }
@@ -179,7 +185,55 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     </div>
   </main>
 
-  <section id="cost" role="tabpanel" aria-labelledby="tab-cost" class="panel" hidden><p class="soon">Cost &amp; tokens: in the next build.</p></section>
+  <div id="cost" role="tabpanel" aria-labelledby="tab-cost" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 05 COST MATRIX</div>
+        <h2>What each model paid per task</h2>
+        <p class="sub">US dollars per complete task run, in Kaggle model credits. Hotter cells cost more.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="cost-matrix"></div></div>
+    </section>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 06 TOKENS</div>
+          <h2>Tokens in and out</h2>
+          <p class="sub">All 5 tasks. Input is our prompts as each vendor counts them; output is the models' answers, with no hidden thinking.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Input</span><span><span class="sw" style="background:var(--hot);box-shadow:0 0 10px var(--hot)"></span>Output</span></div>
+        <div class="costs" id="tokens"></div>
+      </section>
+      <section class="panel hot">
+        <div class="head">
+          <div class="tag">// 07 TOKEN GAP</div>
+          <h2>The Georgian token gap</h2>
+          <p class="sub">Average input tokens per call for identical prompts. Same text, different bill.</p>
+        </div>
+        <div class="levels" id="per-call"></div>
+      </section>
+    </div>
+
+    <div class="duo">
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 08 VALUE</div>
+          <h2>Cost per correct answer</h2>
+          <p class="sub" id="cpc-sub"></p>
+        </div>
+        <div class="costs" id="cpc"></div>
+      </section>
+      <section class="panel">
+        <div class="head">
+          <div class="tag">// 09 BUDGET</div>
+          <h2>What the whole project cost</h2>
+          <p class="sub" id="spend-sub"></p>
+        </div>
+        <div class="costs" id="spend"></div>
+      </section>
+    </div>
+  </div>
   <section id="tasks" role="tabpanel" aria-labelledby="tab-tasks" class="panel" hidden><p class="soon">Task deep dives: in the next build.</p></section>
   <section id="examples" role="tabpanel" aria-labelledby="tab-examples" class="panel" hidden><p class="soon">Examples: in the next build.</p></section>
   <section id="method" role="tabpanel" aria-labelledby="tab-method" class="panel" hidden><p class="soon">Method: in the next build.</p></section>
@@ -274,6 +328,79 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
     findings.append(li);
   }
   document.getElementById('foot-note').textContent = D.footnote;
+
+  // ---- Cost & tokens tab ----
+  const C = D.costTab;
+  const hot = (a) => 'rgba(255, 46, 126, ' + a + ')';
+  const nf = new Intl.NumberFormat('en-US');
+  const barRow = (cls, label, frac, fill, value) => el('div', { class: 'cost ' + cls },
+    el('div', { class: 'm', title: label }, label),
+    el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + Math.max(frac * 100, 0.6) + '%;background:' + fill + ';box-shadow:0 0 10px ' + fill })),
+    el('div', { class: 'v' }, value));
+
+  // Cost matrix
+  const cm = document.getElementById('cost-matrix');
+  const cmHdr = el('div', { class: 'row hdr' }, el('div', {}, 'Model'));
+  for (const t of D.tasks) cmHdr.append(el('div', {}, t.name));
+  cmHdr.append(el('div', {}, 'Total'));
+  cm.append(cmHdr);
+  const allCosts = D.order.flatMap((s) => Object.values(C.perTask[s] || {}));
+  const maxTaskCost = Math.max(...allCosts, 0.0001);
+  for (const slug of D.order) {
+    const m = D.models[slug];
+    const row = el('div', { class: 'row' },
+      el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), el('span', {}, m.name)));
+    const vals = D.tasks.map((t) => (C.perTask[slug] || {})[t.id]);
+    for (const v of vals) {
+      if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
+      const f = v / maxTaskCost;
+      row.append(el('div', { class: 'cell', style: 'background:' + hot((0.04 + f * 0.4).toFixed(3)) + ';border-color:' + hot((0.12 + f * 0.5).toFixed(3)) }, '$' + v.toFixed(3)));
+    }
+    row.append(m.cost == null ? el('div', { class: 'cell none' }, '…') : el('div', { class: 'cell avg', style: 'border-color:#27405E' }, '$' + m.cost.toFixed(2)));
+    cm.append(row);
+  }
+
+  // Tokens in and out
+  const tok = document.getElementById('tokens');
+  const doneModels = D.order.filter((s) => D.models[s].average != null);
+  const maxTok = Math.max(...doneModels.map((s) => Math.max(D.models[s].inputTokens, D.models[s].outputTokens)));
+  for (const slug of doneModels) {
+    const m = D.models[slug];
+    tok.append(el('div', { class: 'pair' },
+      barRow('', m.name, m.inputTokens / maxTok, 'var(--neon)', nf.format(m.inputTokens)),
+      barRow('', '', m.outputTokens / maxTok, 'var(--hot)', nf.format(m.outputTokens))));
+  }
+
+  // Token gap per task
+  const pc = document.getElementById('per-call');
+  for (const r of C.perCall) {
+    if (r.anthropic == null || r.openai == null) continue;
+    const mx = Math.max(r.anthropic, r.openai);
+    pc.append(el('div', { class: 'level' },
+      el('div', {}, el('div', { class: 'name' }, r.task), el('div', { class: 'ratio' }, (r.anthropic / r.openai).toFixed(1) + '×')),
+      el('div', { class: 'bars' },
+        barRow('', 'Claude', r.anthropic / mx, 'var(--claude)', nf.format(Math.round(r.anthropic))),
+        barRow('', 'GPT', r.openai / mx, 'var(--gpt)', nf.format(Math.round(r.openai))))));
+  }
+
+  // Cost per correct answer
+  const cpc = document.getElementById('cpc');
+  const cpcRows = C.costPerCorrect.filter((r) => r.cents != null).sort((a, b) => a.cents - b.cents);
+  if (cpcRows.length) {
+    document.getElementById('cpc-sub').textContent = 'Numbers, verbs and cloze, the tasks scored right or wrong per item (' + cpcRows[0].of + ' items). US cents per correct answer.';
+    const maxC = Math.max(...cpcRows.map((r) => r.cents));
+    for (const r of cpcRows) {
+      const m = D.models[r.model];
+      cpc.append(barRow('wide', m.name + ' · ' + r.correct + ' right', r.cents / maxC, color[m.vendor], r.cents.toFixed(3) + '¢'));
+    }
+  }
+
+  // Project spend
+  const sp = document.getElementById('spend');
+  document.getElementById('spend-sub').textContent = 'Every model call of the project, all billed to the same Kaggle model quota.';
+  sp.append(el('div', { class: 'total' }, '$' + C.spendTotal.toFixed(2)));
+  const maxS = Math.max(...C.spend.map((r) => r.cost));
+  for (const r of C.spend) sp.append(barRow('wide', r.label, r.cost / maxS, 'var(--neon)', '$' + r.cost.toFixed(2)));
 
   // Tabs
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));

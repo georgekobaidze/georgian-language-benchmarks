@@ -122,8 +122,51 @@ def main():
             else "Anthropic leads at every level so far" if gpt_wins == 0
             else f"OpenAI leads at {gpt_wins} of {len(pairs)} levels so far")
 
+    # Cost & tokens tab.
+    per_call = []
+    for task, name in TASKS:
+        if task not in SAME_PROMPT_TASKS:
+            continue
+        row = {"task": name}
+        for vendor in ("anthropic", "openai"):
+            vals = [int(runs[(s, task)]["input_tokens"]) / int(runs[(s, task)]["calls"])
+                    for s in done if models[s]["vendor"] == vendor]
+            row[vendor] = sum(vals) / len(vals) if vals else None
+        per_call.append(row)
+
+    binary = ["glb-numbers", "glb-verbs", "glb-cloze"]  # tasks scored 0/1 per item
+    cost_per_correct = []
+    for s in done:
+        correct = sum(models[s]["scores"][t] * items[t] for t in binary)
+        spent = sum(float(runs[(s, t)]["cost_usd"]) for t in binary)
+        cost_per_correct.append({"model": s, "cents": 100 * spent / correct if correct else None,
+                                 "correct": round(correct), "of": sum(items[t] for t in binary)})
+
+    spend = {"Final comparison runs": 0.0, "Kaggle's automatic push runs": 0.0,
+             "Earlier runs and probes": 0.0, "Local test runs": 0.0}
+    with open(REPO / "analysis" / "runs.csv", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            c = float(r["cost_usd"] or 0)
+            if r["source"] == "local":
+                spend["Local test runs"] += c
+            elif r["model"].startswith("gemini-3.7-flash"):
+                spend["Kaggle's automatic push runs"] += c
+            elif r["run"].startswith(VERSION + "/") and r["model"] in models:
+                spend["Final comparison runs"] += c
+            else:
+                spend["Earlier runs and probes"] += c
+
+    cost_tab = {
+        "perTask": {s: {t: float(runs[(s, t)]["cost_usd"]) for t, _ in TASKS if (s, t) in runs} for s in models},
+        "perCall": per_call,
+        "costPerCorrect": cost_per_correct,
+        "spend": [{"label": k, "cost": v} for k, v in spend.items()],
+        "spendTotal": sum(spend.values()),
+    }
+
     data = {
         "generated": date.today().isoformat(),
+        "costTab": cost_tab,
         "itemsPerModel": sum(items.values()),
         "tasks": [{"id": t, "name": n, "items": items[t]} for t, n in TASKS],
         "levels": [{"name": lv, "hint": hint, "models": [c, g]} for lv, hint, c, g in LEVELS],
