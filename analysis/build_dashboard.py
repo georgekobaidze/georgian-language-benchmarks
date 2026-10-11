@@ -6,7 +6,10 @@ use the same figures. Run analysis/load_results.py first to refresh runs.csv.
 Usage: .venv/bin/python analysis/build_dashboard.py
 """
 import csv
+import difflib
 import json
+import re
+import unicodedata
 from datetime import date
 from pathlib import Path
 
@@ -74,6 +77,199 @@ def latest_runs() -> dict[tuple[str, str], dict]:
             if key not in best or (r["end"] or "") > (best[key]["end"] or ""):
                 best[key] = r
     return best
+
+
+def load_items(runs: dict, done: list) -> dict:
+    """Item rows of the chosen runs, keyed by (model, task) -> {item id: row}."""
+    wanted = {(s, t): runs[(s, t)]["run"] for s in done for t, _ in TASKS}
+    out = {}
+    csv.field_size_limit(10_000_000)
+    with open(REPO / "analysis" / "items.csv", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            key = (r["model"], r["task"])
+            if r["source"] == "kaggle" and wanted.get(key) == r["run"]:
+                out.setdefault(key, {})[r["item"]] = r
+    return out
+
+
+def nfc(text: str) -> str:
+    return " ".join(unicodedata.normalize("NFC", text).translate(DASHES).split())
+
+
+DASHES = str.maketrans({c: "-" for c in "‐‑‒–—−﹣－"})
+
+
+def numbers_error(kind: str, form: str, expected: str, answer: str) -> str:
+    """Classify a wrong numbers answer into a readable error type."""
+    exp_alts = [nfc(e) for e in expected.split("|")]
+    a = nfc(answer)
+    e = exp_alts[0]
+    if kind == "to_digits" and form == "ordinal":
+        if e.startswith("მე-") and a.endswith("-ე"):
+            return "N-ე instead of მე-N"
+        if e.endswith("-ე") and a.startswith("მე-"):
+            return "მე-N instead of N-ე"
+        if a.replace(" ", "").replace(",", "") in [x.replace(" ", "") for x in exp_alts]:
+            return "Thousand separators"
+        return "Wrong ordinal in digits"
+    if kind == "to_digits":
+        return "Wrong value in digits"
+    if a == "ერთი " + e:
+        return "Added ერთი (one)"
+    if "ილიონ" in a and ("ალიონ" in e or "ალონ" in e):
+        return "International name for a huge number"
+    if form == "ordinal" and "მე" in e:
+        if a.replace("მე", "", 1) == e.replace("მე", "", 1):
+            return "მე- in the wrong place"
+        if a == e.replace("მე", "", 1) or a.replace(" ", "") == e.replace("მე", "", 1).replace(" ", ""):
+            return "Missing მე-"
+    if a.replace(" ", "") == e.replace(" ", ""):
+        return "Spacing between words"
+    return "Other wrong form"
+
+
+def token_list(text: str) -> list[str]:
+    return re.findall(r"\w+|[^\w\s]", nfc(text))
+
+
+def correction_breakdown(inp: str, exp: str, ans: str) -> tuple[int, int, int]:
+    """(errors needed, errors fixed, correct tokens broken), compared token by token."""
+    ti, te, ta = token_list(inp), token_list(exp), token_list(ans)
+    # Input tokens that were already correct (unchanged between input and expected).
+    correct = set()
+    for op, i1, i2, _, _ in difflib.SequenceMatcher(None, ti, te, autojunk=False).get_opcodes():
+        if op == "equal":
+            correct.update(range(i1, i2))
+    broken = 0
+    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, ti, ta, autojunk=False).get_opcodes():
+        if op == "equal":
+            continue
+        span = range(i1, i2) if i2 > i1 else range(max(i1 - 1, 0), min(i1 + 1, len(ti)))
+        if all(i in correct for i in span):
+            broken += max(i2 - i1, j2 - j1)
+    needed = edit_distance(ti, te)
+    remaining = edit_distance(ta, te)
+    fixed = max(0, min(needed, needed - (remaining - broken)))
+    return needed, fixed, broken
+
+
+def edit_distance(a: list[str], b: list[str]) -> int:
+    prev = list(range(len(b) + 1))
+    for i, x in enumerate(a, 1):
+        cur = [i]
+        for j, y in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (x != y)))
+        prev = cur
+    return prev[-1]
+
+
+def tasks_tab(runs: dict, done: list, models: dict) -> dict:
+    rows = load_items(runs, done)
+
+    # Numbers: accuracy by question type, and error types.
+    with open(REPO / "data" / "numbers.csv", encoding="utf-8") as fh:
+        num = {r["id"]: r for r in csv.DictReader(fh)}
+    huge = {str(10 ** k) for k in range(15, 40, 3)}
+    cats = [("Digits → words, cardinal", "to_words", "cardinal"), ("Digits → words, ordinal", "to_words", "ordinal"),
+            ("Words → digits, cardinal", "to_digits", "cardinal"), ("Words → digits, ordinal", "to_digits", "ordinal")]
+    num_grid = []
+    for label, kind, form in cats + [("Huge numbers, 10¹⁵ to 10³⁹", None, None)]:
+        row = {"label": label, "values": {}}
+        for s in done:
+            hits = total = 0
+            for qid, it in rows[(s, "glb-numbers")].items():
+                rid, f = qid.rsplit("-", 1)
+                r = num[rid]
+                digits = r["input"] if r["kind"] == "to_words" else r["expected_cardinal"]
+                if kind is None:
+                    if digits not in huge:
+                        continue
+                elif (r["kind"], f) != (kind, form):
+                    continue
+                total += 1
+                hits += float(it["score"]) == 1.0
+            row["values"][s] = hits / total if total else None
+            row["n"] = total
+        num_grid.append(row)
+
+    errors = {}
+    for s in done:
+        for qid, it in rows[(s, "glb-numbers")].items():
+            if float(it["score"]) == 1.0:
+                continue
+            rid, f = qid.rsplit("-", 1)
+            r = num[rid]
+            kind_ = numbers_error(r["kind"], f, r["expected_" + f], it["answer"])
+            e = errors.setdefault(kind_, {"count": 0, "example": None})
+            e["count"] += 1
+            if e["example"] is None:
+                e["example"] = {"question": r["input"], "expected": r["expected_" + f].split("|")[0],
+                                "answer": it["answer"], "model": models[s]["name"]}
+    num_errors = sorted(({"type": k, **v} for k, v in errors.items()), key=lambda x: -x["count"])
+
+    # Verbs: accuracy per kind, and swapped participants.
+    with open(REPO / "data" / "verbs.csv", encoding="utf-8") as fh:
+        verbs = {r["id"]: r for r in csv.DictReader(fh)}
+    kinds = [("who_to_whom", "Who does what to whom"), ("form", "Build the verb form"), ("preverb", "Choose the preverb")]
+    verb_grid, swaps = [], {}
+    for k, label in kinds:
+        row = {"label": label, "values": {}, "n": sum(1 for v in verbs.values() if v["kind"] == k)}
+        for s in done:
+            its = [it for vid, it in rows[(s, "glb-verbs")].items() if verbs[vid]["kind"] == k]
+            row["values"][s] = sum(float(it["score"]) for it in its) / len(its) if its else None
+        verb_grid.append(row)
+    for s in done:
+        n = 0
+        for vid, it in rows[(s, "glb-verbs")].items():
+            v = verbs[vid]
+            if v["kind"] != "who_to_whom" or float(it["score"]) == 1.0:
+                continue
+            opts = {o[0]: o[3:] for o in v["choices"].split("|")}
+            got = re.fullmatch(r"\(?([A-Da-d])[).]?", it["answer"].strip())
+            if not got:
+                continue
+            chosen, right = opts.get(got.group(1).upper(), ""), opts[v["expected"]]
+            cp, rp = chosen.split(" → "), right.split(" → ")
+            # Swapped: same people, but the doer and the receiver trade places.
+            if len(cp) >= 2 and len(cp) == len(rp) and cp[0] == rp[1] and cp[1] == rp[0]:
+                n += 1
+        swaps[s] = n
+    wrong_who = {s: sum(1 for vid, it in rows[(s, "glb-verbs")].items()
+                        if verbs[vid]["kind"] == "who_to_whom" and float(it["score"]) != 1.0) for s in done}
+
+    # Correction: fixed, missed, broken.
+    with open(REPO / "data" / "correction.csv", encoding="utf-8") as fh:
+        corr = {r["id"]: r for r in csv.DictReader(fh)}
+    corr_rows = []
+    for s in done:
+        needed = fixed = broken = 0
+        for cid, it in rows[(s, "glb-correction")].items():
+            n_, f_, b_ = correction_breakdown(corr[cid]["input"], corr[cid]["expected"], it["answer"])
+            needed += n_
+            fixed += f_
+            broken += b_
+        corr_rows.append({"model": s, "needed": needed, "fixed": fixed, "missed": needed - fixed, "broken": broken})
+
+    # Cloze: every gap, pass or fail, per model.
+    gap_re = re.compile(r"(cloze-\d+) \[(\d+)\]: (.*) \(got: (.*)\)$")
+    gaps = {}
+    for s in done:
+        for it in rows[(s, "glb-cloze")].values():
+            for part in it["expectation"].split(" || "):
+                m = gap_re.match(part)
+                if not m:
+                    continue
+                text, n, accepted, got = m.groups()
+                ok = nfc(got) in {nfc(a) for a in accepted.split(" | ")}
+                g = gaps.setdefault((text, int(n)), {"text": text, "gap": int(n), "expected": accepted, "results": {}, "answers": {}})
+                g["results"][s] = ok
+                g["answers"][s] = got
+    gap_list = [gaps[k] for k in sorted(gaps)]
+    all_wrong = [g for g in gap_list if g["results"] and not any(g["results"].values())]
+
+    return {"numbersGrid": num_grid, "numbersErrors": num_errors, "verbsGrid": verb_grid,
+            "swaps": swaps, "wrongWho": wrong_who, "correction": corr_rows,
+            "clozeGaps": gap_list, "clozeAllWrong": all_wrong}
 
 
 def main():
@@ -167,6 +363,7 @@ def main():
     data = {
         "generated": date.today().isoformat(),
         "costTab": cost_tab,
+        "tasksTab": tasks_tab(runs, done, models),
         "itemsPerModel": sum(items.values()),
         "tasks": [{"id": t, "name": n, "items": items[t]} for t, n in TASKS],
         "levels": [{"name": lv, "hint": hint, "models": [c, g]} for lv, hint, c, g in LEVELS],

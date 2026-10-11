@@ -118,6 +118,22 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
 .pair .track { height: 12px; }
 .ratio { font-family: var(--display); font-size: 20px; font-weight: 800; color: var(--hot); text-shadow: 0 0 12px rgba(255, 46, 126, 0.5); }
 .total { font-family: var(--display); font-size: 30px; font-weight: 800; color: var(--text-strong); }
+.errs { display: flex; flex-direction: column; gap: 14px; }
+.err { display: grid; grid-template-columns: 250px minmax(0, 1fr) 56px; gap: 14px; align-items: center; }
+.err .t { font-size: 15px; color: var(--text-strong); font-weight: 500; }
+.err .ex { grid-column: 1 / -1; font-size: 14px; color: var(--muted); margin-top: -6px; }
+.err .ex b { font-weight: 500; color: var(--text-body); }
+.err .ex .bad { color: #FF7FAF; }
+.gapgrid { min-width: 860px; display: flex; flex-direction: column; gap: 6px; }
+.gaprow { display: grid; grid-template-columns: 170px 1fr 1fr; gap: 16px; align-items: center; }
+.gaprow .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-body); }
+.gaprow .who .sw { width: 10px; height: 10px; flex: none; }
+.squares { display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 3px; }
+.sq { aspect-ratio: 1; border: 1px solid var(--hot); background: transparent; }
+.sq.ok { border-color: var(--neon); background: var(--neon); box-shadow: 0 0 6px rgba(56, 214, 255, 0.6); }
+.gaprow.hdr { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.hard { display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--text-body); line-height: 1.5; }
+.hard .q { color: var(--text-strong); font-weight: 500; }
 [hidden] { display: none !important; }
 @media (max-width: 640px) {
   .wrap { padding: 32px 16px 48px; }
@@ -234,7 +250,60 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
       </section>
     </div>
   </div>
-  <section id="tasks" role="tabpanel" aria-labelledby="tab-tasks" class="panel" hidden><p class="soon">Task deep dives: in the next build.</p></section>
+  <div id="tasks" role="tabpanel" aria-labelledby="tab-tasks" class="tabpage" hidden>
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 10 NUMBERS</div>
+        <h2>Numbers, by question type</h2>
+        <p class="sub">Share answered exactly right. Georgian counts in twenties, and ordinals add the prefix მე- inside the word or before the digits.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="num-grid"></div></div>
+    </section>
+
+    <section class="panel hot">
+      <div class="head">
+        <div class="tag">// 11 ERROR TYPES</div>
+        <h2>How the models get numbers wrong</h2>
+        <p class="sub">All wrong numbers answers of the compared models, sorted into types automatically, with one real example each.</p>
+      </div>
+      <div class="errs" id="num-errors"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div class="tag">// 12 VERBS</div>
+        <h2>Verbs, by question type</h2>
+        <p class="sub">Georgian verbs mark who does what to whom inside the verb itself. Share answered right.</p>
+      </div>
+      <div class="scroll"><div class="heat" id="verb-grid"></div></div>
+      <p class="sub" id="swaps"></p>
+    </section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 13 CORRECTION</div>
+          <h2>Grammar correction: fixed, missed, broken</h2>
+          <p class="sub" id="corr-sub"></p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Fixed</span><span><span class="sw" style="background:#2A3B57"></span>Missed</span><span><span class="sw" style="background:var(--hot);box-shadow:0 0 10px var(--hot)"></span>Broken</span></div>
+      </div>
+      <div class="costs" id="corr"></div>
+    </section>
+
+    <section class="panel">
+      <div class="head-row">
+        <div class="head">
+          <div class="tag">// 14 CLOZE</div>
+          <h2>Cloze, gap by gap</h2>
+          <p class="sub">Two articles with 25 gaps each. Every square is one gap; lit means the exact right word form.</p>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--neon);box-shadow:0 0 10px var(--neon)"></span>Right</span><span><span class="sw" style="border:1px solid var(--hot)"></span>Wrong</span></div>
+      </div>
+      <div class="scroll"><div class="gapgrid" id="cloze"></div></div>
+      <div id="cloze-hard"></div>
+    </section>
+  </div>
   <section id="examples" role="tabpanel" aria-labelledby="tab-examples" class="panel" hidden><p class="soon">Examples: in the next build.</p></section>
   <section id="method" role="tabpanel" aria-labelledby="tab-method" class="panel" hidden><p class="soon">Method: in the next build.</p></section>
 
@@ -401,6 +470,94 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12
   sp.append(el('div', { class: 'total' }, '$' + C.spendTotal.toFixed(2)));
   const maxS = Math.max(...C.spend.map((r) => r.cost));
   for (const r of C.spend) sp.append(barRow('wide', r.label, r.cost / maxS, 'var(--neon)', '$' + r.cost.toFixed(2)));
+
+  // ---- Tasks tab ----
+  const T = D.tasksTab;
+  const who = (slug) => {
+    const m = D.models[slug];
+    return el('div', { class: 'who' }, el('span', { class: 'sw', 'aria-hidden': 'true', style: 'background:' + color[m.vendor] + ';box-shadow:0 0 8px ' + color[m.vendor] }), el('span', {}, m.name));
+  };
+  // Category rows x model columns, as score cells.
+  const grid = (target, rows) => {
+    const cols = doneModels.length;
+    const tmpl = 'grid-template-columns:240px repeat(' + cols + ', minmax(0, 1fr))';
+    const box = document.getElementById(target);
+    box.style.minWidth = (240 + cols * 110) + 'px';
+    const hdr = el('div', { class: 'row hdr', style: tmpl }, el('div', {}, 'Question type'));
+    for (const s of doneModels) hdr.append(el('div', { title: D.models[s].name }, D.models[s].name.replace('Claude ', '')));
+    box.append(hdr);
+    for (const r of rows) {
+      const row = el('div', { class: 'row', style: tmpl }, el('div', { class: 'who' }, el('span', {}, r.label + ' (' + r.n + ')')));
+      for (const s of doneModels) {
+        const v = r.values[s];
+        if (v == null) { row.append(el('div', { class: 'cell none' }, '…')); continue; }
+        row.append(el('div', { class: 'cell', style: 'background:' + neon((0.04 + v * 0.36).toFixed(3)) + ';border-color:' + neon((0.12 + v * 0.45).toFixed(3)) + (v >= 0.9 ? ';box-shadow:0 0 14px ' + neon(0.45) : '') }, Math.round(v * 100) + '%'));
+      }
+      box.append(row);
+    }
+  };
+  grid('num-grid', T.numbersGrid);
+  grid('verb-grid', T.verbsGrid);
+
+  // Numbers error types
+  const ne = document.getElementById('num-errors');
+  const maxE = Math.max(...T.numbersErrors.map((e) => e.count));
+  for (const e of T.numbersErrors) {
+    const x = e.example;
+    ne.append(el('div', { class: 'err' },
+      el('div', { class: 't' }, e.type),
+      el('div', { class: 'track' }, el('div', { class: 'fill', style: 'width:' + (e.count / maxE * 100) + '%;background:var(--hot);box-shadow:0 0 10px var(--hot)' })),
+      el('div', { class: 'v', style: 'font-family:var(--mono);font-weight:600;text-align:right' }, String(e.count)),
+      el('div', { class: 'ex' }, 'e.g. ', el('b', { lang: 'ka' }, x.question), ' → expected ', el('b', { lang: 'ka' }, x.expected), ', ' + x.model + ' wrote ', el('b', { class: 'bad', lang: 'ka' }, x.answer))));
+  }
+
+  // Verbs: swapped participants
+  const sw = doneModels.map((s) => D.models[s].name + ' ' + T.swaps[s] + ' of ' + T.wrongWho[s]);
+  document.getElementById('swaps').textContent = 'Wrong "who does what to whom" answers where the model swapped the doer and the receiver: ' + sw.join(' · ') + '.';
+
+  // Correction
+  const corr = document.getElementById('corr');
+  if (T.correction.length) {
+    document.getElementById('corr-sub').textContent = 'Out of ' + T.correction[0].needed + ' planted errors in ' + D.tasks.find((t) => t.id === 'glb-correction').items + ' paragraphs. Broken = correct words the model changed anyway. Counted word by word, so the split is approximate.';
+  }
+  const corrSorted = [...T.correction].sort((a, b) => b.fixed - a.fixed);
+  for (const r of corrSorted) {
+    const m = D.models[r.model];
+    corr.append(el('div', { class: 'cost wide' },
+      el('div', { class: 'm' }, m.name),
+      el('div', { class: 'track', style: 'display:flex;height:18px' },
+        el('div', { class: 'fill', title: 'fixed ' + r.fixed, style: 'width:' + (r.fixed / r.needed * 100) + '%;background:var(--neon);box-shadow:0 0 10px var(--neon)' }),
+        el('div', { class: 'fill', title: 'missed ' + r.missed, style: 'width:' + (r.missed / r.needed * 100) + '%;background:#2A3B57' })),
+      el('div', { class: 'v' }, r.fixed + ' / ' + r.needed, el('span', { style: 'color:var(--hot);margin-left:8px' }, '−' + r.broken))));
+  }
+
+  // Cloze grid
+  const cz = document.getElementById('cloze');
+  const texts = [...new Set(T.clozeGaps.map((g) => g.text))];
+  const gh = el('div', { class: 'gaprow hdr' }, el('div', {}, 'Model'));
+  for (const t of texts) gh.append(el('div', {}, t === 'cloze-000' ? 'Text 1: History of computers' : 'Text 2: The Roman Empire'));
+  cz.append(gh);
+  for (const s of doneModels) {
+    const row = el('div', { class: 'gaprow' }, who(s));
+    for (const t of texts) {
+      const sq = el('div', { class: 'squares' });
+      for (const g of T.clozeGaps.filter((g) => g.text === t)) {
+        const ok = g.results[s];
+        sq.append(el('div', { class: 'sq' + (ok ? ' ok' : ''), title: '[' + g.gap + '] ' + g.expected + (ok ? '' : ' · wrote ' + g.answers[s]) }));
+      }
+      row.append(sq);
+    }
+    cz.append(row);
+  }
+  const hard = document.getElementById('cloze-hard');
+  if (T.clozeAllWrong.length) {
+    const box = el('div', { class: 'hard' }, el('div', { class: 'tag', style: 'color:var(--hot)' }, '// GAPS NO MODEL GOT RIGHT'));
+    for (const g of T.clozeAllWrong) {
+      const answers = [...new Set(Object.values(g.answers))].join(', ');
+      box.append(el('div', {}, el('span', { class: 'q' }, (g.text === 'cloze-000' ? 'Text 1' : 'Text 2') + ', gap [' + g.gap + ']: '), 'expected ', el('b', { lang: 'ka' }, g.expected), ', models wrote ', el('b', { lang: 'ka', style: 'color:#FF7FAF' }, answers)));
+    }
+    hard.append(box);
+  }
 
   // Tabs
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
