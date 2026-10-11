@@ -16,9 +16,19 @@ from pathlib import Path
 import kaggle_benchmarks as kbench
 import pandas as pd
 
-# On Kaggle the dataset is mounted here; locally we read the repo's data/.
-KAGGLE_DATA = Path("/kaggle/input/georgian-language-benchmark-data")
-DATA = KAGGLE_DATA if KAGGLE_DATA.exists() else Path(__file__).resolve().parent.parent / "data"
+
+def data_file(name: str) -> Path:
+    # Kaggle mounts the attached dataset somewhere under /kaggle/input (the
+    # exact sub-path varies), so search for the file there. Locally, read the
+    # repo's data/ folder next to tasks/.
+    kaggle_input = Path("/kaggle/input")
+    if kaggle_input.exists():
+        found = sorted(kaggle_input.rglob(name))
+        if not found:
+            raise FileNotFoundError(f"{name} not found under /kaggle/input")
+        return found[0]
+    return Path(__file__).resolve().parent.parent / "data" / name
+
 
 TENSES = {
     "present": "present (აწმყო)",
@@ -37,7 +47,7 @@ ARROWS = (
 
 
 def load_items() -> pd.DataFrame:
-    df = pd.read_csv(DATA / "verbs.csv", dtype=str, keep_default_na=False)
+    df = pd.read_csv(data_file("verbs.csv"), dtype=str, keep_default_na=False)
     df = df.rename(columns={"input": "text"})
     # Local testing: GLB_LIMIT=N runs a fixed random sample of N rows.
     limit = int(os.environ.get("GLB_LIMIT", "0"))
@@ -64,11 +74,20 @@ def normalize(text: str) -> str:
     return " ".join(text.split())
 
 
+# Kaggle reserves each call's worst-case cost (maximum output length x price)
+# against the quota before sending it, and refuses the call if that doesn't
+# fit. A generous limit, far above any answer seen in testing (the longest
+# was 26,600 tokens), keeps the reservation affordable for expensive models.
+OUTPUT_LIMIT = {"max_completion_tokens": 32000}
+# Every model answers directly, without hidden thinking: the same conditions
+# for all models, and affordable within the daily quota.
+
+
 def ask(llm, prompt: str) -> str:
     # Nested evaluations can't retry failed items, so retry API errors here.
     for attempt in range(3):
         try:
-            return llm.prompt(prompt, schema=Answer).answer
+            return llm.prompt(prompt, schema=Answer, reasoning="none", extra_api_params=OUTPUT_LIMIT).answer
         except Exception:
             if attempt == 2:
                 raise
@@ -133,9 +152,14 @@ def verb_item(llm, id: str, kind: str, text: str, choices: str, expected: str) -
 )
 def verbs(llm) -> float:
     runs = verb_item.evaluate(
-        llm=[llm], evaluation_data=ITEMS, n_jobs=4, on_failure="continue"
+        llm=[llm], evaluation_data=ITEMS, n_jobs=2, on_failure="continue"
     )
-    # Errored runs (e.g. API failures after retries) count as wrong.
+    # Calls that failed (e.g. the model quota ran out) must not look like a
+    # low score: above 5% failed items, stop without reporting one.
+    errored = len(runs.errored_runs)
+    if errored > 0.05 * len(ITEMS):
+        raise RuntimeError(f"{errored} of {len(ITEMS)} items failed with errors; no score reported.")
+    # A few errored runs (isolated API failures after retries) count as wrong.
     correct = sum(1 for r in runs.completed_runs if r.result is True)
     return correct / len(ITEMS)
 
